@@ -3,6 +3,13 @@ module.exports = {
     darkMode: ["class"],
     content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
+	container: {
+		center: true,
+		padding: "2rem",
+		screens: {
+		  "2xl": "1400px",
+		},
+	  },
   	extend: {
   		borderRadius: {
   			lg: 'var(--radius)',
@@ -10,6 +17,12 @@ module.exports = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+			orange: {
+				600: '#FF4405', // Adjust this to match your exact orange
+			  },
+			  purple: {
+				600: '#6366F1', // The main purple color used in the design
+			  },
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

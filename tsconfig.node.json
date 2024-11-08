@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "incremental": true,  // Added this to enable tsBuildInfoFile
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "target": "ES2022",
     "lib": ["ES2023"],
@@ -17,8 +18,8 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noFallthroughCasesInSwitch": true
+    // Removed 'noUncheckedSideEffectImports' as it's not a valid TypeScript option
   },
   "include": ["vite.config.ts"]
 }
