@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import App from "./App";
 import Layout from "./layout";
 import Dashboard from "./pages/Dashboard";
-import TestimonialForm from "./components/general/TestimonialForm";
+import TestimonialForm from "./pages/Testimonial";
 
 const AppRoutes = () => {
   return (

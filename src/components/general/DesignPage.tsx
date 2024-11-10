@@ -1,10 +1,11 @@
+import React from "react";
 import { Heart, Video } from "lucide-react";
 
-interface WelcomePageProps {
+interface DesignPageProps {
   isDesktop: boolean;
 }
 
-const WelcomePage = ({ isDesktop }: WelcomePageProps) => {
+const DesignPage: React.FC<DesignPageProps> = ({ isDesktop }) => {
   return (
     <div className="relative">
       <div className="absolute top-[-12px] right-4 z-10">
@@ -56,4 +57,4 @@ const WelcomePage = ({ isDesktop }: WelcomePageProps) => {
   );
 };
 
-export default WelcomePage;
+export default DesignPage;
