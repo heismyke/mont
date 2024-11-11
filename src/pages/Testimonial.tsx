@@ -67,7 +67,7 @@ const TestimonialForm = () => {
           ))}
         </div>
 
-        <button className="w-full bg-black text-white rounded-lg py-3 mt-6">
+        <button className="w-full bg-black text-white rounded-lg py-2 mt-6">
           Save changes
         </button>
       </div>
