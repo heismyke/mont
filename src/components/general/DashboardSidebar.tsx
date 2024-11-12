@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
-import { WormIcon, TagsIcon, InboxIcon, PlusCircleIcon } from "lucide-react";
+import { WormIcon, TagsIcon, InboxIcon, PlusCircleIcon, LogOutIcon } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useFormContext } from "@/context/FormContext";
 import { useEffect } from "react";
 
 export const DashboardSidebar = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { forms, loadForms } = useFormContext();
   const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ export const DashboardSidebar = () => {
   };
 
   return (
-    <div className="w-64 border-r border-gray-200 bg-[#F5F5F5] min-h-screen">
+    <div className="w-64 border-r border-gray-200 bg-[#F5F5F5] min-h-screen flex flex-col">
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center gap-3">
           <img
@@ -36,7 +36,7 @@ export const DashboardSidebar = () => {
         </div>
       </div>
 
-      <div className="p-2">
+      <div className="p-2 flex-1">
         <div className="shadow-sm rounded-lg bg-white p-4 text-gray-800 space-y-1">
           <p className="text-sm font-medium flex items-center gap-1">
             Support{" "}
@@ -85,6 +85,13 @@ export const DashboardSidebar = () => {
             onClick={() => navigate("/dashboard")}
           />
           <NavItem rightIcon={undefined} icon={<TagsIcon />} label="Tags" />
+        </div>
+      </div>
+
+      <div className="p-3 border-t border-gray-200 flex items-center gap-2 mb-3 ml-2">
+        <LogOutIcon color="red" fontSize={24}/>
+        <div className="w-full text-base text-red-500 text-start cursor-pointer ml-1" onClick={signOut}>
+          Logout
         </div>
       </div>
     </div>

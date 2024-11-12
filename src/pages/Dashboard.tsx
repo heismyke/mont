@@ -2,7 +2,6 @@ import { useState } from "react";
 import TestimonialList from "../components/general/TestimonialList";
 import DashboardHeader from "../components/general/DashboardHeader";
 import TestimonialWidgets from "../components/general/TestimonialWidgets";
-import { Button } from "@/components/ui/button";
 import {DashboardSidebar} from "@/components/general/DashboardSidebar";
 
 const Dashboard = () => {
@@ -27,11 +26,11 @@ const Dashboard = () => {
                   <h2 className="text-xl font-medium">Your Monts</h2>
                   <span className="text-gray-400 text-sm ml-1 mt-1">249</span>
                 </div>
-                <div className="flex items-center gap-3">
+                {/* <div className="flex items-center gap-3">
                   <Button className="bg-[#6366F1] text-white px-4 py-2 rounded-lg text-sm font-medium">
                     Go to forms
                   </Button>
-                </div>
+                </div> */}
               </div>
 
               <div className="flex gap-6 mt-6 border-b border-gray-200 text-sm">
@@ -42,17 +41,17 @@ const Dashboard = () => {
                   All
                 </TabButton>
                 <TabButton
-                  active={selectedTab === "feedback"}
-                  onClick={() => setSelectedTab("feedback")}
+                  active={selectedTab === "favorites"}
+                  onClick={() => setSelectedTab("favorites")}
                 >
-                  Feedback tag{" "}
+                  Favorites{" "}
                 </TabButton>
-                <TabButton
+                {/* <TabButton
                   active={selectedTab === "social"}
                   onClick={() => setSelectedTab("social")}
                 >
-                  Social tag
-                </TabButton>
+                  Responders emails
+                </TabButton> */}
               </div>
 
               <TestimonialList />

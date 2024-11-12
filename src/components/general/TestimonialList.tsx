@@ -1,7 +1,11 @@
+import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { TwitterLogoIcon } from "@radix-ui/react-icons";
+import { CopyIcon } from "lucide-react";
 
 const TestimonialList = () => {
+ const {toast} = useToast();
+
   const testimonials = [
     {
       id: 1,
@@ -13,6 +17,7 @@ const TestimonialList = () => {
       tags: ["feedback", "build-in-public"],
       country: "en",
       fileSize: "24MB",
+      address: "0x1234567890abcdef00209282",
     },
     {
       id: 2,
@@ -24,6 +29,7 @@ const TestimonialList = () => {
       tags: ["social", "build-in-public"],
       country: "ar",
       fileSize: "18MB",
+      address: "0x1234567890abcdef7477hddd",
     },
     {
       id: 3,
@@ -35,8 +41,17 @@ const TestimonialList = () => {
       tags: ["feedback", "social"],
       country: "br",
       fileSize: "21MB",
+      address: "0x1234567890abcdefw635639",
     },
   ];
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast({
+      title: "Copied to clipboard",
+      description: "Address copied to clipboard",
+    });
+  };
 
   return (
     <div className="mt-4 grid grid-cols-1 gap-6">
@@ -106,7 +121,7 @@ const TestimonialList = () => {
                 </div>
               </div>
 
-              <div className="mb-4">
+              <div className="mb-3">
                 <h4 className="text-sm font-medium text-gray-900 mb-2">
                   Near Redacted 2024
                 </h4>
@@ -124,7 +139,7 @@ const TestimonialList = () => {
               </div> */}
 
               {/* Witty comment */}
-              <p className="text-xs text-gray-500 italic mb-4 line-clamp-2">
+              <p className="text-xs text-gray-500 italic mb-3 line-clamp-1">
                 {testimonial.name === "Rick Astley" &&
                   "This hackathon was amazing! Never gonna give up building!"}
                 {testimonial.name === "Mariah Carey" &&
@@ -132,6 +147,14 @@ const TestimonialList = () => {
                 {testimonial.name === "Lily Hughes" &&
                   "Buildspace helped me take my project from 0 to 1 in just 6 weeks!"}
               </p>
+
+              <div className="flex gap-3 items-center mb-2">
+                <p className="text-xs text-gray-600 font-medium line-clamp-1">
+                  Wallet Address: {testimonial.address}
+                </p>
+
+                <CopyIcon size={14} className="text-gray-600 cursor-pointer" onClick={() => handleCopy(testimonial.address)} />
+              </div>
 
               {/* Footer */}
               <div className="flex items-center gap-3 text-sm text-gray-500">
