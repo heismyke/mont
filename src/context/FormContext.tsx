@@ -1,7 +1,14 @@
 import React, { createContext, useContext, useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "./AuthContext";
 
 // Define the types for our form state
 interface FormState {
+  form: {
+    id?: string;
+    form_title?: string;
+  };
   design: {
     logo: {
       file: File | null;
@@ -50,6 +57,10 @@ interface FormState {
 
 // Create the initial state
 const initialFormState: FormState = {
+  form: {
+    id: "",
+    form_title: "My new form",
+  },
   design: {
     logo: {
       file: null,
@@ -102,8 +113,10 @@ const initialFormState: FormState = {
 // Create the context
 interface FormContextType {
   formState: FormState;
+  forms: { id: string; name: string | null }[];
   handleLogoUpload: (file: File) => void;
   updateWelcome: (updates: Partial<FormState["welcome"]>) => void;
+  updateForm: (updates: Partial<FormState["form"]>) => void;
   updateFormState: (
     section: keyof FormState,
     newData: Partial<FormState[keyof FormState]>
@@ -116,6 +129,9 @@ interface FormContextType {
   setExpandedItem: (item: string | null) => void;
   isDesktop: boolean;
   setIsDesktop: (isDesktop: boolean) => void;
+  saveForm: () => Promise<void>;
+  loadForm: (id: string) => Promise<void>;
+  loadForms: () => Promise<void>;
 }
 
 const FormContext = createContext<FormContextType | null>(null);
@@ -134,9 +150,89 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [formState, setFormState] = useState<FormState>(initialFormState);
+  const [forms, setForms] = useState<{ id: string; name: string | null }[]>([]);
   const [activeView, setActiveView] = useState<string>("design");
   const [expandedItem, setExpandedItem] = useState<string | null>("design");
   const [isDesktop, setIsDesktop] = useState<boolean>(true);
+  const { toast } = useToast();
+  const { user } = useAuth();
+
+  const saveForm = async () => {
+    try {
+      if (!user) throw new Error("User not authenticated");
+
+      const { error } = await supabase.from("forms").upsert({
+        id: formState.form.id || crypto.randomUUID(),
+        form_title: formState.form.form_title,
+        user_id: user.id,
+        form_state: formState,
+        updated_at: new Date().toISOString(),
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Form saved successfully",
+      });
+    } catch (error) {
+      console.error("Error saving form:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save form",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const loadForm = async (id: string) => {
+    try {
+      const { data, error } = await supabase
+        .from("forms")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setFormState(data.form_state);
+      }
+    } catch (error) {
+      console.error("Error loading form:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load form",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const loadForms = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("forms")
+        .select("id, form_title")
+        .eq("user_id", user?.id);
+
+      if (error) throw error;
+      if (data) {
+        const forms = data?.map(
+          (form: { id: string; form_title: string | null }) => ({
+            id: form.id,
+            name: form.form_title || null,
+          })
+        );
+        setForms(forms || []);
+      }
+    } catch (error) {
+      console.error("Error loading forms:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load forms",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleLogoUpload = (file: File) => {
     const reader = new FileReader();
@@ -156,6 +252,16 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
       ...prev,
       welcome: {
         ...prev.welcome,
+        ...updates,
+      },
+    }));
+  };
+
+  const updateForm = (updates: Partial<FormState["form"]>) => {
+    setFormState((prev) => ({
+      ...prev,
+      form: {
+        ...prev.form,
         ...updates,
       },
     }));
@@ -188,8 +294,8 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     setFormState((prev) => ({
       ...prev,
       [section]: {
-        ...prev[section],
-        ...newData,
+        ...(prev[section] as object),
+        ...(newData as object),
       },
     }));
   };
@@ -200,6 +306,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
         formState,
         handleLogoUpload,
         updateWelcome,
+        updateForm,
         updateResponse,
         setRating,
         updateFormState,
@@ -209,6 +316,10 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
         setExpandedItem,
         isDesktop,
         setIsDesktop,
+        saveForm,
+        loadForm,
+        forms,
+        loadForms,
       }}
     >
       {children}

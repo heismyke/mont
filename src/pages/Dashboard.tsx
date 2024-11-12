@@ -1,9 +1,9 @@
 import { useState } from "react";
 import TestimonialList from "../components/general/TestimonialList";
 import DashboardHeader from "../components/general/DashboardHeader";
-import DashboardSidebar from "../components/general/DashboardSidebar";
 import TestimonialWidgets from "../components/general/TestimonialWidgets";
 import { Button } from "@/components/ui/button";
+import {DashboardSidebar} from "@/components/general/DashboardSidebar";
 
 const Dashboard = () => {
   const [selectedTab, setSelectedTab] = useState("all");
@@ -25,7 +25,7 @@ const Dashboard = () => {
               <div className="flex items-center justify-between text-gray-600">
                 <div className="flex items-center gap-2">
                   <h2 className="text-xl font-medium">Your Monts</h2>
-                  <span className="text-gray-500 ml-2">249</span>
+                  <span className="text-gray-400 text-sm ml-1 mt-1">249</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Button className="bg-[#6366F1] text-white px-4 py-2 rounded-lg text-sm font-medium">
@@ -34,7 +34,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="flex gap-6 mt-6 border-b border-gray-200">
+              <div className="flex gap-6 mt-6 border-b border-gray-200 text-sm">
                 <TabButton
                   active={selectedTab === "all"}
                   onClick={() => setSelectedTab("all")}
