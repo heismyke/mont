@@ -16,19 +16,20 @@ interface FormState {
     };
   };
   welcome: {
-    title: string; // For "Share a testimonial!"
-    subtitle: string; // For "Do you love using our product? We'd love to hear about it!"
+    title: string;
+    subtitle: string;
     prompts: string;
-    buttonText: string; // For "Record a video"
-    showTestimonialButton: boolean; // For controlling testimonial button visibility
+    buttonText: string;
+    showTestimonialButton: boolean;
   };
   response: {
-    title: string; // For "Record a video feedback"
-    prompts: string; // For the bullet points
-    enableRating: boolean; // For the rating checkbox
-    rating: number | null; // To store the selected rating
-    videoPreview: string | null; // For video preview URL
-    recordingTime: string; // For video recording timer
+    title: string;
+    prompts: string;
+    enableRating: boolean;
+    rating: number | null;
+    videoPreview: string | null;
+    videoUrl: string | null;
+    recordingTime: string;
   };
   customer: {
     fields: {
@@ -77,6 +78,7 @@ const initialFormState: FormState = {
     enableRating: true,
     rating: null,
     videoPreview: null,
+    videoUrl: null,
     recordingTime: "00:00",
   },
   customer: {

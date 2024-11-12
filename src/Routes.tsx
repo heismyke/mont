@@ -12,6 +12,8 @@ const AppRoutes = () => {
           <Route path="/" element={<App />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/form" element={<TestimonialForm />} />
+          <Route path="/forms/:id" element={<TestimonialForm />} />
+          <Route path="/form/:id" element={<TestimonialForm />} />
         </Routes>
       </Layout>
     </Router>
