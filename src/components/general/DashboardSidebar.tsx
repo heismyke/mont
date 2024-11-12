@@ -6,9 +6,7 @@ const DashboardSidebar = () => {
     <div className="w-64 border-r border-gray-200 bg-[#F5F5F5] min-h-screen">
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-red-500 rounded-md flex items-center justify-center text-black">
-            W
-          </div>
+         <img src="/src/assets/protocols/polygon.svg" alt="Polygon Network" className="w-8 h-8" />
           <div>
             <div className="font-medium text-gray-800">Polygon Network</div>
             <div className="text-xs text-gray-500">Enterprise plan</div>

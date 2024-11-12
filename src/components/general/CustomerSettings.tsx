@@ -1,7 +1,23 @@
 import { Mail, Wallet, Globe, MessageSquare } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useFormContext } from "@/context/FormContext";
 
-const responderSettings = () => {
+const ResponderSettings = () => {
+  const { formState, updateFormState } = useFormContext();
+  const { fields } = formState.customer;
+
+  const handleFieldUpdate = (field: keyof typeof fields, type: 'enabled' | 'required', value: boolean) => {
+    updateFormState('customer', {
+      fields: {
+        ...fields,
+        [field]: {
+          ...fields[field],
+          [type]: value
+        }
+      }
+    });
+  };
+
   return (
     <div className="space-y-4">
       <div className="space-y-3">
@@ -16,13 +32,19 @@ const responderSettings = () => {
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
-              defaultChecked
+              checked={fields.email.enabled}
+              onChange={(e) => handleFieldUpdate('email', 'enabled', e.target.checked)}
               className="rounded-lg accent-purple-500"
             />
             <span className="text-xs text-gray-600">Enabled</span>
           </div>
           <div className="flex items-center gap-2">
-            <input type="checkbox" className="rounded-lg accent-purple-500" />
+            <input 
+              type="checkbox"
+              checked={fields.email.required}
+              onChange={(e) => handleFieldUpdate('email', 'required', e.target.checked)}
+              className="rounded-lg accent-purple-500"
+            />
             <span className="text-xs text-gray-600">Required</span>
           </div>
         </div>
@@ -42,13 +64,19 @@ const responderSettings = () => {
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
-              defaultChecked
+              checked={fields.walletAddress.enabled}
+              onChange={(e) => handleFieldUpdate('walletAddress', 'enabled', e.target.checked)}
               className="rounded-lg accent-purple-500"
             />
             <span className="text-xs text-gray-600">Enabled</span>
           </div>
           <div className="flex items-center gap-2">
-            <input type="checkbox" className="rounded-lg accent-purple-500" />
+            <input
+              type="checkbox"
+              checked={fields.walletAddress.required}
+              onChange={(e) => handleFieldUpdate('walletAddress', 'required', e.target.checked)}
+              className="rounded-lg accent-purple-500"
+            />
             <span className="text-xs text-gray-600">Required</span>
           </div>
         </div>
@@ -68,13 +96,19 @@ const responderSettings = () => {
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
-              defaultChecked
+              checked={fields.nationality.enabled}
+              onChange={(e) => handleFieldUpdate('nationality', 'enabled', e.target.checked)}
               className="rounded-lg accent-purple-500"
             />
             <span className="text-xs text-gray-600">Enabled</span>
           </div>
           <div className="flex items-center gap-2">
-            <input type="checkbox" className="rounded-lg accent-purple-500" />
+            <input
+              type="checkbox"
+              checked={fields.nationality.required}
+              onChange={(e) => handleFieldUpdate('nationality', 'required', e.target.checked)}
+              className="rounded-lg accent-purple-500"
+            />
             <span className="text-xs text-gray-600">Required</span>
           </div>
         </div>
@@ -94,13 +128,19 @@ const responderSettings = () => {
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
-              defaultChecked
+              checked={fields.comment.enabled}
+              onChange={(e) => handleFieldUpdate('comment', 'enabled', e.target.checked)}
               className="rounded-lg accent-purple-500"
             />
             <span className="text-xs text-gray-600">Enabled</span>
           </div>
           <div className="flex items-center gap-2">
-            <input type="checkbox" className="rounded-lg accent-purple-500" />
+            <input
+              type="checkbox"
+              checked={fields.comment.required}
+              onChange={(e) => handleFieldUpdate('comment', 'required', e.target.checked)}
+              className="rounded-lg accent-purple-500"
+            />
             <span className="text-xs text-gray-600">Required</span>
           </div>
         </div>
@@ -109,4 +149,4 @@ const responderSettings = () => {
   );
 };
 
-export default responderSettings;
+export default ResponderSettings;

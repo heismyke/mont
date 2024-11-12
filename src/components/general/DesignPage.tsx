@@ -1,28 +1,51 @@
 import React from "react";
 import { Heart, Video } from "lucide-react";
+import { useFormContext } from "@/context/FormContext";
 
 interface DesignPageProps {
   isDesktop: boolean;
 }
 
 const DesignPage: React.FC<DesignPageProps> = ({ isDesktop }) => {
+  const { formState } = useFormContext();
+  const { primaryColor, backgroundColor, font, logo } = formState.design;
+
   return (
     <div className="relative">
       <div className="absolute top-[-12px] right-4 z-10">
-        <button className="bg-white text-xs text-purple-600 hover:text-white hover:bg-purple-700 flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow">
+        <button 
+          className="bg-white text-xs hover:text-white flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow"
+          style={{ 
+            color: primaryColor,
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = primaryColor}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
+        >
           Collect testimonials with Mont ↗
         </button>
       </div>
 
       <div
-        className={`bg-white rounded-2xl p-6 shadow-lg mx-auto relative ${
+        className={`rounded-2xl p-6 shadow-lg mx-auto relative ${
           isDesktop
             ? "max-w-2xl"
             : "w-[360px] h-[660px] border-4 border-gray-800 flex flex-col justify-center"
         }`}
+        style={{ 
+          backgroundColor: backgroundColor,
+          fontFamily: font 
+        }}
       >
         <div className="flex justify-between items-start mb-4">
-          <Heart className="text-purple-700 fill-purple-700" size={48} />
+          {logo.preview ? (
+            <img src={logo.preview} alt="Logo" className="h-12 w-12 object-contain" />
+          ) : (
+            <Heart 
+              className="fill-current" 
+              size={48} 
+              style={{ color: primaryColor }}
+            />
+          )}
         </div>
 
         <h2 className="text-2xl font-bold mb-3">Share a testimonial!</h2>
@@ -35,22 +58,20 @@ const DesignPage: React.FC<DesignPageProps> = ({ isDesktop }) => {
           <li>Recording a video? Don't forget to smile 😊</li>
         </ul>
 
-        <button className="w-full bg-purple-700 text-white rounded-lg py-3 mb-3 flex items-center justify-center gap-2">
+        <button 
+          className="w-full text-white rounded-lg py-3 mb-3 flex items-center justify-center gap-2"
+          style={{ backgroundColor: primaryColor }}
+        >
           <Video size={20} />
           Record a video
         </button>
 
-        {/* <button className="w-full bg-gray-100 text-gray-700 rounded-lg py-3 flex items-center justify-center gap-2">
-          <Pen size={20} />
-          Write a testimonial
-        </button> */}
-
         <div
-          className={` text-center ${
+          className={`text-center ${
             isDesktop ? "mt-10" : "absolute bottom-6 left-0 right-0"
           }`}
         >
-          <p className={`text-xs text-gray-300`}>Powered by Mont protocol</p>
+          <p className="text-xs text-gray-300">Powered by Mont protocol</p>
         </div>
       </div>
     </div>

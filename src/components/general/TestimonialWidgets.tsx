@@ -15,7 +15,7 @@ const TestimonialWidgets = () => {
         <div className="bg-blue-50 p-4 rounded-lg">
           <div className="flex items-center gap-2 text-blue-600 mb-2">
             <BarChart3Icon className="w-4 h-4" />
-            <span className="text-sm font-medium">Total Visitors</span>
+            <span className="text-sm font-medium">Total Responders</span>
           </div>
           <div className="text-2xl font-bold text-blue-700">2,847</div>
           <div className="text-sm text-blue-600 mt-1">+12.5% from last month</div>
@@ -35,7 +35,7 @@ const TestimonialWidgets = () => {
         <div className="bg-green-50 p-4 rounded-lg">
           <div className="flex items-center gap-2 text-green-600 mb-2">
             <MessageSquareIcon className="w-4 h-4" />
-            <span className="text-sm font-medium">Total Testimonials</span>
+            <span className="text-sm font-medium">Total Monts</span>
           </div>
           <div className="text-2xl font-bold text-green-700">154</div>
           <div className="text-sm text-green-600 mt-1">+8.3% from last month</div>
@@ -59,8 +59,8 @@ const TestimonialWidgets = () => {
       {/* Charts */}
       <div className="grid grid-cols-2 gap-6 mt-6">
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h4 className="text-sm font-medium text-gray-700 mb-4">Visitors Over Time</h4>
-          <div className="h-48 flex items-end gap-2">
+          <h4 className="text-sm font-medium text-gray-700 mb-4">Responders Over Time</h4>
+          <div className="h-36 flex items-end gap-2">
             {[45, 60, 30, 80, 65, 90, 70].map((height, i) => (
               <div key={i} className="flex-1">
                 <div 

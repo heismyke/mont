@@ -1,4 +1,16 @@
+import { useFormContext } from "@/context/FormContext";
+
+// Thank You Settings Component
 const ThankYouSettings = () => {
+  const { formState, updateFormState } = useFormContext();
+  const { thanks } = formState;
+
+  const handleChange = (field: keyof typeof thanks, value: string) => {
+    updateFormState('thanks', {
+      [field]: value
+    });
+  };
+
   return (
     <div className="space-y-4">
       <div>
@@ -6,7 +18,8 @@ const ThankYouSettings = () => {
         <input
           type="text"
           className="w-full p-2 border rounded text-gray-800 text-sm"
-          defaultValue="Thanks for leaving us feedback 🙏"
+          value={thanks.title}
+          onChange={(e) => handleChange('title', e.target.value)}
         />
       </div>
 
@@ -15,7 +28,8 @@ const ThankYouSettings = () => {
         <textarea
           className="w-full p-2 border rounded text-gray-800 text-sm"
           rows={4}
-          defaultValue="Thank you so much for your support! We appreciate your support and we hope you enjoy using our product."
+          value={thanks.message}
+          onChange={(e) => handleChange('message', e.target.value)}
         />
       </div>
     </div>

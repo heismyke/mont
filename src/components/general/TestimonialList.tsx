@@ -1,3 +1,4 @@
+import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { TwitterLogoIcon } from "@radix-ui/react-icons";
 
 const TestimonialList = () => {
@@ -8,7 +9,7 @@ const TestimonialList = () => {
       title: "Team Banana Bets",
       avatar: "/avatar1.jpg",
       videoUrl: "/testimonials/mariah-video.mp4",
-      date: "3 months ago",
+      date: "12-04-2024",
       tags: ["feedback", "build-in-public"],
       country: "en",
       fileSize: "24MB",
@@ -19,7 +20,7 @@ const TestimonialList = () => {
       title: "Team Gas Guard",
       avatar: "/avatar2.jpg",
       videoUrl: "/testimonials/rick-video.mp4",
-      date: "3 months ago",
+      date: "12-04-2024",
       tags: ["social", "build-in-public"],
       country: "ar",
       fileSize: "18MB",
@@ -30,7 +31,7 @@ const TestimonialList = () => {
       title: "Team Buildspace",
       avatar: "/avatar3.jpg",
       videoUrl: "/testimonials/lily-video.mp4",
-      date: "3 months ago",
+      date: "12-04-2024",
       tags: ["feedback", "social"],
       country: "br",
       fileSize: "21MB",
@@ -46,7 +47,7 @@ const TestimonialList = () => {
         >
           <div className="flex gap-6">
             {/* Left side - Video */}
-            <div className="w-96 flex-shrink-0">
+            <div className="w-72 flex-shrink-0">
               <div className="relative rounded-lg overflow-hidden bg-gray-900">
                 <video
                   className="w-full aspect-video object-cover"
@@ -65,52 +66,53 @@ const TestimonialList = () => {
               <div className="flex items-start justify-between mb-4">
                 {" "}
                 {/* Increased margin bottom */}
-                <div className="flex items-center gap-4">
-                  <img
-                    src={testimonial.avatar}
-                    alt=""
-                    className="w-9 h-9 rounded-full object-cover ring-2 ring-purple-500"
-                  />
+                <div className="flex items-center gap-3">
+                  <Avatar className="w-10 h-10 rounded-full">
+                    <AvatarImage
+                      className="rounded-full"
+                      src="https://github.com/shadcn.png"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
                   <div>
-                    <h3 className="font-medium text-gray-900 text-sm flex items-center gap-2">
+                    <h3 className="font-medium text-gray-800 text-sm flex items-center gap-2">
                       {" "}
                       {/* Reduced font size */}
                       {testimonial.name}
                     </h3>
-                    <p className="text-gray-600 text-sm">{testimonial.title}</p>
+                    <p className="text-gray-600 text-xs">{testimonial.title}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                <button
-                  className="flex items-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
-                  onClick={() =>
-                    console.log(`Sharing ${testimonial.videoUrl}`)
-                  }
-                >
-                  <TwitterLogoIcon className="w-4 h-4" />
-                  <span>Share</span>
-                </button>
-                <button
-                  className="flex items-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
-                  onClick={() =>
-                    console.log(`Downloading ${testimonial.videoUrl}`)
-                  }
-                >
-                  <DownloadIcon className="w-4 h-4" />
-                  <span>{testimonial.fileSize}</span>
-                </button>
-
-                  </div>
-              
+                  <button
+                    className="flex items-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
+                    onClick={() =>
+                      console.log(`Sharing ${testimonial.videoUrl}`)
+                    }
+                  >
+                    <TwitterLogoIcon className="w-4 h-4" />
+                    <span>Share</span>
+                  </button>
+                  <button
+                    className="flex items-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
+                    onClick={() =>
+                      console.log(`Downloading ${testimonial.videoUrl}`)
+                    }
+                  >
+                    <DownloadIcon className="w-4 h-4" />
+                    <span>{testimonial.fileSize}</span>
+                  </button>
+                </div>
               </div>
 
               <div className="mb-4">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">
+                <h4 className="text-sm font-medium text-gray-900 mb-2">
                   Near Redacted 2024
                 </h4>
               </div>
 
-              <div className="flex flex-wrap gap-2 mb-4">
+              {/* <div className="flex flex-wrap gap-2 mb-4">
                 {testimonial.tags.map((tag) => (
                   <span
                     key={tag}
@@ -119,7 +121,7 @@ const TestimonialList = () => {
                     #{tag}
                   </span>
                 ))}
-              </div>
+              </div> */}
 
               {/* Witty comment */}
               <p className="text-xs text-gray-500 italic mb-4 line-clamp-2">
@@ -133,12 +135,12 @@ const TestimonialList = () => {
 
               {/* Footer */}
               <div className="flex items-center gap-3 text-sm text-gray-500">
-                <HeartIcon className="w-5 h-5 text-purple-600" />
-                <span>{testimonial.date}</span>
+                <HeartIcon className="w-5 h-5 text-purple-700" />
+                <span className="text-sm">{testimonial.date}</span>
                 <img
                   src={`/src/assets/flags/${testimonial.country}.svg`}
                   alt=""
-                  className="w-5 h-5 rounded-lg "
+                  className="w-4 h-4 rounded-lg "
                 />
               </div>
             </div>

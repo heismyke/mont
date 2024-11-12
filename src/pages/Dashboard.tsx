@@ -24,12 +24,12 @@ const Dashboard = () => {
             <div className="mt-8">
               <div className="flex items-center justify-between text-gray-600">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-medium">Your Testimonials</h2>
+                  <h2 className="text-xl font-medium">Your Monts</h2>
                   <span className="text-gray-500 ml-2">249</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Button className="bg-[#6366F1] text-white px-4 py-2 rounded-lg text-sm font-medium">
-                    View Montline
+                    Go to forms
                   </Button>
                 </div>
               </div>

@@ -2,12 +2,16 @@ import React from "react";
 import { Heart, Star, Video, Upload } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
+import { useFormContext } from "@/context/FormContext";
 
 interface ResponsePageProps {
   isDesktop: boolean;
 }
 
 const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop }) => {
+  const { formState, setRating } = useFormContext();
+  const { response, design } = formState;
+
   return (
     <div className="relative">
       <div className="absolute top-[-12px] right-4 z-10">
@@ -24,31 +28,52 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop }) => {
         }`}
       >
         <div className=" mx-auto space-y-4">
-          <div className="flex justify-between items-start mb-4">
-            <Heart className="text-purple-700 fill-purple-700" size={48} />
-          </div>
+        <div className="flex justify-between items-start mb-4">
+          {design.logo.preview ? (
+            <img 
+              src={design.logo.preview} 
+              alt="Logo" 
+              className="h-12 w-auto object-contain"
+            />
+          ) : (
+            <Heart 
+              className="fill-current" 
+              size={48} 
+              style={{ color: design.primaryColor }}
+            />
+          )}
+        </div>
 
           <div>
             <p className="text-gray-800 font-medium text-xl mb-3">
-              Record a video feedback{" "}
+              {response.title}
             </p>
 
             <ul className="text-sm list-disc text-gray-600 ml-4 mb-3">
-              <li>What do you like about Mont?</li>
-              <li>Would you recommend Mont to a friend?</li>
+              {response.prompts.split("\n").map((prompt, index) => (
+                <li key={index}>{prompt.replace("- ", "")}</li>
+              ))}
             </ul>
           </div>
 
-          <div>
-            <label className="block text-sm text">Rate your experience</label>
-            <div className="flex gap-2 mt-1">
-              {[1, 2, 3, 4, 5].map((rating) => (
-                <button key={rating} className="hover:text-yellow-500">
-                  <Star size={24} />
-                </button>
-              ))}
+          {response.enableRating && (
+            <div>
+              <label className="block text-sm text">Rate your experience</label>
+              <div className="flex gap-2 mt-1">
+                {[1, 2, 3, 4, 5].map((rating) => (
+                  <button
+                    key={rating}
+                    className={`hover:text-yellow-500 ${
+                      response.rating === rating ? "text-yellow-500" : ""
+                    }`}
+                    onClick={() => setRating(rating)}
+                  >
+                    <Star size={24} />
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Video record UI section */}
           <div className="bg-black rounded-2xl">
@@ -61,7 +86,9 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop }) => {
               className="aspect-video flex flex-col items-center justify-center rounded-lg relative "
             >
               <div>
-                <p className="text-gray-50 text-center text-sm">Preview</p>
+                <p className="text-gray-50 text-center text-sm font-medium">
+                  Preview
+                </p>
                 <p className="text-gray-300 text-center text-xs px-4">
                   Your responder's camera feed will show up here.
                 </p>
@@ -84,7 +111,17 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop }) => {
 
           <Separator />
 
-          <Button size={"lg"} className="bg-secondary w-full text-gray-800 text-sm ">
+          <Button
+            onClick={() => document.getElementById("fileInput")?.click()}
+            size={"lg"}
+            className="bg-secondary hover:bg-secondary-foreground w-full text-gray-800 text-sm "
+          >
+            <input
+              type="file"
+              accept="image/*"
+              id="fileInput"
+              className="w-full hidden"
+            />
             <Upload size={20} />
             Upload a file
           </Button>

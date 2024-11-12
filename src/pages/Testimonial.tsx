@@ -1,12 +1,21 @@
-import { useState } from "react";
-import { ArrowLeftIcon, ChevronDown, Layout } from "lucide-react";
-import { navItems } from "../components/general/navItems";
-import { MobileIcon } from "@radix-ui/react-icons";
 
+import { ArrowLeftIcon, ChevronDown, Layout } from "lucide-react";
+import { MobileIcon } from "@radix-ui/react-icons";
+import { navItems } from "../components/general/navItems";
+import { useFormContext } from '@/context/FormContext';
+
+
+// Main TestimonialForm component
 const TestimonialForm = () => {
-  const [isDesktop, setIsDesktop] = useState(true);
-  const [expandedItem, setExpandedItem] = useState<string | null>("design");
-  const [activeView, setActiveView] = useState<string>("design");
+  const {
+    formState,
+    activeView,
+    setActiveView,
+    expandedItem,
+    setExpandedItem,
+    isDesktop,
+    setIsDesktop
+  } = useFormContext();
 
   const ActiveComponent = navItems.find(
     (item) => item.id === activeView
@@ -14,13 +23,6 @@ const TestimonialForm = () => {
   const ActiveSettings = navItems.find(
     (item) => item.id === expandedItem
   )?.settings;
-
-  //  Information to be captured in form
-  //  Design - Logo, color (primary and background), font, gradient background (fixed with MontBranding)
-  //  welcome - Title, subtitle, video feedback alone
-  //  response - 2 prompts, collect rating (fixed)
-  //  Details - Name, Project name, email, wallet address, Photo, Natioanlity, Comment (optional)
-  //  Thank you - Title, Message
 
   return (
     <div className="flex min-h-screen bg-gray-50 text-gray-800">
@@ -30,12 +32,11 @@ const TestimonialForm = () => {
           <button className="mr-2">
             <ArrowLeftIcon size={14} />
           </button>
-          <h1 className="text-sm"> Forms</h1>
+          <h1 className="text-sm">Forms</h1>
         </div>
 
         <div className="flex items-center mb-6">
           <h1 className="text-lg font-medium line-clamp-1">
-            {" "}
             REDACTED Hackathon
           </h1>
         </div>
@@ -84,19 +85,20 @@ const TestimonialForm = () => {
             </button>
             <button
               onClick={() => setIsDesktop(false)}
-              className={`p-[4px] rounded-md ${
-                !isDesktop ? "bg-gray-200" : ""
-              }`}
+              className={`p-[4px] rounded-md ${!isDesktop ? "bg-gray-200" : ""}`}
             >
-              <div className="">
-                <MobileIcon className="w-5 h-5" />
-              </div>
+              <MobileIcon className="w-5 h-5" />
             </button>
           </div>
         </div>
 
         <div className="flex items-center justify-center flex-grow mb-10">
-          {ActiveComponent && <ActiveComponent isDesktop={isDesktop} />}
+          {ActiveComponent && (
+            <ActiveComponent 
+              isDesktop={isDesktop} 
+              {...formState[activeView as keyof typeof formState]} 
+            />
+          )}
         </div>
       </div>
     </div>
