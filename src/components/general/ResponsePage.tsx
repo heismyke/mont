@@ -7,9 +7,10 @@ import { useResponseContext } from "@/context/ResponseContext";
 
 interface ResponsePageProps {
   isDesktop: boolean;
+  onNavigateNext: () => void;
 }
 
-const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop }) => {
+const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }) => {
   const { formState } = useFormContext();
   const { responseState, updateResponse, setRating } = useResponseContext();
   const { response, design } = formState;
@@ -265,7 +266,11 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop }) => {
             Upload a file
           </Button>
 
-          <div
+          <Button onClick={onNavigateNext} size={'lg'} className="w-full mt-2">
+            Proceed
+          </Button>
+
+          {/* <div
             className={`text-center ${
               isDesktop ? "mt-10" : "absolute bottom-6 left-0 right-0"
             }`}
@@ -273,7 +278,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop }) => {
             <p className="text-xs text-gray-300">
               {"Powered by Mont protocol"}
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

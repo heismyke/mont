@@ -3,9 +3,10 @@ import { Heart, Video } from "lucide-react";
 
 interface WelcomePageProps {
   isDesktop: boolean;
+  onNavigateNext: () => void;
 }
 
-const WelcomePage = ({ isDesktop }: WelcomePageProps) => {
+const WelcomePage = ({ isDesktop, onNavigateNext }: WelcomePageProps) => {
   const { formState } = useFormContext();
   const { welcome, design } = formState;
 
@@ -59,6 +60,7 @@ const WelcomePage = ({ isDesktop }: WelcomePageProps) => {
         <button
           className="w-full text-white rounded-lg py-3 mb-3 flex items-center justify-center gap-2"
           style={{ backgroundColor: design.primaryColor }}
+          onClick={onNavigateNext}
         >
           <Video size={20} />
           {welcome.buttonText}

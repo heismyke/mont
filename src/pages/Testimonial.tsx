@@ -14,6 +14,17 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 // Utility function to generate a unique ID
 const generateUniqueId = () => {
@@ -44,7 +55,7 @@ const TestimonialForm = () => {
       loadForm(id);
     }
     updateForm({ id: generateUniqueId() });
-    updateForm({ creatorId: user?.id || ''});
+    updateForm({ creatorId: user?.id || "" });
   }, [id]);
 
   const handleSave = async () => {
@@ -68,22 +79,20 @@ const TestimonialForm = () => {
     <div className="flex min-h-screen bg-gray-50 text-gray-800">
       {/* Left Sidebar */}
       <div className="w-96 bg-white border-r border-gray-200 p-4">
-        <div className="flex items-center mb-6 text-gray-500">
-          <button onClick={handleBack} className="mr-2">
+        <div
+          onClick={handleBack}
+          className="flex items-center mb-6 text-gray-500 cursor-pointer"
+        >
+          <button className="mr-2">
             <ArrowLeftIcon size={14} />
           </button>
-          <h1 className="text-sm">Forms</h1>
+          <h1 className="text-sm">Dashboard</h1>
         </div>
 
-        <div className="flex items-center mb-6 justify-between">
-          <input
-            type="text"
-            value={formState.form.form_title || ""}
-            onChange={(e) => updateForm({ form_title: e.target.value })}
-            className="text-lg font-medium line-clamp-1"
-          />
+        <div className="flex items-center mb-3 justify-between">
+          <p className="font-medium ml-3">{formState.form.form_title || ""}</p>
 
-          <EditIcon size={20} className="mr-4" />
+          <FormTitleDialog />
         </div>
 
         <div className="space-y-2">
@@ -173,9 +182,10 @@ const TestimonialForm = () => {
         <div className="flex items-center justify-center flex-grow mb-10">
           {ActiveComponent && (
             <ActiveComponent
-              isDesktop={isDesktop}
-              {...(formState[activeView as keyof typeof formState] as object)}
-            />
+              onNavigateNext={function (): void {
+                throw new Error("Function not implemented.");
+              } } isDesktop={isDesktop}
+              {...(formState[activeView as keyof typeof formState] as object)}            />
           )}
         </div>
       </div>
@@ -184,3 +194,41 @@ const TestimonialForm = () => {
 };
 
 export default TestimonialForm;
+
+export const FormTitleDialog = () => {
+  const { formState, updateForm } = useFormContext();
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <EditIcon size={20} className="text-gray-500 hover:text-gray-700" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader className="text-gray-700">
+          <DialogTitle>Form Title</DialogTitle>
+          <DialogDescription className="mt-1 text-sm">
+            Name your form to help you identify it.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-2">
+          <div className="grid gap-2">
+            <Input
+              type="text"
+              value={formState.form.form_title || ""}
+              onChange={(e) => updateForm({ form_title: e.target.value })}
+              className="w-full px-3 py-1 text-gray-700 text-base border rounded-md "
+              placeholder="Enter form title..."
+            />
+          </div>
+        </div>
+        <DialogFooter>
+        <DialogClose asChild>
+          <Button size={'lg'} className="w-full">Save</Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};

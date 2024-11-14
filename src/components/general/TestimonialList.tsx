@@ -14,7 +14,7 @@ interface TestimonialListProps {
 
 const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
   const { toast } = useToast();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { forms } = useFormContext();
   const { responses, loadResponses, loadResponsesByForm, loadResponsesByFavorites, toggleFavorite } =
@@ -144,14 +144,14 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
 
                     {/* Show more/less button */}
                     <button
-                      onClick={() => setIsExpanded(!isExpanded)}
+                      onClick={() => setExpandedId(expandedId === form.id ? null : form.id)}
                       className="text-xs text-purple-600 hover:text-purple-800 font-medium"
                     >
-                      {isExpanded ? "Show less" : "Show more details"}
+                      {expandedId === form.id ? "Show less" : "Show more details"}
                     </button>
 
                     {/* Expandable content */}
-                    {isExpanded && (
+                    {expandedId === form.id && (
                       <div className="mt-2 flex items-center gap-4">
                         <p className="text-xs text-gray-600">
                           <span className="font-medium"> Email: </span>
@@ -201,7 +201,7 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                     <img
                       src={`/src/assets/flags/${form.responseState.customerInputs.nationality}.svg`}
                       alt=""
-                      className="w-4 h-4 rounded-lg "
+                      className="w-6 h-5"
                     />
                   </div>
                 </div>
