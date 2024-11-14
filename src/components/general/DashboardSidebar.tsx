@@ -1,32 +1,52 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useNavigate } from "react-router-dom";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
-import { WormIcon, TagsIcon, InboxIcon, PlusCircleIcon, LogOutIcon } from "lucide-react";
+import {
+  WormIcon,
+  TagsIcon,
+  InboxIcon,
+  PlusCircleIcon,
+  LogOutIcon,
+  Trash2,
+} from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useFormContext } from "@/context/FormContext";
 import { useEffect } from "react";
+import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 
 export const DashboardSidebar = () => {
   const { user, signOut } = useAuth();
-  const { forms, loadForms } = useFormContext();
+  const { forms, loadForms, deleteForm } = useFormContext();
   const navigate = useNavigate();
 
   useEffect(() => {
     loadForms();
-  }, [loadForms]);
+  }, [deleteForm]);
 
   const handleFormClick = (formId: string) => {
-    navigate(`/forms/${formId}`);
+    navigate(`/form/${formId}`);
+  };
+
+  const handleDeleteForm = (formId: string) => {
+    deleteForm(formId);
   };
 
   return (
     <div className="w-64 border-r border-gray-200 bg-[#F5F5F5] min-h-screen flex flex-col">
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center gap-3">
-          <img
-            src={user?.user_metadata.avatar_url || "/placeholder.png"}
-            alt={user?.user_metadata.name || "User Avatar"}
-            className="w-8 h-8 rounded-full"
-          />
+          <Avatar className="w-8 h-8 rounded-full">
+            <AvatarImage
+              className="rounded-full"
+              src={user?.user_metadata.avatar_url || ""}
+              alt="@shadcn"
+            />
+            <AvatarFallback>
+              <div className="text-white bg-purple-600 flex items-center justify-center h-full rounded-sm">
+                {user?.user_metadata.name?.substring(0, 2).toUpperCase()}
+              </div>
+            </AvatarFallback>
+          </Avatar>
           <div>
             <div className="font-medium text-gray-800">
               {user?.user_metadata.name || "Unnamed User"}
@@ -62,12 +82,15 @@ export const DashboardSidebar = () => {
           {forms.length > 0 && (
             <>
               {forms.map((form) => (
-                <Forms
-                  key={form.id}
-                  label={form.name || "Untitled Form"}
-                  onClick={() => handleFormClick(form.id)}
-                  icon={undefined}
-                />
+                <div key={form.id} className="flex items-center justify-between px-3 py-2 rounded-md text-xs text-gray-600 cursor-pointer border-b border-gray-200">
+                  <div className="flex items-center gap-3">
+                    <Trash2 onClick={() => handleDeleteForm(form.id)} size={16} className="text-red-600 cursor-pointer" />
+                    <span onClick={() => handleFormClick(form.id)} className="line-clamp-1">{form.name || "Untitled Form"}</span>
+                  </div>
+                  <div>
+                    
+                  </div>
+                </div>
               ))}
             </>
           )}
@@ -88,9 +111,12 @@ export const DashboardSidebar = () => {
         </div>
       </div>
 
-      <div className="p-3 border-t border-gray-200 flex items-center gap-2 mb-3 ml-2">
-        <LogOutIcon color="red" fontSize={24}/>
-        <div className="w-full text-base text-red-500 text-start cursor-pointer ml-1" onClick={signOut}>
+      <div className="p-3 border-t border-gray-200 flex items-center gap-2 mb-1 ml-2">
+        <LogOutIcon color="red" fontSize={24} />
+        <div
+          className="w-full text-base text-red-500 text-start cursor-pointer ml-1"
+          onClick={signOut}
+        >
           Logout
         </div>
       </div>
@@ -126,27 +152,3 @@ const NavItem = ({
     {rightIcon}
   </div>
 );
-
-const Forms = ({
-  icon,
-  label,
-  active = false,
-  onClick,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  active?: boolean;
-  onClick?: () => void;
-}) => (
-  <div
-    className={`
-    flex items-center gap-3 px-3 py-2 rounded-md text-xs text-gray-600 cursor-pointer border-b border-gray-200
-    ${active ? "bg-gray-100" : "hover:bg-gray-50"}
-  `}
-    onClick={onClick}
-  >
-    {icon}
-    <span className={active ? "font-medium" : ""}>{label}</span>
-  </div>
-);
-

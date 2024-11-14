@@ -2,10 +2,14 @@ import { useState } from "react";
 import TestimonialList from "../components/general/TestimonialList";
 import DashboardHeader from "../components/general/DashboardHeader";
 import TestimonialWidgets from "../components/general/TestimonialWidgets";
-import {DashboardSidebar} from "@/components/general/DashboardSidebar";
+import { DashboardSidebar } from "@/components/general/DashboardSidebar";
+import { useResponseContext } from "@/context/ResponseContext";
+import { useFormContext } from "@/context/FormContext";
 
 const Dashboard = () => {
   const [selectedTab, setSelectedTab] = useState("all");
+  const { responses } = useResponseContext();
+  const { forms } = useFormContext();
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -18,19 +22,16 @@ const Dashboard = () => {
         </div>
         <main className="flex-1 overflow-y-auto bg-[#fafafa] p-6">
           <div className="min-h-full">
-            <TestimonialWidgets />
+            <TestimonialWidgets selectedTab={selectedTab} />
 
             <div className="mt-8">
               <div className="flex items-center justify-between text-gray-600">
                 <div className="flex items-center gap-2">
                   <h2 className="text-xl font-medium">Your Monts</h2>
-                  <span className="text-gray-400 text-sm ml-1 mt-1">249</span>
+                  <span className="text-gray-400 text-sm ml-1 mt-1">
+                    {responses.length}
+                  </span>
                 </div>
-                {/* <div className="flex items-center gap-3">
-                  <Button className="bg-[#6366F1] text-white px-4 py-2 rounded-lg text-sm font-medium">
-                    Go to forms
-                  </Button>
-                </div> */}
               </div>
 
               <div className="flex gap-6 mt-6 border-b border-gray-200 text-sm">
@@ -40,21 +41,18 @@ const Dashboard = () => {
                 >
                   All
                 </TabButton>
-                <TabButton
-                  active={selectedTab === "favorites"}
-                  onClick={() => setSelectedTab("favorites")}
-                >
-                  Favorites{" "}
-                </TabButton>
-                {/* <TabButton
-                  active={selectedTab === "social"}
-                  onClick={() => setSelectedTab("social")}
-                >
-                  Responders emails
-                </TabButton> */}
+                {forms.map((form) => (
+                  <TabButton
+                    key={form.id}
+                    active={selectedTab === form.name}
+                    onClick={() => setSelectedTab(form.name || '')}
+                  >
+                    {form.name}
+                  </TabButton>
+                ))}
               </div>
 
-              <TestimonialList />
+              <TestimonialList selectedTab={selectedTab} />
             </div>
           </div>
         </main>

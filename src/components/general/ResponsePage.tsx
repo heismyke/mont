@@ -3,13 +3,15 @@ import { Heart, Star, Video, Upload, Square } from "lucide-react";
 import { useFormContext } from "@/context/FormContext";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
+import { useResponseContext } from "@/context/ResponseContext";
 
 interface ResponsePageProps {
   isDesktop: boolean;
 }
 
 const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop }) => {
-  const { formState, updateResponse, setRating } = useFormContext();
+  const { formState } = useFormContext();
+  const { responseState, updateResponse, setRating } = useResponseContext();
   const { response, design } = formState;
   const [isRecording, setIsRecording] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -57,6 +59,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop }) => {
       // Start timer
       timerRef.current = window.setInterval(() => {
         setRecordedTime((prev) => prev + 1);
+        updateResponse({ recordingTime: formatTime(recordedTime) });
       }, 1000);
     } catch (error) {
       console.error("Error accessing camera:", error);
@@ -193,12 +196,12 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop }) => {
                 playsInline
                 muted
                 className={`absolute inset-0 w-full h-full object-cover ${
-                  !stream && !response.videoUrl ? "hidden" : ""
+                  !stream && !responseState.response.videoUrl ? "hidden" : ""
                 }`}
-                src={response.videoUrl || ""}
+                src={responseState.response.videoUrl || ""}
               />
 
-              {!stream && !response.videoUrl && (
+              {!stream && !responseState.response.videoUrl && (
                 <div
                   style={{
                     backgroundImage: `url('https://utfs.io/f/PKy8oE1GN2J3XLp6Sd83fo9U5AvPYm0IDul7exrc1OS2MyBZ')`,

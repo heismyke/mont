@@ -1,12 +1,14 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "./AuthContext";
 
-// Define the types for our form state
+
 interface FormState {
   form: {
     id?: string;
+    creatorId: string;
     form_title?: string;
   };
   design: {
@@ -49,16 +51,26 @@ interface FormState {
       comment: { required: boolean; enabled: boolean };
     };
   };
+  customerInputs: {
+    name: string | null;
+    projectName: string | null;
+    email: string | null;
+    walletAddress: string | null;
+    photo: string | null;
+    nationality: string | null;
+    comment: string | null;
+  };
   thanks: {
     title: string;
     message: string;
   };
 }
 
-// Create the initial state
+
 const initialFormState: FormState = {
   form: {
     id: "",
+    creatorId: '',
     form_title: "My new form",
   },
   design: {
@@ -103,6 +115,15 @@ const initialFormState: FormState = {
       comment: { required: false, enabled: true },
     },
   },
+  customerInputs: {
+    name: "",
+    projectName: "",
+    email: "",
+    walletAddress: "",
+    photo: "",
+    nationality: "",
+    comment: "",
+  },
   thanks: {
     title: "Thanks for leaving us feedback 🙏",
     message:
@@ -110,10 +131,11 @@ const initialFormState: FormState = {
   },
 };
 
-// Create the context
+
 interface FormContextType {
   formState: FormState;
-  forms: { id: string; name: string | null }[];
+  formDate: Date;
+  forms: { id: string; name: string | null; formState: FormState }[];
   handleLogoUpload: (file: File) => void;
   updateWelcome: (updates: Partial<FormState["welcome"]>) => void;
   updateForm: (updates: Partial<FormState["form"]>) => void;
@@ -122,6 +144,7 @@ interface FormContextType {
     newData: Partial<FormState[keyof FormState]>
   ) => void;
   updateResponse: (updates: Partial<FormState["response"]>) => void;
+  updateCustomer: (updates: Partial<FormState["customerInputs"]>) => void;
   setRating: (rating: number) => void;
   activeView: string;
   setActiveView: (view: string) => void;
@@ -132,6 +155,7 @@ interface FormContextType {
   saveForm: () => Promise<void>;
   loadForm: (id: string) => Promise<void>;
   loadForms: () => Promise<void>;
+  deleteForm: (id: string) => Promise<void>;
 }
 
 const FormContext = createContext<FormContextType | null>(null);
@@ -150,7 +174,10 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [formState, setFormState] = useState<FormState>(initialFormState);
-  const [forms, setForms] = useState<{ id: string; name: string | null }[]>([]);
+  const [formDate, setFormDate] = useState<Date>(new Date());
+  const [forms, setForms] = useState<
+    { id: string; name: string | null; formState: FormState }[]
+  >([]);
   const [activeView, setActiveView] = useState<string>("design");
   const [expandedItem, setExpandedItem] = useState<string | null>("design");
   const [isDesktop, setIsDesktop] = useState<boolean>(true);
@@ -161,13 +188,18 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       if (!user) throw new Error("User not authenticated");
 
-      const { error } = await supabase.from("forms").upsert({
-        id: formState.form.id || crypto.randomUUID(),
-        form_title: formState.form.form_title,
-        user_id: user.id,
-        form_state: formState,
-        updated_at: new Date().toISOString(),
-      });
+      const { error } = await supabase.from("forms").upsert(
+        {
+          id: formState.form.id || crypto.randomUUID(),
+          form_title: formState.form.form_title,
+          user_id: user.id,
+          form_state: formState,
+          updated_at: new Date().toISOString(),
+        },
+        {
+          onConflict: "id",
+        }
+      );
 
       if (error) throw error;
 
@@ -196,14 +228,11 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
       if (error) throw error;
       if (data) {
         setFormState(data.form_state);
+        setFormDate(new Date(data.updated_at));
       }
     } catch (error) {
       console.error("Error loading form:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load form",
-        variant: "destructive",
-      });
+   
     }
   };
 
@@ -211,26 +240,27 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const { data, error } = await supabase
         .from("forms")
-        .select("id, form_title")
+        .select("id, form_title, form_state")
         .eq("user_id", user?.id);
 
       if (error) throw error;
       if (data) {
         const forms = data?.map(
-          (form: { id: string; form_title: string | null }) => ({
+          (form: {
+            id: string;
+            form_title: string | null;
+            form_state: FormState;
+          }) => ({
             id: form.id,
             name: form.form_title || null,
+            formState: form.form_state,
           })
         );
         setForms(forms || []);
       }
     } catch (error) {
       console.error("Error loading forms:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load forms",
-        variant: "destructive",
-      });
+     
     }
   };
 
@@ -277,6 +307,16 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     }));
   };
 
+  const updateCustomer = (updates: Partial<FormState["customerInputs"]>) => {
+    setFormState((prev) => ({
+      ...prev,
+      customerInputs: {
+        ...prev.customerInputs,
+        ...updates,
+      },
+    }));
+  };
+
   const setRating = (rating: number) => {
     setFormState((prev) => ({
       ...prev,
@@ -300,14 +340,41 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     }));
   };
 
+  const deleteForm = async (id: string) => {
+    try {
+      if (!user) throw new Error("User not authenticated");
+      
+      const { error } = await supabase
+        .from("forms")
+        .delete()
+        .eq('id', id); 
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Form deleted successfully",
+      });
+    } catch (error) {
+      console.error("Error deleting form:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete form",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <FormContext.Provider
       value={{
         formState,
+        formDate,
         handleLogoUpload,
         updateWelcome,
         updateForm,
         updateResponse,
+        updateCustomer,
         setRating,
         updateFormState,
         activeView,
@@ -320,6 +387,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
         loadForm,
         forms,
         loadForms,
+        deleteForm,
       }}
     >
       {children}

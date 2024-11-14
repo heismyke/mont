@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import TestimonialForm from "./pages/Testimonial";
 import LoginForm from "./components/auth/LoginForm";
 import ProtectedRoute from "./components/auth/ProtectedRoutes";
+import ResponsePage from "./pages/Response";
 
 const AppRoutes = () => {
   return (
@@ -26,18 +27,18 @@ const AppRoutes = () => {
             element={
               <ProtectedRoute>
                 <TestimonialForm />
-              </ProtectedRoute>
+              </ProtectedRoute>  
             } 
           />
           <Route 
-            path="/forms/:id" 
+            path="/form/:id" 
             element={
               <ProtectedRoute>
                 <TestimonialForm />
               </ProtectedRoute>
             } 
           />
-          <Route path="/form/:id" element={<TestimonialForm />} />
+          <Route path="/:id" element={<ResponsePage />} />
         </Routes>
       </Layout>
     </Router>

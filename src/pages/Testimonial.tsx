@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import {
   ArrowLeftIcon,
@@ -12,15 +13,16 @@ import { useFormContext } from "@/context/FormContext";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
-// // Utility function to generate a unique ID
-// const generateUniqueId = () => {
-//   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-//     const r = Math.random() * 16 | 0;
-//     const v = c === 'x' ? r : (r & 0x3 | 0x8);
-//     return v.toString(16);
-//   });
-// };
+// Utility function to generate a unique ID
+const generateUniqueId = () => {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
 
 const TestimonialForm = () => {
   const { id } = useParams();
@@ -35,11 +37,14 @@ const TestimonialForm = () => {
     isDesktop,
     setIsDesktop,
   } = useFormContext();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (id) {
       loadForm(id);
     }
+    updateForm({ id: generateUniqueId() });
+    updateForm({ creatorId: user?.id || ''});
   }, [id]);
 
   const handleSave = async () => {

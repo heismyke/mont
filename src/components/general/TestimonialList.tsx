@@ -1,175 +1,194 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useAuth } from "@/context/AuthContext";
+import { useFormContext } from "@/context/FormContext";
+import { useResponseContext } from "@/context/ResponseContext";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { TwitterLogoIcon } from "@radix-ui/react-icons";
-import { CopyIcon } from "lucide-react";
+import { CopyIcon, Loader } from "lucide-react";
+import { useEffect, useState } from "react";
 
-const TestimonialList = () => {
- const {toast} = useToast();
+interface TestimonialListProps {
+  selectedTab: string;
+}
 
-  const testimonials = [
-    {
-      id: 1,
-      name: "Mariah Carey",
-      title: "Team Banana Bets",
-      avatar: "/avatar1.jpg",
-      videoUrl: "/testimonials/mariah-video.mp4",
-      date: "12-04-2024",
-      tags: ["feedback", "build-in-public"],
-      country: "en",
-      fileSize: "24MB",
-      address: "0x1234567890abcdef00209282",
-    },
-    {
-      id: 2,
-      name: "Rick Astley",
-      title: "Team Gas Guard",
-      avatar: "/avatar2.jpg",
-      videoUrl: "/testimonials/rick-video.mp4",
-      date: "12-04-2024",
-      tags: ["social", "build-in-public"],
-      country: "ar",
-      fileSize: "18MB",
-      address: "0x1234567890abcdef7477hddd",
-    },
-    {
-      id: 3,
-      name: "Lily Hughes",
-      title: "Team Buildspace",
-      avatar: "/avatar3.jpg",
-      videoUrl: "/testimonials/lily-video.mp4",
-      date: "12-04-2024",
-      tags: ["feedback", "social"],
-      country: "br",
-      fileSize: "21MB",
-      address: "0x1234567890abcdefw635639",
-    },
-  ];
+const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
+  const { toast } = useToast();
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Added loading state
+  const { forms } = useFormContext();
+  const { responses, loadResponses, loadResponsesByForm } =
+    useResponseContext();
+  const { user } = useAuth();
 
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast({
-      title: "Copied to clipboard",
-      description: "Address copied to clipboard",
-    });
+  useEffect(() => {
+    setIsLoading(true); // Set loading state to true when effect starts
+    if (selectedTab === "all") {
+      loadResponses(user?.id || "").then(() => setIsLoading(false));
+    } else {
+      const selectedForm = forms.find(form => form.name === selectedTab);
+      if (selectedForm) {
+        loadResponsesByForm(selectedForm.id).then(() => setIsLoading(false));
+      }
+    }
+  }, [selectedTab, user?.id]);
+
+  const handleCopy = (text: string | null) => {
+    if (text) {
+      navigator.clipboard.writeText(text);
+      toast({
+        title: "Copied to clipboard",
+        description: "Address copied to clipboard",
+      });
+    }
   };
 
   return (
     <div className="mt-4 grid grid-cols-1 gap-6">
-      {testimonials.map((testimonial) => (
-        <div
-          key={testimonial.id}
-          className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow"
-        >
-          <div className="flex gap-6">
-            {/* Left side - Video */}
-            <div className="w-72 flex-shrink-0">
-              <div className="relative rounded-lg overflow-hidden bg-gray-900">
-                <video
-                  className="w-full aspect-video object-cover"
-                  src={testimonial.videoUrl}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  controls
-                />
-              </div>
-            </div>
-
-            {/* Right side - Content */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between mb-4">
-                {" "}
-                {/* Increased margin bottom */}
-                <div className="flex items-center gap-3">
-                  <Avatar className="w-10 h-10 rounded-full">
-                    <AvatarImage
-                      className="rounded-full"
-                      src="https://github.com/shadcn.png"
-                      alt="@shadcn"
+      {isLoading ? (
+        <div className="flex justify-center items-center h-56">
+          <Loader className="w-12 h-12 animate-spin text-gray-400" />
+        </div>
+      ) : (
+        responses.map((form) => {
+          return (
+            <div
+              key={form.id}
+              className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="flex gap-6">
+                {/* Left side - Video */}
+                <div className="w-72 flex-shrink-0">
+                  <div className="relative rounded-lg overflow-hidden bg-gray-900">
+                    <video
+                      className="w-full aspect-video object-cover"
+                      src={form.responseState.response.videoUrl || ""}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      controls
                     />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="font-medium text-gray-800 text-sm flex items-center gap-2">
-                      {" "}
-                      {/* Reduced font size */}
-                      {testimonial.name}
-                    </h3>
-                    <p className="text-gray-600 text-xs">{testimonial.title}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    className="flex items-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
-                    onClick={() =>
-                      console.log(`Sharing ${testimonial.videoUrl}`)
-                    }
-                  >
-                    <TwitterLogoIcon className="w-4 h-4" />
-                    <span>Share</span>
-                  </button>
-                  <button
-                    className="flex items-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
-                    onClick={() =>
-                      console.log(`Downloading ${testimonial.videoUrl}`)
-                    }
-                  >
-                    <DownloadIcon className="w-4 h-4" />
-                    <span>{testimonial.fileSize}</span>
-                  </button>
+
+                {/* Right side - Content */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between mb-3">
+                    {" "}
+                    <div className="flex items-center gap-3">
+                      <Avatar className="w-10 h-10 rounded-full">
+                        <AvatarImage
+                          className="rounded-full"
+                          src={form.responseState.customerInputs.photo || ""}
+                          alt="@shadcn"
+                        />
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h3 className="font-medium text-gray-800 text-sm flex items-center gap-2">
+                          {" "}
+                          {form.responseState.customerInputs.name || "N/A"}
+                        </h3>
+                        <p className="text-gray-600 text-xs">
+                          {form.responseState.customerInputs.projectName || "N/A"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="flex items-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
+                        onClick={() =>
+                          console.log(
+                            `Sharing ${form.responseState.response.videoUrl}`
+                          )
+                        }
+                      >
+                        <TwitterLogoIcon className="w-4 h-4" />
+                        <span>Share</span>
+                      </button>
+                      <button
+                        className="flex items-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
+                        onClick={() =>
+                          console.log(
+                            `Downloading ${form.responseState.response.videoUrl}`
+                          )
+                        }
+                      >
+                        <DownloadIcon className="w-4 h-4" />
+                        <span>18MB</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <h4 className="text-sm font-medium text-gray-900 mb-2">
+                      {form.name || "N/A"}
+                    </h4>
+                  </div>
+
+                  {/* Collapsible section */}
+                  <div className="mb-2">
+                    {/* Witty comment - always visible */}
+                    <p className="text-xs text-gray-500 italic">
+                      {form.responseState.customerInputs.comment || "N/A"}
+                    </p>
+
+                    {/* Show more/less button */}
+                    <button
+                      onClick={() => setIsExpanded(!isExpanded)}
+                      className="text-xs text-purple-600 hover:text-purple-800 font-medium"
+                    >
+                      {isExpanded ? "Show less" : "Show more details"}
+                    </button>
+
+                    {/* Expandable content */}
+                    {isExpanded && (
+                      <div className="mt-2 flex items-center gap-4">
+                        <p className="text-xs text-gray-600">
+                          <span className="font-medium"> Email: </span>
+                          {form.responseState.customerInputs.email || "N/A"}
+                        </p>
+                        <div className="h-4 w-px bg-gray-300" /> {/* Separator */}
+                        <div className="flex gap-3 items-center">
+                          <p className="text-xs text-gray-600 line-clamp-1">
+                            <span className="font-medium"> Wallet Address: </span>
+                            {form.responseState.customerInputs.walletAddress ||
+                              "N/A"}
+                          </p>
+                          <CopyIcon
+                            size={14}
+                            className="text-gray-600 cursor-pointer"
+                            onClick={() =>
+                              handleCopy(
+                                form.responseState.customerInputs.walletAddress ||
+                                  ""
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="flex items-center gap-3 text-sm text-gray-500">
+                    <HeartIcon className="w-5 h-5 text-purple-700" />
+                    <span className="text-sm">
+                      {new Date(form.date).toLocaleDateString()}
+                    </span>
+                    <img
+                      src={`/src/assets/flags/${form.responseState.customerInputs.nationality}.svg`}
+                      alt=""
+                      className="w-4 h-4 rounded-lg "
+                    />
+                  </div>
                 </div>
               </div>
-
-              <div className="mb-3">
-                <h4 className="text-sm font-medium text-gray-900 mb-2">
-                  Near Redacted 2024
-                </h4>
-              </div>
-
-              {/* <div className="flex flex-wrap gap-2 mb-4">
-                {testimonial.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1 bg-green-50 text-green-700 text-xs rounded-full font-medium"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div> */}
-
-              {/* Witty comment */}
-              <p className="text-xs text-gray-500 italic mb-3 line-clamp-1">
-                {testimonial.name === "Rick Astley" &&
-                  "This hackathon was amazing! Never gonna give up building!"}
-                {testimonial.name === "Mariah Carey" &&
-                  "The energy at ETH Global was through the roof! All I want for Christmas is Web3!"}
-                {testimonial.name === "Lily Hughes" &&
-                  "Buildspace helped me take my project from 0 to 1 in just 6 weeks!"}
-              </p>
-
-              <div className="flex gap-3 items-center mb-2">
-                <p className="text-xs text-gray-600 font-medium line-clamp-1">
-                  Wallet Address: {testimonial.address}
-                </p>
-
-                <CopyIcon size={14} className="text-gray-600 cursor-pointer" onClick={() => handleCopy(testimonial.address)} />
-              </div>
-
-              {/* Footer */}
-              <div className="flex items-center gap-3 text-sm text-gray-500">
-                <HeartIcon className="w-5 h-5 text-purple-700" />
-                <span className="text-sm">{testimonial.date}</span>
-                <img
-                  src={`/src/assets/flags/${testimonial.country}.svg`}
-                  alt=""
-                  className="w-4 h-4 rounded-lg "
-                />
-              </div>
             </div>
-          </div>
-        </div>
-      ))}
+          );
+        })
+      )}
     </div>
   );
 };
