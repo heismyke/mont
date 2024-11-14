@@ -15,18 +15,21 @@ interface TestimonialListProps {
 const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
   const { toast } = useToast();
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Added loading state
+  const [isLoading, setIsLoading] = useState(false);
   const { forms } = useFormContext();
-  const { responses, loadResponses, loadResponsesByForm } =
+  const { responses, loadResponses, loadResponsesByForm, loadResponsesByFavorites, toggleFavorite } =
     useResponseContext();
+
   const { user } = useAuth();
 
   useEffect(() => {
-    setIsLoading(true); // Set loading state to true when effect starts
+    setIsLoading(true);
     if (selectedTab === "all") {
       loadResponses(user?.id || "").then(() => setIsLoading(false));
+    } else if (selectedTab === "favorites") {
+      loadResponsesByFavorites(user?.id || "").then(() => setIsLoading(false));
     } else {
-      const selectedForm = forms.find(form => form.name === selectedTab);
+      const selectedForm = forms.find((form) => form.name === selectedTab);
       if (selectedForm) {
         loadResponsesByForm(selectedForm.id).then(() => setIsLoading(false));
       }
@@ -41,6 +44,10 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
         description: "Address copied to clipboard",
       });
     }
+  };
+
+  const handleFavoriteClick = async (responseId: string) => {
+    await toggleFavorite(responseId);
   };
 
   return (
@@ -91,7 +98,8 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                           {form.responseState.customerInputs.name || "N/A"}
                         </h3>
                         <p className="text-gray-600 text-xs">
-                          {form.responseState.customerInputs.projectName || "N/A"}
+                          {form.responseState.customerInputs.projectName ||
+                            "N/A"}
                         </p>
                       </div>
                     </div>
@@ -149,10 +157,14 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                           <span className="font-medium"> Email: </span>
                           {form.responseState.customerInputs.email || "N/A"}
                         </p>
-                        <div className="h-4 w-px bg-gray-300" /> {/* Separator */}
+                        <div className="h-4 w-px bg-gray-300" />{" "}
+                        {/* Separator */}
                         <div className="flex gap-3 items-center">
                           <p className="text-xs text-gray-600 line-clamp-1">
-                            <span className="font-medium"> Wallet Address: </span>
+                            <span className="font-medium">
+                              {" "}
+                              Wallet Address:{" "}
+                            </span>
                             {form.responseState.customerInputs.walletAddress ||
                               "N/A"}
                           </p>
@@ -161,8 +173,8 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                             className="text-gray-600 cursor-pointer"
                             onClick={() =>
                               handleCopy(
-                                form.responseState.customerInputs.walletAddress ||
-                                  ""
+                                form.responseState.customerInputs
+                                  .walletAddress || ""
                               )
                             }
                           />
@@ -173,7 +185,16 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
 
                   {/* Footer */}
                   <div className="flex items-center gap-3 text-sm text-gray-500">
-                    <HeartIcon className="w-5 h-5 text-purple-700" />
+                    <button onClick={() => handleFavoriteClick(form.id)}>
+                      <HeartIcon
+                        className={`w-6 h-6 ${
+                          form.isFavorite
+                            ? "fill-current text-purple-700"
+                            : "stroke-current"
+                        }`}
+                      />
+                    </button>
+
                     <span className="text-sm">
                       {new Date(form.date).toLocaleDateString()}
                     </span>

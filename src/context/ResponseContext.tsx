@@ -57,18 +57,20 @@ interface ResponseContextType {
     name: string | null;
     responseState: ResponseState;
     date: string;
+    isFavorite: boolean;
   }[];
-
   saveResponse: (
     id: string,
     form_title: string,
     creator_id: string
   ) => Promise<void>;
   loadResponses: (creatorId: string) => Promise<void>;
+  loadResponsesByFavorites: (creatorId: string) => Promise<void>;
   loadResponsesByForm: (formId: string) => Promise<void>;
   updateResponse: (updates: Partial<ResponseState["response"]>) => void;
   updateFeedback: (id: string, form_title: string) => void;
   updateDetails: (updates: Partial<ResponseState["customerInputs"]>) => void;
+  toggleFavorite: (responseId: string) => Promise<void>;
 }
 
 const ResponseContext = createContext<ResponseContextType | undefined>(
@@ -98,6 +100,7 @@ export const ResponseProvider: React.FC<{ children: React.ReactNode }> = ({
       name: string | null;
       responseState: ResponseState;
       date: string;
+      isFavorite: boolean;
     }[]
   >([]);
 
@@ -133,6 +136,7 @@ export const ResponseProvider: React.FC<{ children: React.ReactNode }> = ({
         form_title: form_title,
         response_state: updatedState,
         created_at: new Date().toISOString(),
+        isFavorite: false, // Initialize with false
       });
 
       if (error) throw error;
@@ -148,6 +152,44 @@ export const ResponseProvider: React.FC<{ children: React.ReactNode }> = ({
       toast({
         title: "Error",
         description: "Failed to save response",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const toggleFavorite = async (responseId: string) => {
+    try {
+      const response = responses.find((r) => r.id === responseId);
+      if (!response) return;
+
+      const newFavoriteStatus = !response.isFavorite;
+
+      const { error } = await supabase
+        .from("responses")
+        .update({ isFavorite: newFavoriteStatus })
+        .eq("id", responseId);
+
+      if (error) throw error;
+
+      setResponses((prev) =>
+        prev.map((response) =>
+          response.id === responseId
+            ? { ...response, isFavorite: newFavoriteStatus }
+            : response
+        )
+      );
+
+      toast({
+        title: "Success",
+        description: newFavoriteStatus
+          ? "Added to favorites"
+          : "Removed from favorites",
+      });
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update favorite status",
         variant: "destructive",
       });
     }
@@ -170,6 +212,7 @@ export const ResponseProvider: React.FC<{ children: React.ReactNode }> = ({
             form_title: string | null;
             response_state: ResponseState;
             created_at: string;
+            isFavorite: boolean;
           }) => ({
             id: response.id,
             creator_id: response.creator_id,
@@ -177,6 +220,48 @@ export const ResponseProvider: React.FC<{ children: React.ReactNode }> = ({
             name: response.form_title || null,
             responseState: response.response_state,
             date: new Date(response.created_at).toISOString(),
+            isFavorite: response.isFavorite || false,
+          })
+        );
+        setResponses(responses || []);
+      }
+    } catch (error) {
+      console.error("Error loading responses:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load responses",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const loadResponsesByFavorites = async (creatorId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from("responses")
+        .select("*")
+        .eq("creator_id", creatorId)
+        .eq("isFavorite", true);
+
+      if (error) throw error;
+      if (data) {
+        const responses = data?.map(
+          (response: {
+            id: string;
+            form_id: string;
+            creator_id: string;
+            form_title: string | null;
+            response_state: ResponseState;
+            created_at: string;
+            isFavorite: boolean;
+          }) => ({
+            id: response.id,
+            creator_id: response.creator_id,
+            form_id: response.form_id,
+            name: response.form_title || null,
+            responseState: response.response_state,
+            date: new Date(response.created_at).toISOString(),
+            isFavorite: response.isFavorite || false,
           })
         );
         setResponses(responses || []);
@@ -208,6 +293,7 @@ export const ResponseProvider: React.FC<{ children: React.ReactNode }> = ({
             form_title: string | null;
             response_state: ResponseState;
             created_at: string;
+            isFavorite: boolean;
           }) => ({
             id: response.id,
             creator_id: response.creator_id,
@@ -215,6 +301,7 @@ export const ResponseProvider: React.FC<{ children: React.ReactNode }> = ({
             name: response.form_title || null,
             responseState: response.response_state,
             date: new Date(response.created_at).toISOString(),
+            isFavorite: response.isFavorite || false,
           })
         );
         setResponses(responses || []);
@@ -268,10 +355,12 @@ export const ResponseProvider: React.FC<{ children: React.ReactNode }> = ({
         responses,
         saveResponse,
         loadResponses,
+        loadResponsesByFavorites,
         loadResponsesByForm,
         updateResponse,
         updateDetails,
         updateFeedback,
+        toggleFavorite,
       }}
     >
       {children}

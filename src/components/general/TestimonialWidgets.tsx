@@ -76,7 +76,7 @@ const TestimonialWidgets = ({ selectedTab }: TestimonialListProps) => {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <BarChart3Icon className="w-5 h-5 text-indigo-600" />
-          <h3 className="font-medium text-gray-900">{selectedTab === 'all' ? "Analytics Overview" : `Analytics Overview for ${selectedTab}`}</h3>
+          <h3 className="font-medium text-gray-900">{selectedTab === 'all' || selectedTab === 'favorites' ? "Analytics Overview" : `Analytics for ${selectedTab}`}</h3>
         </div>
       </div>
 

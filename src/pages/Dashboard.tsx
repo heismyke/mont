@@ -38,9 +38,15 @@ const Dashboard = () => {
                 <TabButton
                   active={selectedTab === "all"}
                   onClick={() => setSelectedTab("all")}
-                >
-                  All
-                </TabButton>
+                  >
+                    All
+                  </TabButton>
+                  <TabButton
+                    active={selectedTab === "favorites"}
+                    onClick={() => setSelectedTab("favorites")}
+                  >
+                    Favorites
+                  </TabButton>
                 {forms.map((form) => (
                   <TabButton
                     key={form.id}
