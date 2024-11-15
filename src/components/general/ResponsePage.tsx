@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
-import { Heart, Star, Video, Upload, Square } from "lucide-react";
+import { Heart, Star, Upload, StopCircle, PictureInPicture, CirclePlay } from "lucide-react";
 import { useFormContext } from "@/context/FormContext";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { useResponseContext } from "@/context/ResponseContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface ResponsePageProps {
   isDesktop: boolean;
@@ -15,6 +15,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
   const { formState } = useFormContext();
   const { responseState, updateResponse, setRating } = useResponseContext();
   const { response, design, design: { font } } = formState;
+  const navigate = useNavigate();
   const location = useLocation();
   const [isRecording, setIsRecording] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -26,7 +27,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
   const chunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<number | null>(null);
 
-  // Only apply isDesktop layout on /form route
+
   const useDesktopLayout = location.pathname === "/form" && isDesktop;
   const useMobileLayout = location.pathname === "/form" && !isDesktop;
 
@@ -97,10 +98,10 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
     try {
       const formData = new FormData();
       formData.append("file", videoBlob);
-      formData.append("upload_preset", "your_upload_preset"); // Replace with your Cloudinary upload preset
+      formData.append("upload_preset", "mont_uploads"); 
 
       const response = await fetch(
-        `https://api.cloudinary.com/v1_1/your_cloud_name/video/upload`, // Replace with your Cloudinary cloud name
+        `https://api.cloudinary.com/v1_1/dgz4c3ahz/video/upload`, 
         {
           method: "POST",
           body: formData,
@@ -134,8 +135,15 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
   return (
     <div className="relative">
       <div className="absolute top-[-12px] right-4 z-10">
-        <button className="bg-white text-xs text-purple-600 hover:text-white hover:bg-purple-700 flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow">
-          Collect testimonials with Mont ↗
+      <button
+          className="bg-white text-xs hover:text-white flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow"
+          style={{
+            color: design.primaryColor,
+            ["--tw-hover-bg" as string]: design.primaryColor,
+          }}
+          onClick={() => navigate('/')}
+        >
+          Collect testimonials with Mont 
         </button>
       </div>
 
@@ -192,15 +200,18 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
             <div>
               <label className="block text-sm">Rate your experience</label>
               <div className="flex gap-1 sm:gap-2 mt-1">
-                {[1, 2, 3, 4, 5].map((rating) => (
+                {[1, 2, 3, 4, 5].map((ratingValue) => (
                   <button
-                    key={rating}
-                    className={`hover:text-yellow-500 ${
-                      response.rating === rating ? "text-yellow-500" : ""
-                    }`}
-                    onClick={() => setRating(rating)}
+                    key={ratingValue}
+                    onClick={() => setRating(ratingValue)} 
+                    className={`focus:outline-none ${responseState.response.rating && responseState.response.rating >= ratingValue ? "text-yellow-500" : "text-gray-300"} hover:text-yellow-500`}
                   >
-                    <Star size={20} className="sm:w-6 sm:h-6" />
+                    <Star
+                      size={18}
+                      className={`sm:w-6 sm:h-6 ${
+                        responseState.response.rating && responseState.response.rating >= ratingValue ? "fill-current text-yellow-500" : "fill-current text-gray-300"
+                      }`}
+                    />
                   </button>
                 ))}
               </div>
@@ -208,7 +219,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
           )}
 
           <div className="bg-black rounded-xl sm:rounded-2xl">
-            <div className="aspect-video flex flex-col items-center justify-center rounded-lg relative overflow-hidden">
+            <div className="aspect-video flex flex-col items-center justify-center relative overflow-hidden">
               <video
                 ref={videoRef}
                 autoPlay
@@ -220,7 +231,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
                 src={responseState.response.videoUrl || ""}
               />
 
-              {!stream && !responseState.response.videoUrl && (
+              {!stream && !responseState.response.videoUrl && location.pathname === "/form" && (
                 <div
                   style={{
                     backgroundImage: `url('https://utfs.io/f/PKy8oE1GN2J3XLp6Sd83fo9U5AvPYm0IDul7exrc1OS2MyBZ')`,
@@ -243,25 +254,25 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
 
             <div className="flex justify-between items-center">
               <div className="flex items-center justify-between w-full p-3 sm:p-4">
-                <span className="text-lg sm:text-xl text-gray-300 font-medium">
+                <span className="text-base sm:text-lg text-gray-300 font-medium">
                   {formatTime(recordedTime)}
                 </span>
 
                 <button
                   className={`${
-                    isRecording ? "bg-gray-600" : "bg-red-700"
-                  } hover:opacity-80 text-white rounded-full p-2 sm:p-3`}
+                    isRecording ? "bg-red-700" : "bg-red-700"
+                  } hover:opacity-80 text-white rounded-full p-3`}
                   onClick={isRecording ? stopRecording : startRecording}
                   disabled={isUploading}
                 >
                   {isRecording ? 
-                    <Square size={24} className="sm:w-8 sm:h-8" /> : 
-                    <Video size={24} className="sm:w-8 sm:h-8" />
+                    <StopCircle size={22} className="sm:w-8 sm:h-8" /> : 
+                    <CirclePlay size={22} className="sm:w-8 sm:h-8" />
                   }
                 </button>
 
                 <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-full p-2">
-                  <Upload size={12} />
+                  <PictureInPicture size={14} />
                 </button>
               </div>
             </div>

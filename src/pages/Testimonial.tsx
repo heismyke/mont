@@ -57,7 +57,7 @@ const TestimonialForm = () => {
     }
     updateForm({ id: generateUniqueId() });
     updateForm({ creatorId: user?.id || "" });
-  }, [id]);
+  }, []);
 
   const handleSave = async () => {
     await saveForm();

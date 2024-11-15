@@ -18,10 +18,10 @@ module.exports = {
   		},
   		colors: {
 			orange: {
-				600: '#FF4405', // Adjust this to match your exact orange
+				600: '#FF4405',
 			  },
 			  purple: {
-				600: '#6366F1', // The main purple color used in the design
+				600: '#6366F1', 
 			  },
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

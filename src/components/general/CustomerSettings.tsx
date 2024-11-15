@@ -23,17 +23,17 @@ const ResponderSettings = () => {
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Mail className="w-4 h-4 text-gray-500" />
-          <label className="text-sm font-medium">Email</label>
+          <label className="text-sm font-medium">Project Name</label>
         </div>
         <p className="text-xs text-gray-500">
-          Collect responder's email address to stay in touch about new events.
+          Collect responder's project name to help identify their BUIDL.
         </p>
         <div className="flex gap-6">
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
-              checked={fields.email.enabled}
-              onChange={(e) => handleFieldUpdate('email', 'enabled', e.target.checked)}
+              checked={fields.projectName.enabled}
+              onChange={(e) => handleFieldUpdate('projectName', 'enabled', e.target.checked)}
               className="rounded-lg accent-purple-500"
             />
             <span className="text-xs text-gray-600">Enabled</span>
@@ -41,8 +41,8 @@ const ResponderSettings = () => {
           <div className="flex items-center gap-2">
             <input 
               type="checkbox"
-              checked={fields.email.required}
-              onChange={(e) => handleFieldUpdate('email', 'required', e.target.checked)}
+              checked={fields.projectName.required}
+              onChange={(e) => handleFieldUpdate('projectName', 'required', e.target.checked)}
               className="rounded-lg accent-purple-500"
             />
             <span className="text-xs text-gray-600">Required</span>

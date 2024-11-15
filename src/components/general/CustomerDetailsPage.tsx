@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Button } from "../ui/button";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface CustomerDetailsPageProps {
   isDesktop: boolean;
@@ -23,11 +23,15 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
   onNavigateNext,
 }) => {
   const { formState } = useFormContext();
-  const { design, design: { font } } = formState;
+  const {
+    design,
+    design: { font },
+  } = formState;
   const { responseState, updateDetails, saveResponse } = useResponseContext();
   const { customerInputs } = responseState;
   const location = useLocation();
-  
+  const navigate = useNavigate();
+
   // Only apply isDesktop layout on /form route
   const useDesktopLayout = location.pathname === "/form" && isDesktop;
   const useMobileLayout = location.pathname === "/form" && !isDesktop;
@@ -35,17 +39,19 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
   const { fields } = formState.customer;
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
-  const handlePhotoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       try {
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("upload_preset", "your_upload_preset");
-        formData.append("cloud_name", "your_cloud_name");
+        formData.append("upload_preset", "mont_uploads");
+        formData.append("cloud_name", "dgz4c3ahz");
 
         const response = await fetch(
-          "https://api.cloudinary.com/v1_1/your_cloud_name/image/upload",
+          "https://api.cloudinary.com/v1_1/dgz4c3ahz/image/upload",
           {
             method: "POST",
             body: formData,
@@ -268,7 +274,6 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
     "Zimbabwe",
   ];
 
-
   return (
     <div className="relative">
       <div className="absolute top-[-12px] right-4 z-10">
@@ -278,6 +283,7 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
             color: design.primaryColor,
             ["--tw-hover-bg" as string]: design.primaryColor,
           }}
+          onClick={() => navigate('/')}
         >
           Collect testimonials with Mont ↗
         </button>
@@ -301,10 +307,10 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
               `
           }
         `}
-        style={{ backgroundColor: design.backgroundColor, fontFamily: font  }}
+        style={{ backgroundColor: design.backgroundColor, fontFamily: font }}
       >
         <div className="space-y-4">
-        <div className="flex justify-between items-start mb-2 sm:mb-4">
+          <div className="flex justify-between items-start mb-2 sm:mb-4">
             {design.logo.preview ? (
               <img
                 src={design.logo.preview}
@@ -320,13 +326,37 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
             )}
           </div>
 
-          <p className="text-gray-800 font-medium text-lg sm:text-xl">Almost done 🙌</p>
+          <p className="text-gray-800 font-medium text-lg sm:text-xl">
+            Almost done 🙌
+          </p>
 
           <div className="grid grid-cols-1 gap-3 sm:gap-4">
+            {fields.email.enabled && (
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">
+                  Email{" "}
+                  {fields.email.required && (
+                    <span className="text-red-500">*</span>
+                  )}
+                </label>
+                <input
+                  type="email"
+                  className="w-full p-2 border rounded text-xs sm:text-sm"
+                  placeholder="Enter your email"
+                  required={fields.email.required}
+                  value={customerInputs.email || ""}
+                  onChange={(e) => updateDetails({ email: e.target.value })}
+                />
+              </div>
+            )}
+
             {fields.name.enabled && (
               <div>
                 <label className="block text-sm text-gray-600 mb-1">
-                  Name {fields.name.required && <span className="text-red-500">*</span>}
+                  Name{" "}
+                  {fields.name.required && (
+                    <span className="text-red-500">*</span>
+                  )}
                 </label>
                 <input
                   type="text"
@@ -342,7 +372,10 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
             {fields.projectName.enabled && (
               <div>
                 <label className="block text-sm text-gray-600 mb-1">
-                  Project name {fields.projectName.required && <span className="text-red-500">*</span>}
+                  Project name{" "}
+                  {fields.projectName.required && (
+                    <span className="text-red-500">*</span>
+                  )}
                 </label>
                 <input
                   type="text"
@@ -350,23 +383,9 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
                   placeholder="Enter your project name"
                   required={fields.projectName.required}
                   value={customerInputs.projectName || ""}
-                  onChange={(e) => updateDetails({ projectName: e.target.value })}
-                />
-              </div>
-            )}
-
-            {fields.email.enabled && (
-              <div>
-                <label className="block text-sm text-gray-600 mb-1">
-                  Email {fields.email.required && <span className="text-red-500">*</span>}
-                </label>
-                <input
-                  type="email"
-                  className="w-full p-2 border rounded text-xs sm:text-sm"
-                  placeholder="Enter your email"
-                  required={fields.email.required}
-                  value={customerInputs.email || ""}
-                  onChange={(e) => updateDetails({ email: e.target.value })}
+                  onChange={(e) =>
+                    updateDetails({ projectName: e.target.value })
+                  }
                 />
               </div>
             )}
@@ -374,7 +393,10 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
             {fields.walletAddress.enabled && (
               <div>
                 <label className="block text-sm text-gray-600 mb-1">
-                  Wallet address {fields.walletAddress.required && <span className="text-red-500">*</span>}
+                  Wallet address{" "}
+                  {fields.walletAddress.required && (
+                    <span className="text-red-500">*</span>
+                  )}
                 </label>
                 <input
                   type="text"
@@ -382,7 +404,9 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
                   placeholder="Enter your wallet address"
                   required={fields.walletAddress.required}
                   value={customerInputs.walletAddress || ""}
-                  onChange={(e) => updateDetails({ walletAddress: e.target.value })}
+                  onChange={(e) =>
+                    updateDetails({ walletAddress: e.target.value })
+                  }
                 />
               </div>
             )}
@@ -390,11 +414,16 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
             {fields.nationality.enabled && (
               <div>
                 <label className="block text-sm text-gray-600 mb-1">
-                  Region {fields.nationality.required && <span className="text-red-500">*</span>}
+                  Region{" "}
+                  {fields.nationality.required && (
+                    <span className="text-red-500">*</span>
+                  )}
                 </label>
                 <Select
                   value={customerInputs.nationality || ""}
-                  onValueChange={(value) => updateDetails({ nationality: value })}
+                  onValueChange={(value) =>
+                    updateDetails({ nationality: value })
+                  }
                 >
                   <SelectTrigger className="w-full text-xs sm:text-sm">
                     <SelectValue placeholder="Select Your Region" />
@@ -413,7 +442,10 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
             {fields.photo.enabled && (
               <div>
                 <label className="block text-sm text-gray-600 mb-1">
-                  Photo {fields.photo.required && <span className="text-red-500">*</span>}
+                  Photo{" "}
+                  {fields.photo.required && (
+                    <span className="text-red-500">*</span>
+                  )}
                 </label>
                 <div className="flex items-center gap-2">
                   <Avatar>
@@ -425,9 +457,13 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
                   </Avatar>
                   <div
                     className="border border-gray-300 rounded-md py-2 px-4 flex justify-center items-center w-fit cursor-pointer"
-                    onClick={() => document.getElementById("photoInput")?.click()}
+                    onClick={() =>
+                      document.getElementById("photoInput")?.click()
+                    }
                   >
-                    <p className="text-xs sm:text-sm font-medium">Upload image</p>
+                    <p className="text-xs sm:text-sm font-medium">
+                      Upload image
+                    </p>
                     <input
                       type="file"
                       accept="image/*"
@@ -444,7 +480,10 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
             {fields.comment.enabled && (
               <div>
                 <label className="block text-sm text-gray-600 mb-1">
-                  Additional comments {fields.comment.required && <span className="text-red-500">*</span>}
+                  Additional comments{" "}
+                  {fields.comment.required && (
+                    <span className="text-red-500">*</span>
+                  )}
                 </label>
                 <textarea
                   className="w-full p-2 border rounded text-xs sm:text-sm"
@@ -483,6 +522,3 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
 };
 
 export default CustomerDetailsPage;
-
- 
- 

@@ -1,7 +1,7 @@
 import { useFormContext } from "@/context/FormContext";
 import { Heart } from "lucide-react";
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface ThankYouPageProps {
   isDesktop: boolean;
@@ -10,7 +10,7 @@ interface ThankYouPageProps {
 const ThankYouPage: React.FC<ThankYouPageProps> = ({ isDesktop }) => {
     const { formState } = useFormContext();
     const { thanks, design, design: {font} } = formState;
-
+    const navigate = useNavigate();
     const location = useLocation();
 
     // Only apply isDesktop layout on /form route
@@ -20,9 +20,16 @@ const ThankYouPage: React.FC<ThankYouPageProps> = ({ isDesktop }) => {
     return (
       <div className="relative">
         <div className="absolute top-[-12px] right-4 z-10">
-          <button className="bg-white text-xs text-purple-600 hover:text-white hover:bg-purple-700 flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow">
-            Collect testimonials with Mont ↗
-          </button>
+        <button
+          className="bg-white text-xs hover:text-white flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow"
+          style={{
+            color: design.primaryColor,
+            ["--tw-hover-bg" as string]: design.primaryColor,
+          }}
+          onClick={() => navigate('/')}
+        >
+          Collect testimonials with Mont 
+        </button>
         </div>
   
         <div

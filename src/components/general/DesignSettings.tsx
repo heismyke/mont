@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import { Switch } from "../ui/switch";
+import { Switch } from "@/components/ui/switch"
 
 const DesignSettings = () => {
   const {
@@ -39,7 +39,13 @@ const DesignSettings = () => {
     if (formState.design.background.preview !== null) {
       updateDesign({ background: { file: null, preview: null } });
     } else {
-      updateDesign({ background: { file: null, preview: 'https://utfs.io/f/PKy8oE1GN2J3t4MUvdkvpN1sulgB5tndmrzYhToROK9e3EVa' } });
+      updateDesign({
+        background: {
+          file: null,
+          preview:
+            "https://utfs.io/f/PKy8oE1GN2J3t4MUvdkvpN1sulgB5tndmrzYhToROK9e3EVa",
+        },
+      });
     }
   };
 
@@ -145,7 +151,8 @@ const DesignSettings = () => {
                   <QuestionMarkCircledIcon />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>You can add a graphic of your event or brand</p>
+                  <p>You can add a graphic of your event</p>
+                  <p> or disable to use a default gradient</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

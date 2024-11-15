@@ -1,7 +1,7 @@
 import React from "react";
 import { Heart, Video } from "lucide-react";
 import { useFormContext } from "@/context/FormContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface DesignPageProps {
   isDesktop: boolean;
@@ -10,7 +10,7 @@ interface DesignPageProps {
 const DesignPage: React.FC<DesignPageProps> = ({ isDesktop }) => {
   const { formState } = useFormContext();
   const { primaryColor, backgroundColor, font, logo } = formState.design;
-
+  const navigate = useNavigate();
   const location = useLocation();
 
   // Only apply isDesktop layout on /form route
@@ -20,15 +20,15 @@ const DesignPage: React.FC<DesignPageProps> = ({ isDesktop }) => {
   return (
     <div className="relative">
       <div className="absolute top-[-12px] right-4 z-10">
-        <button 
+        <button
           className="bg-white text-xs hover:text-white flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow"
-          style={{ 
+          style={{
             color: primaryColor,
+            ["--tw-hover-bg" as string]: primaryColor,
           }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = primaryColor}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
+          onClick={() => navigate('/')}
         >
-          Collect testimonials with Mont ↗
+          Collect testimonials with Mont
         </button>
       </div>
 
@@ -50,18 +50,22 @@ const DesignPage: React.FC<DesignPageProps> = ({ isDesktop }) => {
               `
           }
         `}
-        style={{ 
+        style={{
           backgroundColor: backgroundColor,
-          fontFamily: font 
+          fontFamily: font,
         }}
       >
         <div className="flex justify-between items-start mb-4">
           {logo.preview ? (
-            <img src={logo.preview} alt="Logo" className="h-12 w-12 object-contain" />
+            <img
+              src={logo.preview}
+              alt="Logo"
+              className="h-12 w-12 object-contain"
+            />
           ) : (
-            <Heart 
-              className="fill-current" 
-              size={48} 
+            <Heart
+              className="fill-current"
+              size={48}
               style={{ color: primaryColor }}
             />
           )}
@@ -77,7 +81,7 @@ const DesignPage: React.FC<DesignPageProps> = ({ isDesktop }) => {
           <li>Recording a video? Don't forget to smile 😊</li>
         </ul>
 
-        <button 
+        <button
           className="w-full text-white rounded-lg py-3 mb-3 flex items-center justify-center gap-2"
           style={{ backgroundColor: primaryColor }}
         >

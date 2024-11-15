@@ -115,7 +115,7 @@ const initialFormState: FormState = {
   customer: {
     fields: {
       name: { required: true, enabled: true },
-      projectName: { required: true, enabled: true },
+      projectName: { required: false, enabled: true },
       email: { required: true, enabled: true },
       walletAddress: { required: false, enabled: true },
       photo: { required: false, enabled: true },
@@ -292,7 +292,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
       formData.append('upload_preset', 'mont_uploads');
       
       const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/dgz4c3ahz/image/upload`,
         {
           method: 'POST',
           body: formData,
@@ -331,7 +331,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
       formData.append('upload_preset', 'mont_uploads');
 
       const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/dgz4c3ahz/image/upload`,
         {
           method: 'POST',
           body: formData,

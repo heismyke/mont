@@ -14,7 +14,7 @@ const ResponsePage = () => {
     if (id) {
       loadForm(id);
     }
-  }, [id]);
+  }, []);
 
   const ActiveComponent = navItems[navIndex]?.component;
 

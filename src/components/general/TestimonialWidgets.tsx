@@ -21,7 +21,7 @@ const TestimonialWidgets = ({ selectedTab }: TestimonialListProps) => {
       }
     };
     loadData();
-  }, [user?.id]);
+  }, []);
 
   const getHeightClass = (percentage: number) => {
     if (percentage === 0) return "";

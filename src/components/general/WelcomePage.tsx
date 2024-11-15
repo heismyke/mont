@@ -1,6 +1,6 @@
 import { useFormContext } from "@/context/FormContext";
 import { Heart, Video } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface WelcomePageProps {
   isDesktop: boolean;
@@ -10,6 +10,7 @@ interface WelcomePageProps {
 const WelcomePage = ({ isDesktop, onNavigateNext }: WelcomePageProps) => {
   const { formState } = useFormContext();
   const { welcome, design, design: { font } } = formState;
+  const navigate = useNavigate();
   const location = useLocation();
 
   // Only apply isDesktop layout on /form route
@@ -25,6 +26,7 @@ const WelcomePage = ({ isDesktop, onNavigateNext }: WelcomePageProps) => {
             color: design.primaryColor,
             ["--tw-hover-bg" as string]: design.primaryColor,
           }}
+          onClick={() => navigate('/')}
         >
           Collect testimonials with Mont 
         </button>
