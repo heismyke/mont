@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import { Switch } from "@/components/ui/switch"
+import { Switch } from "@/components/ui/switch.tsx"
 
 const DesignSettings = () => {
   const {
