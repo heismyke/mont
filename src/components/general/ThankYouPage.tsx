@@ -1,6 +1,7 @@
 import { useFormContext } from "@/context/FormContext";
 import { Heart } from "lucide-react";
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 interface ThankYouPageProps {
   isDesktop: boolean;
@@ -8,7 +9,13 @@ interface ThankYouPageProps {
 
 const ThankYouPage: React.FC<ThankYouPageProps> = ({ isDesktop }) => {
     const { formState } = useFormContext();
-    const { thanks, design } = formState;
+    const { thanks, design, design: {font} } = formState;
+
+    const location = useLocation();
+
+    // Only apply isDesktop layout on /form route
+    const useDesktopLayout = location.pathname === "/form" && isDesktop;
+    const useMobileLayout = location.pathname === "/form" && !isDesktop;
   
     return (
       <div className="relative">
@@ -19,11 +26,23 @@ const ThankYouPage: React.FC<ThankYouPageProps> = ({ isDesktop }) => {
         </div>
   
         <div
-          className={`bg-white rounded-2xl p-6 shadow-lg mx-auto relative ${
-            isDesktop
+         className={`
+          rounded-2xl p-4 shadow-lg mx-auto relative
+          ${
+            useDesktopLayout
               ? "max-w-2xl"
-              : "w-[360px] h-[660px] border-4 border-gray-800 flex flex-col justify-center"
-          }`}
+              : useMobileLayout
+              ? "w-[360px] h-[660px] border-4 border-gray-800 flex flex-col justify-center"
+              : `
+                w-full
+                sm:w-[360px]
+                md:w-[480px]
+                lg:w-[560px]
+                flex flex-col justify-center
+              `
+          }
+        `}
+        style={{ backgroundColor: design.backgroundColor, fontFamily: font  }}
         >
           <div className="max-w-2xl mx-auto">
           <div className="flex justify-center items-center mb-6 mt-3">

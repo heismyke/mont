@@ -4,6 +4,7 @@ import { useFormContext } from "@/context/FormContext";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { useResponseContext } from "@/context/ResponseContext";
+import { useLocation } from "react-router-dom";
 
 interface ResponsePageProps {
   isDesktop: boolean;
@@ -13,7 +14,8 @@ interface ResponsePageProps {
 const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }) => {
   const { formState } = useFormContext();
   const { responseState, updateResponse, setRating } = useResponseContext();
-  const { response, design } = formState;
+  const { response, design, design: { font } } = formState;
+  const location = useLocation();
   const [isRecording, setIsRecording] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [recordedTime, setRecordedTime] = useState(0);
@@ -24,12 +26,14 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
   const chunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<number | null>(null);
 
+  // Only apply isDesktop layout on /form route
+  const useDesktopLayout = location.pathname === "/form" && isDesktop;
+  const useMobileLayout = location.pathname === "/form" && !isDesktop;
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs
-      .toString()
-      .padStart(2, "0")}`;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
   const startRecording = async () => {
@@ -126,6 +130,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
     }
   };
 
+
   return (
     <div className="relative">
       <div className="absolute top-[-12px] right-4 z-10">
@@ -135,19 +140,32 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
       </div>
 
       <div
-        className={`bg-white rounded-2xl p-6 shadow-lg mx-auto ${
-          isDesktop
-            ? "w-[540px]"
-            : "w-[360px] h-[660px] border-4 border-gray-800 overflow-y-auto"
-        }`}
+        className={`
+          rounded-2xl p-4 shadow-lg mx-auto relative
+          ${
+            useDesktopLayout
+              ? "w-[540px]"
+              : useMobileLayout
+              ? "w-[360px] h-[660px] border-4 border-gray-800 flex flex-col justify-center"
+              : `
+                w-full
+                sm:w-[360px]
+                md:w-[480px]
+                lg:w-[560px]
+                min-h-[500px]
+                flex flex-col justify-center
+              `
+          }
+        `}
+        style={{ backgroundColor: design.backgroundColor, fontFamily: font  }}
       >
-        <div className="mx-auto space-y-4">
-          <div className="flex justify-between items-start mb-4">
+        <div className="mx-auto space-y-3 sm:space-y-4">
+          <div className="flex justify-between items-start mb-2 sm:mb-4">
             {design.logo.preview ? (
               <img
                 src={design.logo.preview}
                 alt="Logo"
-                className="h-12 w-auto object-contain"
+                className="h-8 sm:h-12 w-auto object-contain"
               />
             ) : (
               <Heart
@@ -159,11 +177,11 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
           </div>
 
           <div>
-            <p className="text-gray-800 font-medium text-xl mb-3">
+            <p className="text-gray-800 font-medium text-lg sm:text-xl mb-2 sm:mb-3">
               {response.title}
             </p>
 
-            <ul className="text-sm list-disc text-gray-600 ml-4 mb-3">
+            <ul className="text-sm list-disc text-gray-600 ml-4 mb-2 sm:mb-3">
               {response.prompts.split("\n").map((prompt, index) => (
                 <li key={index}>{prompt.replace("- ", "")}</li>
               ))}
@@ -172,8 +190,8 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
 
           {response.enableRating && (
             <div>
-              <label className="block text-sm text">Rate your experience</label>
-              <div className="flex gap-2 mt-1">
+              <label className="block text-sm">Rate your experience</label>
+              <div className="flex gap-1 sm:gap-2 mt-1">
                 {[1, 2, 3, 4, 5].map((rating) => (
                   <button
                     key={rating}
@@ -182,14 +200,14 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
                     }`}
                     onClick={() => setRating(rating)}
                   >
-                    <Star size={24} />
+                    <Star size={20} className="sm:w-6 sm:h-6" />
                   </button>
                 ))}
               </div>
             </div>
           )}
 
-          <div className="bg-black rounded-2xl">
+          <div className="bg-black rounded-xl sm:rounded-2xl">
             <div className="aspect-video flex flex-col items-center justify-center rounded-lg relative overflow-hidden">
               <video
                 ref={videoRef}
@@ -212,7 +230,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
                   className="absolute inset-0 w-full h-full rounded-2xl flex flex-col items-center justify-center"
                 >
                   <div className="z-10">
-                    <p className="text-gray-50 text-center text-sm font-medium">
+                    <p className="text-gray-50 text-center text-xs sm:text-sm font-medium">
                       Preview
                     </p>
                     <p className="text-gray-300 text-center text-xs px-4">
@@ -224,19 +242,22 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
             </div>
 
             <div className="flex justify-between items-center">
-              <div className="flex items-center justify-between w-full p-4">
-                <span className="text-xl text-gray-300 font-medium">
+              <div className="flex items-center justify-between w-full p-3 sm:p-4">
+                <span className="text-lg sm:text-xl text-gray-300 font-medium">
                   {formatTime(recordedTime)}
                 </span>
 
                 <button
                   className={`${
                     isRecording ? "bg-gray-600" : "bg-red-700"
-                  } hover:opacity-80 text-white rounded-full p-3`}
+                  } hover:opacity-80 text-white rounded-full p-2 sm:p-3`}
                   onClick={isRecording ? stopRecording : startRecording}
                   disabled={isUploading}
                 >
-                  {isRecording ? <Square size={30} /> : <Video size={30} />}
+                  {isRecording ? 
+                    <Square size={24} className="sm:w-8 sm:h-8" /> : 
+                    <Video size={24} className="sm:w-8 sm:h-8" />
+                  }
                 </button>
 
                 <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-full p-2">
@@ -250,7 +271,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
 
           <Button
             className="bg-gray-200 hover:bg-gray-300 text-gray-800 w-full"
-            size={"lg"}
+            size={useDesktopLayout ? "lg" : "default"}
             onClick={() => document.getElementById("videoInput")?.click()}
             disabled={isUploading}
           >
@@ -266,17 +287,17 @@ const ResponsePage: React.FC<ResponsePageProps> = ({ isDesktop, onNavigateNext }
             Upload a file
           </Button>
 
-          <Button onClick={onNavigateNext} size={'lg'} className="w-full mt-2">
+          <Button 
+            onClick={onNavigateNext} 
+            size={useDesktopLayout ? "lg" : "default"}
+            className="w-full"
+          >
             Proceed
           </Button>
 
-          {/* <div
-            className={`text-center ${
-              isDesktop ? "mt-10" : "absolute bottom-6 left-0 right-0"
-            }`}
-          >
+          {/* <div className={`text-center ${useDesktopLayout ? "mt-10" : "mt-auto pt-6"}`}>
             <p className="text-xs text-gray-300">
-              {"Powered by Mont protocol"}
+              Powered by Mont protocol
             </p>
           </div> */}
         </div>

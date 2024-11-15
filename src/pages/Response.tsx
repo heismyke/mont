@@ -7,6 +7,7 @@ import { navItems } from "@/components/general/navItems";
 const ResponsePage = () => {
   const { id } = useParams();
   const { formState, loadForm, activeView, isDesktop } = useFormContext();
+  const { background } = formState.design;
   const [navIndex, setNavIndex] = useState(1);
 
   useEffect(() => {
@@ -18,13 +19,23 @@ const ResponsePage = () => {
   const ActiveComponent = navItems[navIndex]?.component;
 
   const handleNavigateNext = () => {
-    setNavIndex(prevIndex => prevIndex + 1);
+    setNavIndex((prevIndex) => prevIndex + 1);
   };
 
   return (
     <div className="flex min-h-screen bg-gray-50 text-gray-800">
-      <div className="flex-1 p-8 bg-gradient-to-br from-purple-500 to-blue-900 flex flex-col">
-        <div className="flex items-center justify-center flex-grow mb-10">
+      <div
+        className="flex-1 p-4 flex flex-col"
+        style={{
+          backgroundImage:
+            background.preview && background.preview.trim() !== ""
+              ? `url(${background.preview})`
+              : "linear-gradient(to bottom right, #6a0dad, #1e3a8a)",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
+      >
+        <div className="flex items-center justify-center flex-grow">
           {ActiveComponent && (
             <ActiveComponent
               isDesktop={isDesktop}

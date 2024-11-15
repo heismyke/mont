@@ -1,6 +1,7 @@
 import React from "react";
 import { Heart, Video } from "lucide-react";
 import { useFormContext } from "@/context/FormContext";
+import { useLocation } from "react-router-dom";
 
 interface DesignPageProps {
   isDesktop: boolean;
@@ -9,6 +10,12 @@ interface DesignPageProps {
 const DesignPage: React.FC<DesignPageProps> = ({ isDesktop }) => {
   const { formState } = useFormContext();
   const { primaryColor, backgroundColor, font, logo } = formState.design;
+
+  const location = useLocation();
+
+  // Only apply isDesktop layout on /form route
+  const useDesktopLayout = location.pathname === "/form" && isDesktop;
+  const useMobileLayout = location.pathname === "/form" && !isDesktop;
 
   return (
     <div className="relative">
@@ -26,11 +33,23 @@ const DesignPage: React.FC<DesignPageProps> = ({ isDesktop }) => {
       </div>
 
       <div
-        className={`rounded-2xl p-6 shadow-lg mx-auto relative ${
-          isDesktop
-            ? "max-w-2xl"
-            : "w-[360px] h-[660px] border-4 border-gray-800 flex flex-col justify-center"
-        }`}
+        className={`
+          rounded-2xl p-4 shadow-lg mx-auto relative
+          ${
+            useDesktopLayout
+              ? "max-w-2xl"
+              : useMobileLayout
+              ? "w-[360px] h-[660px] border-4 border-gray-800 flex flex-col justify-center"
+              : `
+                w-full
+                sm:w-[360px]
+                md:w-[480px]
+                lg:w-[560px]
+                min-h-[500px]
+                flex flex-col justify-center
+              `
+          }
+        `}
         style={{ 
           backgroundColor: backgroundColor,
           fontFamily: font 

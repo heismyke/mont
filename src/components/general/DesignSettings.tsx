@@ -1,15 +1,45 @@
 import React from "react";
-import { Heart } from "lucide-react";
+import { Heart, UploadIcon } from "lucide-react";
 import { useFormContext } from "@/context/FormContext";
+import { Button } from "../ui/button";
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
+import { Switch } from "../ui/switch";
 
 const DesignSettings = () => {
-  const { formState, updateFormState, handleLogoUpload } = useFormContext();
+  const {
+    formState,
+    updateFormState,
+    updateDesign,
+    handleLogoUpload,
+    handleBackgroundUpload,
+  } = useFormContext();
   const { primaryColor, backgroundColor, font, logo } = formState.design;
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogo = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       handleLogoUpload(file);
+    }
+  };
+
+  const handleBackground = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      handleBackgroundUpload(file);
+    }
+  };
+
+  const toggleBackground = () => {
+    if (formState.design.background.preview !== null) {
+      updateDesign({ background: { file: null, preview: null } });
+    } else {
+      updateDesign({ background: { file: null, preview: 'https://utfs.io/f/PKy8oE1GN2J3t4MUvdkvpN1sulgB5tndmrzYhToROK9e3EVa' } });
     }
   };
 
@@ -35,7 +65,7 @@ const DesignSettings = () => {
             accept="image/*"
             id="logoInput"
             className="w-full hidden"
-            onChange={handleFileChange}
+            onChange={handleLogo}
           />
         </div>
       </div>
@@ -101,6 +131,48 @@ const DesignSettings = () => {
           <option>Inter</option>
           <option>Open Sans</option>
         </select>
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center space-x-2">
+            <label className="block text-xs text-gray-600">
+              Background Image
+            </label>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <QuestionMarkCircledIcon />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>You can add a graphic of your event or brand</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+
+          <Switch
+            checked={formState.design.background.preview !== null}
+            onCheckedChange={toggleBackground}
+          />
+        </div>
+
+        <div
+          className=""
+          onClick={() => document.getElementById("backgroundInput")?.click()}
+        >
+          <Button variant={"outline"} className="w-full" size={"lg"}>
+            <UploadIcon />
+            Upload
+          </Button>
+          <input
+            type="file"
+            accept="image/*"
+            id="backgroundInput"
+            className="w-full hidden"
+            onChange={handleBackground}
+          />
+        </div>
       </div>
     </div>
   );

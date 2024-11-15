@@ -16,6 +16,10 @@ interface FormState {
       file: File | null;
       preview: string | null;
     };
+    background: {
+      file: File | null;
+      preview: string | null;
+    };
     primaryColor: string;
     backgroundColor: string;
     font: string;
@@ -78,6 +82,10 @@ const initialFormState: FormState = {
       file: null,
       preview: null,
     },
+    background: {
+      file: null,
+      preview: 'https://utfs.io/f/PKy8oE1GN2J3t4MUvdkvpN1sulgB5tndmrzYhToROK9e3EVa',
+    },
     primaryColor: "#6D28D9", // purple-700
     backgroundColor: "#ffffff",
     font: "Roboto Mono",
@@ -137,8 +145,10 @@ interface FormContextType {
   formDate: Date;
   forms: { id: string; name: string | null; formState: FormState }[];
   handleLogoUpload: (file: File) => void;
+  handleBackgroundUpload: (file: File) => void;
   updateWelcome: (updates: Partial<FormState["welcome"]>) => void;
   updateForm: (updates: Partial<FormState["form"]>) => void;
+  updateDesign: (updates: Partial<FormState["design"]>) => void;
   updateFormState: (
     section: keyof FormState,
     newData: Partial<FormState[keyof FormState]>
@@ -264,7 +274,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const handleLogoUpload = (file: File) => {
+  const handleLogoUpload = async (file: File) => {
     const reader = new FileReader();
     reader.onloadend = () => {
       updateFormState("design", {
@@ -275,6 +285,71 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
       });
     };
     reader.readAsDataURL(file);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'mont_uploads');
+      
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      updateFormState("design", {
+        logo: {
+          file: file,
+          preview: data.secure_url,
+        },
+      });
+
+    } catch (error) {
+      console.error('Error uploading logo:', error);
+    }
+  };
+
+  const handleBackgroundUpload = async (file: File) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      updateFormState("design", {
+        background: {
+          file: file, 
+          preview: reader.result as string,
+        },
+      });
+    };
+    reader.readAsDataURL(file);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'mont_uploads');
+
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      updateFormState("design", {
+        background: {
+          file: file,
+          preview: data.secure_url,
+        },
+      });
+
+    } catch (error) {
+      console.error('Error uploading background:', error);
+    }
   };
 
   const updateWelcome = (updates: Partial<FormState["welcome"]>) => {
@@ -292,6 +367,16 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
       ...prev,
       form: {
         ...prev.form,
+        ...updates,
+      },
+    }));
+  };
+
+  const updateDesign = (updates: Partial<FormState["design"]>) => {
+    setFormState((prev) => ({
+      ...prev,
+      design: {
+        ...prev.design,
         ...updates,
       },
     }));
@@ -371,8 +456,10 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
         formState,
         formDate,
         handleLogoUpload,
+        handleBackgroundUpload,
         updateWelcome,
         updateForm,
+        updateDesign,
         updateResponse,
         updateCustomer,
         setRating,

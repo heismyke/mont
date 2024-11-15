@@ -39,6 +39,7 @@ const TestimonialForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { formState, loadForm, saveForm, updateForm } = useFormContext();
+  const { background } = formState.design;
   const { toast } = useToast();
   const {
     activeView,
@@ -159,7 +160,16 @@ const TestimonialForm = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-8 bg-gradient-to-br from-purple-500 to-blue-900 flex flex-col">
+      <div
+        className="flex-1 p-8 flex flex-col"
+        style={{
+          backgroundImage: (background.preview && background.preview.trim() !== '') 
+          ? `url(${background.preview})` 
+          : 'linear-gradient(to bottom right, #6a0dad, #1e3a8a)',
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
+      >
         <div className="flex justify-end mb-6">
           <div className="bg-white rounded-lg p-[5px] flex gap-1">
             <button
@@ -184,8 +194,10 @@ const TestimonialForm = () => {
             <ActiveComponent
               onNavigateNext={function (): void {
                 throw new Error("Function not implemented.");
-              } } isDesktop={isDesktop}
-              {...(formState[activeView as keyof typeof formState] as object)}            />
+              }}
+              isDesktop={isDesktop}
+              {...(formState[activeView as keyof typeof formState] as object)}
+            />
           )}
         </div>
       </div>
@@ -224,8 +236,10 @@ export const FormTitleDialog = () => {
           </div>
         </div>
         <DialogFooter>
-        <DialogClose asChild>
-          <Button size={'lg'} className="w-full">Save</Button>
+          <DialogClose asChild>
+            <Button size={"lg"} className="w-full">
+              Save
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

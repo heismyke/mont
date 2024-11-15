@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { BarChart3Icon, StarIcon, MessageSquareIcon } from "lucide-react";
+import { BarChart3Icon, StarIcon, VideotapeIcon } from "lucide-react";
 import { useFormContext } from "@/context/FormContext";
 import { useResponseContext } from "@/context/ResponseContext";
 import { useEffect, useMemo } from "react";
@@ -94,7 +94,7 @@ const TestimonialWidgets = ({ selectedTab }: TestimonialListProps) => {
         {/* Total Responses */}
         <div className="bg-green-50 p-4 rounded-lg">
           <div className="flex items-center gap-2 text-green-600 mb-2">
-            <MessageSquareIcon className="w-4 h-4" />
+            <VideotapeIcon className="w-4 h-4" />
             <span className="text-sm font-medium">Total Monts</span>
           </div>
           <div className="text-2xl font-bold text-green-700">
