@@ -7,6 +7,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { TwitterLogoIcon } from "@radix-ui/react-icons";
 import { CopyIcon, Loader } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface TestimonialListProps {
   selectedTab: string;
@@ -17,8 +19,14 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { forms } = useFormContext();
-  const { responses, loadResponses, loadResponsesByForm, loadResponsesByFavorites, toggleFavorite } =
-    useResponseContext();
+  const {
+    responses,
+    loadResponses,
+    loadResponsesByForm,
+    loadResponsesByFavorites,
+    toggleFavorite,
+  } = useResponseContext();
+  const navigate = useNavigate();
 
   const { user } = useAuth();
 
@@ -50,11 +58,83 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
     await toggleFavorite(responseId);
   };
 
+  const handleShare = (videoUrl: string | null) => {
+    if (!videoUrl) {
+      console.error("No video URL provided.");
+      return;
+    }
+
+    if (videoUrl) {
+      const tweetText = encodeURIComponent("What our participants have to say! 📹");
+      const tweetUrl = encodeURIComponent(videoUrl);
+      window.open(
+        `https://x.com/intent/tweet?text=${tweetText}&url=${tweetUrl}`,
+        "_blank"
+      );
+    }
+  };
+
+  const handleDownload = async (videoUrl: string | null) => {
+    if (!videoUrl) {
+      console.error("No video URL provided.");
+      return;
+    }
+
+    try {
+      const response = await fetch(videoUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `video-testimonial-${Date.now()}.mp4`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast({
+        title: "Success",
+        description: "Video downloaded successfully",
+      });
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to download video",
+      });
+    }
+  };
+
   return (
     <div className="mt-4 grid grid-cols-1 gap-6">
       {isLoading ? (
         <div className="flex justify-center items-center h-56">
           <Loader className="w-12 h-12 animate-spin text-gray-400" />
+        </div>
+      ) : responses.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16 px-4">
+          <div className="relative w-48 h-48">
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-20 h-20 bg-purple-100 rounded-lg transform rotate-6"></div>
+            <div className="absolute inset-0 m-auto w-28 h-28 bg-white rounded-xl shadow-lg flex items-center justify-center"></div>
+          </div>
+
+          <h3 className="text-lg font-semibold text-gray-900 mb-2 text-center">
+            No responses yet
+          </h3>
+
+          <p className="text-gray-500 text-center text-sm mb-8 max-w-md">
+            Create and share form links to start collecting video testimonials.
+            The responses will appear here.
+          </p>
+
+          <div className="flex gap-4">
+            <Button
+              onClick={() => navigate("/form")}
+              className="flex items-center gap-2"
+            >
+              Get started
+            </Button>
+          </div>
         </div>
       ) : (
         responses.map((form) => {
@@ -107,9 +187,7 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                       <button
                         className="flex items-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
                         onClick={() =>
-                          console.log(
-                            `Sharing ${form.responseState.response.videoUrl}`
-                          )
+                          handleShare(form.responseState.response.videoUrl)
                         }
                       >
                         <TwitterLogoIcon className="w-4 h-4" />
@@ -118,13 +196,11 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                       <button
                         className="flex items-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
                         onClick={() =>
-                          console.log(
-                            `Downloading ${form.responseState.response.videoUrl}`
-                          )
+                          handleDownload(form.responseState.response.videoUrl)
                         }
                       >
                         <DownloadIcon className="w-4 h-4" />
-                        <span>18MB</span>
+                        <span>Download</span>
                       </button>
                     </div>
                   </div>
@@ -144,10 +220,14 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
 
                     {/* Show more/less button */}
                     <button
-                      onClick={() => setExpandedId(expandedId === form.id ? null : form.id)}
+                      onClick={() =>
+                        setExpandedId(expandedId === form.id ? null : form.id)
+                      }
                       className="text-xs text-purple-600 hover:text-purple-800 font-medium"
                     >
-                      {expandedId === form.id ? "Show less" : "Show more details"}
+                      {expandedId === form.id
+                        ? "Show less"
+                        : "Show more details"}
                     </button>
 
                     {/* Expandable content */}
@@ -184,7 +264,7 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                   </div>
 
                   {/* Footer */}
-                  <div className="flex items-center gap-3 text-sm text-gray-500">
+                  <div className="flex items-center gap-3 text-sm text-gray-400">
                     <button onClick={() => handleFavoriteClick(form.id)}>
                       <HeartIcon
                         className={`w-6 h-6 ${
@@ -196,13 +276,16 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                     </button>
 
                     <span className="text-sm">
-                      {new Date(form.date).toLocaleDateString()}
+                      {new Date(form.date).toLocaleDateString()},
                     </span>
-                    <img
+                    {/* <img
                       src={`/src/assets/flags/${form.responseState.customerInputs.nationality}.svg`}
                       alt=""
                       className="w-6 h-5"
-                    />
+                    /> */}
+                    <p className="text-sm">
+                      {form.responseState.customerInputs.nationality || "N/A"}
+                    </p>
                   </div>
                 </div>
               </div>

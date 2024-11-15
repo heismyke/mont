@@ -137,18 +137,18 @@ const TestimonialForm = () => {
               <input
                 type="text"
                 readOnly
-                value={`${window.location.origin}/form/${id}`}
+                value={`${window.location.origin}/${id}`}
                 className="flex-1 text-sm p-2 border rounded bg-white text-gray-800"
               />
               <Button
                 variant="outline"
                 onClick={async () => {
                   await navigator.clipboard.writeText(
-                    `${window.location.origin}/form/${id}`
+                    `${window.location.origin}/${id}`
                   );
                   toast({
-                    title: "Copied",
-                    description: "Form URL copied to clipboard",
+                    title: "🎉 Share away!",
+                    description: "Form URL copied to clipboard, now share to get those videos rolling in!",
                   });
                 }}
               >
