@@ -217,7 +217,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
 
       <div
         className={`
-          rounded-2xl p-4 shadow-lg mx-auto relative
+          rounded-2xl p-5 shadow-lg mx-auto relative
           ${
             useDesktopLayout
               ? "w-[540px]"
