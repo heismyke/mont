@@ -202,18 +202,18 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
 
   return (
     <div className="relative">
-      <div className="absolute top-[-12px] right-4 z-10">
+      { formState.form.form_ad && <div className="absolute top-[-12px] right-4 z-10">
         <button
           className="bg-white text-xs hover:text-white flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow"
           style={{
             color: design.primaryColor,
             ["--tw-hover-bg" as string]: design.primaryColor,
           }}
-          onClick={() => navigate("/")}
+          onClick={() => navigate('/')}
         >
           Collect testimonials with Mont
         </button>
-      </div>
+      </div>}
 
       <div
         className={`
@@ -342,21 +342,24 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
                 </span>
 
                 {isPreviewing ? (
-                  <div className="flex gap-2">
-                    <button
-                      className="bg-red-600 hover:bg-red-700 text-white rounded-full p-3"
-                      onClick={handleDiscardVideo}
-                      disabled={isUploading}
-                    >
-                      <X size={22} className="sm:w-6 sm:h-6" />
-                    </button>
-                    <button
-                      className="bg-green-600 hover:bg-green-700 text-white rounded-full p-3"
-                      onClick={handleApproveVideo}
-                      disabled={isUploading}
-                    >
-                      <Check size={22} className="sm:w-6 sm:h-6" />
-                    </button>
+                  <div className="space-y-2">
+                    <p className="text-gray-100 text-sm">Ready to send?</p>
+                    <div className="flex gap-2">
+                      <button
+                        className="bg-green-600 hover:bg-green-700 text-white rounded-full p-3"
+                        onClick={handleApproveVideo}
+                        disabled={isUploading}
+                      >
+                        <Check size={22} className="sm:w-6 sm:h-6" />
+                      </button>
+                      <button
+                        className="bg-red-600 hover:bg-red-700 text-white rounded-full p-3"
+                        onClick={handleDiscardVideo}
+                        disabled={isUploading}
+                      >
+                        <X size={22} className="sm:w-6 sm:h-6" />
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <button

@@ -1,0 +1,10 @@
+{
+    "functions": {
+      "supabase/functions/**/*.ts": {
+        "runtime": "@vercel/node"
+      },
+      "src/pages/Subscription.tsx": {
+        "runtime": "@vercel/node"
+      }
+    }
+  }

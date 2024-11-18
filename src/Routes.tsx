@@ -6,6 +6,8 @@ import TestimonialForm from "./pages/Testimonial";
 import LoginForm from "./components/auth/LoginForm";
 import ProtectedRoute from "./components/auth/ProtectedRoutes";
 import ResponsePage from "./pages/Response";
+import OnboardPage from "./pages/OnboardForm";
+import Subscription from "./pages/Subscription";
 
 const AppRoutes = () => {
   return (
@@ -39,6 +41,8 @@ const AppRoutes = () => {
             } 
           />
           <Route path="/:id" element={<ResponsePage />} />
+          <Route path="/o/:id" element={<OnboardPage />} />
+          <Route path="/subscription" element={<Subscription />} />
         </Routes>
       </Layout>
     </Router>

@@ -2,22 +2,25 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import {
-  WormIcon,
   TagsIcon,
-  InboxIcon,
   PlusCircleIcon,
   LogOutIcon,
   Trash2,
+  Share2,
+  Library,
+  ClapperboardIcon,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useFormContext } from "@/context/FormContext";
 import { useEffect } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import { useToast } from "@/hooks/use-toast";
 
 export const DashboardSidebar = () => {
   const { user, signOut } = useAuth();
   const { forms, loadForms, deleteForm } = useFormContext();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     loadForms();
@@ -73,7 +76,7 @@ export const DashboardSidebar = () => {
           </div>
 
           <NavItem
-            icon={<WormIcon />}
+            icon={<Library />}
             rightIcon={<PlusCircleIcon size={20} />}
             label="Forms"
             onClick={() => navigate("/form")}
@@ -82,13 +85,38 @@ export const DashboardSidebar = () => {
           {forms.length > 0 && (
             <>
               {forms.map((form) => (
-                <div key={form.id} className="flex items-center justify-between px-3 py-2 rounded-md text-xs text-gray-600 cursor-pointer border-b border-gray-200">
+                <div
+                  key={form.id}
+                  className="flex items-center justify-between px-3 py-2 rounded-md text-xs text-gray-600 border-b border-gray-200"
+                >
                   <div className="flex items-center gap-3">
-                    <Trash2 onClick={() => handleDeleteForm(form.id)} size={16} className="text-red-600 cursor-pointer" />
-                    <span onClick={() => handleFormClick(form.id)} className="line-clamp-1">{form.name || "Untitled Form"}</span>
+                    <span
+                      onClick={() => handleFormClick(form.id)}
+                      className="line-clamp-1 cursor-pointer"
+                    >
+                      {form.name || "Untitled Form"}
+                    </span>
                   </div>
-                  <div>
-                    
+                  <div className="flex items-center gap-3">
+                    <Share2
+                      className="cursor-pointer"
+                      size={15}
+                      onClick={async () => {
+                        await navigator.clipboard.writeText(
+                          `${window.location.origin}/${form.id}`
+                        );
+                        toast({
+                          title: "🎉 Share away!",
+                          description:
+                            "Form link copied to clipboard, now share to get those videos rolling in!",
+                        });
+                      }}
+                    />
+                    <Trash2
+                      onClick={() => handleDeleteForm(form.id)}
+                      size={15}
+                      className="text-red-700 cursor-pointer"
+                    />
                   </div>
                 </div>
               ))}
@@ -101,7 +129,7 @@ export const DashboardSidebar = () => {
             MANAGE
           </div>
           <NavItem
-            icon={<InboxIcon />}
+            icon={<ClapperboardIcon />}
             rightIcon={undefined}
             label="Monts"
             active

@@ -19,7 +19,7 @@ const WelcomePage = ({ isDesktop, onNavigateNext }: WelcomePageProps) => {
 
   return (
     <div className="relative">
-      <div className="absolute top-[-12px] right-4 z-10">
+      { formState.form.form_ad && <div className="absolute top-[-12px] right-4 z-10">
         <button
           className="bg-white text-xs hover:text-white flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow"
           style={{
@@ -28,9 +28,9 @@ const WelcomePage = ({ isDesktop, onNavigateNext }: WelcomePageProps) => {
           }}
           onClick={() => navigate('/')}
         >
-          Collect testimonials with Mont 
+          Collect testimonials with Mont
         </button>
-      </div>
+      </div>}
 
       <div
         className={`

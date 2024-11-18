@@ -25,6 +25,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
+import Switch from "@/components/ui/Switch";
 
 // Utility function to generate a unique ID
 const generateUniqueId = () => {
@@ -40,6 +48,8 @@ const TestimonialForm = () => {
   const navigate = useNavigate();
   const { formState, loadForm, saveForm, updateForm } = useFormContext();
   const { background } = formState.design;
+  // const { updateFormState } = useFormContext();
+
   const { toast } = useToast();
   const {
     activeView,
@@ -75,6 +85,11 @@ const TestimonialForm = () => {
   const ActiveSettings = navItems.find(
     (item) => item.id === expandedItem
   )?.settings;
+
+  const disableMontBanner = () => {
+    navigate("/subscription");
+    // updateFormState("form", { form_ad: false });
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-50 text-gray-800">
@@ -123,6 +138,30 @@ const TestimonialForm = () => {
           ))}
         </div>
 
+        <div className="flex items-center justify-between mt-5 px-3">
+          <div className="flex items-center space-x-2">
+            <label className="block text-sm text-gray-600">
+              Disable banner
+            </label>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <QuestionMarkCircledIcon />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Disable mont banner at top of form</p>
+                  <p> only available on paid plans</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+
+          <Switch
+            checked={formState.form.form_ad === true}
+            onCheckedChange={disableMontBanner}
+          />
+        </div>
+
         <Button
           size="lg"
           className="w-full bg-black text-white rounded-lg py-2 mt-6"
@@ -148,7 +187,8 @@ const TestimonialForm = () => {
                   );
                   toast({
                     title: "🎉 Share away!",
-                    description: "Form URL copied to clipboard, now share to get those videos rolling in!",
+                    description:
+                      "Form link copied to clipboard, now share to get those videos rolling in!",
                   });
                 }}
               >
@@ -163,9 +203,10 @@ const TestimonialForm = () => {
       <div
         className="flex-1 p-8 flex flex-col"
         style={{
-          backgroundImage: (background.preview && background.preview.trim() !== '') 
-          ? `url(${background.preview})` 
-          : 'linear-gradient(to bottom right, #6a0dad, #1e3a8a)',
+          backgroundImage:
+            background.preview && background.preview.trim() !== ""
+              ? `url(${background.preview})`
+              : "linear-gradient(to bottom right, #6a0dad, #1e3a8a)",
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}

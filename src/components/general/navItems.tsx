@@ -10,6 +10,7 @@ import CustomerSettings from './CustomerSettings';
 import ThankYouPage from './ThankYouPage';
 import ThankYouSettings from './ThankYouSettings';
 
+
 export const navItems = [
   {
     id: 'design',
@@ -45,5 +46,12 @@ export const navItems = [
     label: 'Thank you page',
     component: ThankYouPage,
     settings: ThankYouSettings
-  }
+  },
+  // {
+  //   id: 'setting',
+  //   icon: <Settings className="text-gray-500" />,
+  //   label: 'Advanced settings',
+  //   component: ThankYouPage,
+  //   settings: AdvancedSettings
+  // }
 ];

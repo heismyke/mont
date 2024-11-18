@@ -10,6 +10,7 @@ interface FormState {
     id?: string;
     creatorId: string;
     form_title?: string;
+    form_ad: boolean;
   };
   design: {
     logo: {
@@ -76,6 +77,7 @@ const initialFormState: FormState = {
     id: "",
     creatorId: '',
     form_title: "My new form",
+    form_ad: true
   },
   design: {
     logo: {
@@ -86,7 +88,7 @@ const initialFormState: FormState = {
       file: null,
       preview: 'https://utfs.io/f/PKy8oE1GN2J3t4MUvdkvpN1sulgB5tndmrzYhToROK9e3EVa',
     },
-    primaryColor: "#6D28D9", // purple-700
+    primaryColor: "#6D28D9", 
     backgroundColor: "#ffffff",
     font: "Roboto Mono",
     gradient: {
@@ -170,7 +172,7 @@ interface FormContextType {
 
 const FormContext = createContext<FormContextType | null>(null);
 
-// Create a custom hook to use the form context
+
 export const useFormContext = () => {
   const context = useContext(FormContext);
   if (!context) {
@@ -179,7 +181,7 @@ export const useFormContext = () => {
   return context;
 };
 
-// Create the provider component
+
 export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
