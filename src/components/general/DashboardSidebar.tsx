@@ -9,6 +9,7 @@ import {
   Share2,
   Library,
   ClapperboardIcon,
+  Link,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useFormContext } from "@/context/FormContext";
@@ -18,20 +19,36 @@ import { useToast } from "@/hooks/use-toast";
 
 export const DashboardSidebar = () => {
   const { user, signOut } = useAuth();
-  const { forms, loadForms, deleteForm } = useFormContext();
+  const {
+    forms,
+    loadForms,
+    deleteForm,
+    onboardingForms,
+    loadOnboardingForms,
+    deleteOnboardingForm,
+  } = useFormContext();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
     loadForms();
-  }, [deleteForm]);
+    loadOnboardingForms();
+  }, [deleteForm, deleteOnboardingForm]);
 
   const handleFormClick = (formId: string) => {
     navigate(`/form/${formId}`);
   };
 
+  const handleOnboardingFormClick = (formId: string) => {
+    navigate(`/admin-manager/${formId}`);
+  };
+
   const handleDeleteForm = (formId: string) => {
     deleteForm(formId);
+  };
+
+  const handleDeleteOnboardingForm = (formId: string) => {
+    deleteOnboardingForm(formId);
   };
 
   return (
@@ -137,6 +154,65 @@ export const DashboardSidebar = () => {
           />
           <NavItem rightIcon={undefined} icon={<TagsIcon />} label="Tags" />
         </div>
+
+        {user &&
+          user.email &&
+          ["winnernwakaku123@gmail.com", "winnernwakaku44@gmail.com"].includes(
+            user.email
+          ) && (
+            <div className="mt-4">
+              <div className="px-3 py-2 text-xs font-medium text-gray-900">
+                ONBOARDING
+              </div>
+              <NavItem
+                icon={<Link />}
+                rightIcon={<PlusCircleIcon size={20} />}
+                label="Links"
+                onClick={() => navigate("/admin-manager")}
+              />
+
+              {onboardingForms.length > 0 && (
+                <>
+                  {onboardingForms.map((form) => (
+                    <div
+                      key={form.id}
+                      className="flex items-center justify-between px-3 py-2 rounded-md text-xs text-gray-600 border-b border-gray-200"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span
+                          onClick={() => handleOnboardingFormClick(form.id)}
+                          className="line-clamp-1 cursor-pointer"
+                        >
+                          {form.name || "Untitled Form"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Share2
+                          className="cursor-pointer"
+                          size={15}
+                          onClick={async () => {
+                            await navigator.clipboard.writeText(
+                              `${window.location.origin}/o/${form.id}`
+                            );
+                            toast({
+                              title: "🎉 Share away!",
+                              description:
+                                "Form link copied to clipboard, now share to get those videos rolling in!",
+                            });
+                          }}
+                        />
+                        <Trash2
+                          onClick={() => handleDeleteOnboardingForm(form.id)}
+                          size={15}
+                          className="text-red-700 cursor-pointer"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+            </div>
+          )}
       </div>
 
       <div className="p-3 border-t border-gray-200 flex items-center gap-2 mb-1 ml-2">

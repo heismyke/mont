@@ -72,7 +72,9 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
     const form_creator_id = formState.form.creatorId || "";
     const form_title = formState.form.form_title || "";
 
-    await saveResponse(feedback_id, form_title, form_creator_id);
+    if (!location.pathname.startsWith("/o/")) {
+      await saveResponse(feedback_id, form_title, form_creator_id);
+    }
     onNavigateNext();
   };
 

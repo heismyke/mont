@@ -42,6 +42,14 @@ const AppRoutes = () => {
             }
           />
           <Route
+            path="/admin-manager/:id"
+            element={
+              <ProtectedRoute>
+                <AdminSetup />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/form/:id"
             element={
               <ProtectedRoute>

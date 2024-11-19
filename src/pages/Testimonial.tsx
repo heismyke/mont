@@ -49,8 +49,9 @@ const TestimonialForm = () => {
   useEffect(() => {
     if (id) {
       loadForm(id);
+    } else {
+      updateForm({ id: generateUniqueId() });
     }
-    updateForm({ id: generateUniqueId() });
     updateForm({ creatorId: user?.id || "" });
   }, []);
 

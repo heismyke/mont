@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ArrowLeftIcon, ChevronDown, Layout } from "lucide-react";
 import { MobileIcon } from "@radix-ui/react-icons";
 import { AdminNavItems } from "../components/general/navItems";
@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { FormTitleDialog } from "@/components/dialogs/FormTitle";
-import PaymentPromptDialog from "@/components/dialogs/Paywall";
 // import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 // import {
 //   TooltipProvider,
@@ -31,7 +30,7 @@ const generateUniqueId = () => {
 const AdminSetup = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { formState, loadForm, saveForm, updateForm } = useFormContext();
+  const { formState, loadOnboardingForm, saveOnboardingForm, updateForm } = useFormContext();
   const { background } = formState.design;
   // const { updateFormState } = useFormContext();
 
@@ -48,21 +47,15 @@ const AdminSetup = () => {
 
   useEffect(() => {
     if (id) {
-      loadForm(id);
+      loadOnboardingForm(id);
+    } else {
+      updateForm({ id: generateUniqueId() });
     }
-    updateForm({ id: generateUniqueId() });
     updateForm({ creatorId: user?.id || "" });
   }, []);
 
-  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
-
   const handleSave = async () => {
-    await saveForm();
-    setShowPaymentDialog(true);
-  };
-
-  const handleClosePaymentDialog = () => {
-    setShowPaymentDialog(false);
+    await saveOnboardingForm();
     navigate("/dashboard");
   };
 
@@ -153,12 +146,6 @@ const AdminSetup = () => {
             onCheckedChange={disableMontBanner}
           />
         </div> */}
-
-        <PaymentPromptDialog
-          isOpen={showPaymentDialog}
-          onClose={handleClosePaymentDialog}
-          form_link={`${window.location.origin}/${id}`}
-        />
 
         <Button
           size="lg"
