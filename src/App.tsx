@@ -1,23 +1,19 @@
 import Hero from "./components/general/Hero";
-import Analytics from "./components/general/Analytics";
 import Steps from "./components/general/Steps";
-import AnalyticsTool from "./components/general/AnalyticsTool";
-import PricingPlans from "./components/general/PricingPlans";
-import FAQ from "./components/general/FAQ";
+import Brands from "./components/general/Brands";
 import Footer from "./components/general/Footer";
 import Navbar from "./components/general/Navbar";
+import WhyUsSection from "./components/general/WhyMont";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <main className="max-w-6xl mx-auto ">
+      <main className="max-w-7xl mx-auto ">
         <Hero />
-        <Analytics />
+        <Brands />
         <Steps />
-        <AnalyticsTool />
-        <PricingPlans />
-        <FAQ />
+        <WhyUsSection/>
       </main>
       <Footer />
     </div>
