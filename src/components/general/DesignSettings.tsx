@@ -20,7 +20,7 @@ const DesignSettings = () => {
     handleLogoUpload,
     handleBackgroundUpload,
   } = useFormContext();
-  const { primaryColor, backgroundColor, font, logo } = formState.design;
+  const { primaryColor, font, logo } = formState.design;
 
   const handleLogo = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -102,7 +102,7 @@ const DesignSettings = () => {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <label className="block text-xs text-gray-600 mb-1">
             Background Color
           </label>
@@ -124,7 +124,7 @@ const DesignSettings = () => {
             </div>
             <span className="ml-2 text-sm">{backgroundColor}</span>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div>

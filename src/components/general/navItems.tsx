@@ -1,4 +1,4 @@
-import { Palette, MessageSquare, UserCircle2, ThumbsUp } from "lucide-react";
+import { Palette, MessageSquare, Aperture, Sparkles, Heart, Users, BookOpen, Share2, Gem, Video } from "lucide-react";
 import DesignPage from "./DesignPage";
 import DesignSettings from "./DesignSettings";
 import WelcomePage from "./WelcomePage";
@@ -23,82 +23,75 @@ export const navItems = [
   },
   {
     id: "welcome",
-    icon: <MessageSquare className="text-blue-500" />,
+    icon: <MessageSquare className="text-purple-500" />,
     label: "Welcome page",
     component: WelcomePage,
     settings: WelcomeSettings,
   },
   {
     id: "response",
-    icon: <MessageSquare className="text-emerald-500" />,
+    icon: <Video className="text-orange-500" />,
     label: "Response page",
     component: ResponsePage,
     settings: ResponseSettings,
   },
   {
     id: "customer",
-    icon: <UserCircle2 className="text-violet-500" />,
+    icon: <Users className="text-green-500" />,
     label: "Customer details",
     component: CustomerDetailsPage,
     settings: CustomerSettings,
   },
   {
     id: "thanks",
-    icon: <ThumbsUp className="text-rose-500" />,
+    icon: <Heart className="text-rose-500" />,
     label: "Thank you page",
     component: ThankYouPage,
     settings: ThankYouSettings,
   },
-  // {
-  //   id: 'setting',
-  //   icon: <Settings className="text-gray-500" />,
-  //   label: 'Advanced settings',
-  //   component: ThankYouPage,
-  //   settings: AdvancedSettings
-  // }
 ];
 
 
 export const AdminNavItems = [
   {
     id: "design",
-    icon: <Palette className="text-indigo-500" />,
+    icon: <Palette className="text-purple-500" />,
     label: "Design",
     component: DesignPage,
     settings: DesignSettings,
   },
   {
     id: "welcome",
-    icon: <MessageSquare className="text-blue-500" />,
+    icon: <MessageSquare className="text-cyan-500" />,
     label: "Welcome page",
     component: WelcomePage,
     settings: WelcomeSettings,
   },
   {
     id: "response",
-    icon: <MessageSquare className="text-emerald-500" />,
+    icon: <Aperture className="text-amber-500" />,
     label: "Response page",
     component: ResponsePage,
     settings: ResponseSettings,
   },
   {
     id: "customer",
-    icon: <UserCircle2 className="text-violet-500" />,
+    icon: <Users className="text-emerald-500" />,
     label: "Customer details",
     component: CustomerDetailsPage,
     settings: CustomerSettings,
   },
   {
     id: "thanks",
-    icon: <ThumbsUp className="text-rose-500" />,
+    icon: <Heart className="text-pink-500" />,
     label: "Thank you page",
     component: ThankYouPage,
     settings: ThankYouSettings,
   },
   {
     id: "social",
-    icon: <ThumbsUp className="text-rose-500" />,
-    label: "Social Handle",
+    icon: <Gem className="text-blue-500" />,
+    label: "Social Media",
     component: SocialHandle,
     settings: SocialHandleSettings,
   },
@@ -108,32 +101,32 @@ export const AdminNavItems = [
 export const onboardNavItems = [
   {
     id: "learn",
-    icon: <Palette className="text-indigo-500" />,
+    icon: <BookOpen className="text-teal-500" />,
     label: "Learn More",
     component: LearnMore,
     
   },
   {
     id: "welcome",
-    icon: <MessageSquare className="text-blue-500" />,
+    icon: <MessageSquare className="text-orange-500" />,
     label: "Welcome page",
     component: WelcomePage,
   },
   {
     id: "response",
-    icon: <MessageSquare className="text-emerald-500" />,
+    icon: <Sparkles className="text-red-500" />,
     label: "Response page",
     component: ResponsePage,
   },
   {
     id: "customer",
-    icon: <UserCircle2 className="text-violet-500" />,
+    icon: <Users className="text-lime-500" />,
     label: "Customer details",
     component: CustomerDetailsPage,
   },
   {
     id: "social",
-    icon: <ThumbsUp className="text-rose-500" />,
+    icon: <Share2 className="text-fuchsia-500" />,
     label: "Social Handle",
     component: SocialHandle,
     
