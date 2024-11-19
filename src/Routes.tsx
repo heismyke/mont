@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoutes";
 import ResponsePage from "./pages/Response";
 import OnboardPage from "./pages/OnboardForm";
 import Subscription from "./pages/Subscription";
+import AdminSetup from "./pages/AdminSetup";
 
 const AppRoutes = () => {
   return (
@@ -16,29 +17,37 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/login" element={<LoginForm />} />
-          <Route 
-            path="/dashboard" 
+          <Route
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/form" 
-            element={
-              <ProtectedRoute>
-                <TestimonialForm />
-              </ProtectedRoute>  
-            } 
-          />
-          <Route 
-            path="/form/:id" 
+          <Route
+            path="/form"
             element={
               <ProtectedRoute>
                 <TestimonialForm />
               </ProtectedRoute>
-            } 
+            }
+          />
+          <Route
+            path="/admin-manager"
+            element={
+              <ProtectedRoute>
+                <AdminSetup />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/form/:id"
+            element={
+              <ProtectedRoute>
+                <TestimonialForm />
+              </ProtectedRoute>
+            }
           />
           <Route path="/:id" element={<ResponsePage />} />
           <Route path="/o/:id" element={<OnboardPage />} />

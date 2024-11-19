@@ -2,13 +2,13 @@
 import { useEffect, useState } from "react";
 import { useFormContext } from "@/context/FormContext";
 import { useParams } from "react-router-dom";
-import { navItems } from "@/components/general/navItems";
+import { onboardNavItems } from "@/components/general/navItems";
 
 const OnboardPage = () => {
   const { id } = useParams();
   const { formState, loadForm, activeView, isDesktop } = useFormContext();
   const { background } = formState.design;
-  const [navIndex, setNavIndex] = useState(1);
+  const [navIndex, setNavIndex] = useState(0);
 
   useEffect(() => {
     if (id) {
@@ -16,7 +16,7 @@ const OnboardPage = () => {
     }
   }, []);
 
-  const ActiveComponent = navItems[navIndex]?.component;
+  const ActiveComponent = onboardNavItems[navIndex]?.component;
 
   const handleNavigateNext = () => {
     setNavIndex((prevIndex) => prevIndex + 1);

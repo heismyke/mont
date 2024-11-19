@@ -69,6 +69,24 @@ interface FormState {
     title: string;
     message: string;
   };
+  socialHandle: {
+    profile: {
+      name: string;
+      handle: string;
+      following: number;
+      followers: number;
+      bio: string;
+    };
+    tweets: Array<{
+      id: string;
+      content: string;
+      videoUrl: string;
+      likes: number;
+      retweets: number;
+      replies: number;
+      timestamp: string;
+    }>;
+  };
 }
 
 
@@ -77,7 +95,7 @@ const initialFormState: FormState = {
     id: "",
     creatorId: '',
     form_title: "My new form",
-    form_ad: true
+    form_ad: false
   },
   design: {
     logo: {
@@ -139,6 +157,26 @@ const initialFormState: FormState = {
     message:
       "Thank you so much for your support! We appreciate your support and participation in making our hackathon better!",
   },
+  socialHandle: {
+    profile: {
+      name: "Mont Protocol",
+      handle: "MontProtocol",
+      following: 420,
+      followers: 15200,
+      bio: "Building the future of institutional DeFi lending | Security-first approach | Cross-chain enabled"
+    },
+    tweets: [
+      {
+        id: "1",
+        content: "✨ Masterpiece alert! Ready to shine? Click the sparkly 'Get Form' button and let's create! ✨ #ContentCreation #Engagement",
+        videoUrl: "/placeholder-video-1.mp4",
+        likes: 1200,
+        retweets: 450,
+        replies: 89,
+        timestamp: "2h"
+      }
+    ]
+  }
 };
 
 
@@ -168,6 +206,7 @@ interface FormContextType {
   loadForm: (id: string) => Promise<void>;
   loadForms: () => Promise<void>;
   deleteForm: (id: string) => Promise<void>;
+  updateSocialHandle: (updates: Partial<FormState["socialHandle"]>) => void;
 }
 
 const FormContext = createContext<FormContextType | null>(null);
@@ -217,7 +256,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
 
       toast({
         title: "Success",
-        description: "Form saved successfully",
+        description: "Changes saved successfully",
       });
     } catch (error) {
       console.error("Error saving form:", error);
@@ -452,12 +491,23 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const updateSocialHandle = (updates: Partial<FormState["socialHandle"]>) => {
+    setFormState((prev) => ({
+      ...prev,
+      socialHandle: {
+        ...prev.socialHandle,
+        ...updates,
+      },
+    }));
+  };
+
   return (
     <FormContext.Provider
       value={{
         formState,
         formDate,
         handleLogoUpload,
+        updateSocialHandle,
         handleBackgroundUpload,
         updateWelcome,
         updateForm,

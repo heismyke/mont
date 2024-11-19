@@ -136,7 +136,7 @@ export const ResponseProvider: React.FC<{ children: React.ReactNode }> = ({
         form_title: form_title,
         response_state: updatedState,
         created_at: new Date().toISOString(),
-        isFavorite: false, // Initialize with false
+        isFavorite: false, 
       });
 
       if (error) throw error;

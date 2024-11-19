@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { ArrowLeftIcon, ChevronDown, Layout } from "lucide-react";
 import { MobileIcon } from "@radix-ui/react-icons";
-import { navItems } from "../components/general/navItems";
+import { AdminNavItems } from "../components/general/navItems";
 import { useFormContext } from "@/context/FormContext";
 import { Button } from "@/components/ui/button";
 // import { useToast } from "@/hooks/use-toast";
@@ -28,7 +28,7 @@ const generateUniqueId = () => {
   });
 };
 
-const TestimonialForm = () => {
+const AdminSetup = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { formState, loadForm, saveForm, updateForm } = useFormContext();
@@ -70,11 +70,11 @@ const TestimonialForm = () => {
     navigate("/dashboard");
   };
 
-  const ActiveComponent = navItems.find(
+  const ActiveComponent = AdminNavItems.find(
     (item) => item.id === activeView
   )?.component;
 
-  const ActiveSettings = navItems.find(
+  const ActiveSettings = AdminNavItems.find(
     (item) => item.id === expandedItem
   )?.settings;
 
@@ -104,7 +104,7 @@ const TestimonialForm = () => {
         </div>
 
         <div className="space-y-2">
-          {navItems.map((item) => (
+          {AdminNavItems.map((item) => (
             <div key={item.id} className="border-b border-gray-100">
               <button
                 onClick={() => {
@@ -244,4 +244,4 @@ const TestimonialForm = () => {
   );
 };
 
-export default TestimonialForm;
+export default AdminSetup;

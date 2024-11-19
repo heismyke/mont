@@ -202,18 +202,20 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
 
   return (
     <div className="relative">
-      { formState.form.form_ad && <div className="absolute top-[-12px] right-4 z-10">
-        <button
-          className="bg-white text-xs hover:text-white flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow"
-          style={{
-            color: design.primaryColor,
-            ["--tw-hover-bg" as string]: design.primaryColor,
-          }}
-          onClick={() => navigate('/')}
-        >
-          Collect testimonials with Mont
-        </button>
-      </div>}
+      {formState.form.form_ad && (
+        <div className="absolute top-[-12px] right-4 z-10">
+          <button
+            className="bg-white text-xs hover:text-white flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow"
+            style={{
+              color: design.primaryColor,
+              ["--tw-hover-bg" as string]: design.primaryColor,
+            }}
+            onClick={() => navigate("/")}
+          >
+            Collect testimonials with Mont
+          </button>
+        </div>
+      )}
 
       <div
         className={`
@@ -392,7 +394,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
 
           <Button
             className="bg-gray-200 hover:bg-gray-300 text-gray-800 w-full"
-            size={useDesktopLayout ? "lg" : "default"}
+            size={"lg"}
             onClick={() => document.getElementById("videoInput")?.click()}
             disabled={isUploading}
           >
@@ -409,11 +411,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
           </Button>
 
           {location.pathname !== "/form" && (
-            <Button
-              onClick={onNavigateNext}
-              size={useDesktopLayout ? "lg" : "default"}
-              className="w-full"
-            >
+            <Button onClick={onNavigateNext} size={"lg"} className="w-full">
               Proceed
             </Button>
           )}
