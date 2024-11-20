@@ -50,6 +50,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
 
   const useDesktopLayout = location.pathname === "/form" && isDesktop;
   const useMobileLayout = location.pathname === "/form" && !isDesktop;
+  const formPage = location.pathname === "/form";
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -201,7 +202,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
   };
 
   return (
-    <div className="relative">
+    <div className={`relative ${isDesktop && formPage ? "min-h-[130vh] pt-40" : ""} `}>
       {formState.form.form_ad && (
         <div className="absolute top-[-12px] right-4 z-10">
           <button
@@ -222,11 +223,11 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
           rounded-2xl p-5 shadow-lg mx-auto relative
           ${
             useDesktopLayout
-              ? "w-[540px]"
+              ? "w-[540px] flex flex-col justify-center"
               : useMobileLayout
               ? "w-[360px] h-[660px] border-4 border-gray-800 flex flex-col justify-center"
               : `
-                w-[360px]
+                w-[380px]
                 md:w-[480px]
                 lg:w-[560px]
                 min-h-[500px]

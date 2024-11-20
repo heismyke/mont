@@ -1,25 +1,20 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { ArrowLeftIcon, ChevronDown, Layout } from "lucide-react";
 import { MobileIcon } from "@radix-ui/react-icons";
 import { navItems } from "../components/general/navItems";
 import { useFormContext } from "@/context/FormContext";
 import { Button } from "@/components/ui/button";
-// import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { FormTitleDialog } from "@/components/dialogs/FormTitle";
 import PaymentPromptDialog from "@/components/dialogs/Paywall";
-// import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
-// import {
-//   TooltipProvider,
-//   Tooltip,
-//   TooltipTrigger,
-//   TooltipContent,
-// } from "@/components/ui/tooltip";
-// import Switch from "@/components/ui/Switch";
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetTrigger 
+} from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
 
-// Utility function to generate a unique ID
 const generateUniqueId = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0;
@@ -33,9 +28,7 @@ const TestimonialForm = () => {
   const navigate = useNavigate();
   const { formState, loadForm, saveForm, updateForm } = useFormContext();
   const { background } = formState.design;
-  // const { updateFormState } = useFormContext();
 
-  // const { toast } = useToast();
   const {
     activeView,
     setActiveView,
@@ -53,6 +46,7 @@ const TestimonialForm = () => {
       updateForm({ id: generateUniqueId() });
     }
     updateForm({ creatorId: user?.id || "" });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
@@ -79,128 +73,91 @@ const TestimonialForm = () => {
     (item) => item.id === expandedItem
   )?.settings;
 
-  // const disableMontBanner = () => {
-  //   navigate("/subscription");
-  //   // updateFormState("form", { form_ad: false });
-  // };
+  const SidebarContent = () => (
+    <div className="space-y-3 p-4">
+      <div
+        onClick={handleBack}
+        className="flex items-center mb-6 text-gray-500 cursor-pointer"
+      >
+        <button className="mr-2">
+          <ArrowLeftIcon size={14} />
+        </button>
+        <h1 className="text-sm">Dashboard</h1>
+      </div>
+
+      <div className="flex items-center mb-3 justify-between">
+        <p className="font-medium ml-3">{formState.form.form_title || ""}</p>
+        <FormTitleDialog />
+      </div>
+
+      <div className="space-y-3">
+        {navItems.map((item) => (
+          <div key={item.id} className="border-b border-gray-100">
+            <button
+              onClick={() => {
+                setExpandedItem(expandedItem === item.id ? null : item.id);
+                setActiveView(item.id);
+              }}
+              className="w-full flex items-center p-3 hover:bg-gray-50 rounded-lg text-sm"
+            >
+              <span className="mr-3">{item.icon}</span>
+              <span className="flex-1 text-left">{item.label}</span>
+              <ChevronDown
+                className={`transform transition-transform ${
+                  expandedItem === item.id ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            {expandedItem === item.id && ActiveSettings && (
+              <div className="p-4 bg-gray-50">
+                <ActiveSettings />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <PaymentPromptDialog
+        isOpen={showPaymentDialog}
+        onClose={handleClosePaymentDialog}
+        form_link={`${window.location.origin}/${id}`}
+      />
+
+      <Button
+        size="lg"
+        className="w-full bg-black text-white rounded-lg py-2 mt-10"
+        onClick={handleSave}
+      >
+        Save Changes
+      </Button>
+    </div>
+  );
 
   return (
     <div className="flex min-h-screen bg-gray-50 text-gray-800">
-      {/* Left Sidebar */}
-      <div className="w-96 bg-white border-r border-gray-200 p-4">
-        <div
-          onClick={handleBack}
-          className="flex items-center mb-6 text-gray-500 cursor-pointer"
-        >
-          <button className="mr-2">
-            <ArrowLeftIcon size={14} />
-          </button>
-          <h1 className="text-sm">Dashboard</h1>
-        </div>
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block w-96 bg-white border-r border-gray-200">
+        <SidebarContent />
+      </div>
 
-        <div className="flex items-center mb-3 justify-between">
-          <p className="font-medium ml-3">{formState.form.form_title || ""}</p>
-
-          <FormTitleDialog />
-        </div>
-
-        <div className="space-y-2">
-          {navItems.map((item) => (
-            <div key={item.id} className="border-b border-gray-100">
-              <button
-                onClick={() => {
-                  setExpandedItem(expandedItem === item.id ? null : item.id);
-                  setActiveView(item.id);
-                }}
-                className="w-full flex items-center p-3 hover:bg-gray-50 rounded-lg text-sm"
-              >
-                <span className="mr-3">{item.icon}</span>
-                <span className="flex-1 text-left">{item.label}</span>
-                <ChevronDown
-                  className={`transform transition-transform ${
-                    expandedItem === item.id ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              {expandedItem === item.id && ActiveSettings && (
-                <div className="p-4 bg-gray-50">
-                  <ActiveSettings />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* <div className="flex items-center justify-between mt-5 px-3">
-          <div className="flex items-center space-x-2">
-            <label className="block text-sm text-gray-600">
-              Disable banner
-            </label>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <QuestionMarkCircledIcon />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Disable mont banner at top of form</p>
-                  <p> only available on paid plans</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-
-          <Switch
-            checked={formState.form.form_ad === true}
-            onCheckedChange={disableMontBanner}
-          />
-        </div> */}
-
-        <PaymentPromptDialog
-          isOpen={showPaymentDialog}
-          onClose={handleClosePaymentDialog}
-          form_link={`${window.location.origin}/${id}`}
-        />
-
-        <Button
-          size="lg"
-          className="w-full bg-black text-white rounded-lg py-2 mt-6"
-          onClick={handleSave}
-        >
-          Save Changes
-        </Button>
-
-        {/* {id && (
-          <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                readOnly
-                value={`${window.location.origin}/${id}`}
-                className="flex-1 text-sm p-2 border rounded bg-white text-gray-800"
-              />
-              <Button
-                variant="outline"
-                onClick={async () => {
-                  await navigator.clipboard.writeText(
-                    `${window.location.origin}/${id}`
-                  );
-                  toast({
-                    title: "🎉 Share away!",
-                    description:
-                      "Form link copied to clipboard, now share to get those videos rolling in!",
-                  });
-                }}
-              >
-                <CopyIcon />
-              </Button>
-            </div>
-          </div>
-        )} */}
+      {/* Mobile Sheet Navigation */}
+      <div className="md:hidden absolute top-4 left-4 z-50">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon">
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-[300px] text-gray-600 p-0">
+            
+            <SidebarContent />
+          </SheetContent>
+        </Sheet>
       </div>
 
       {/* Main Content */}
       <div
-        className="flex-1 p-8 flex flex-col"
+        className="flex-1 p-4 md:p-8 flex flex-col"
         style={{
           backgroundImage:
             background.preview && background.preview.trim() !== ""

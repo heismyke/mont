@@ -45,68 +45,72 @@ const AuthForm = () => {
     }
   };
 
-  // Password validation function
   const validatePassword = (password: string) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     return regex.test(password);
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-        <CardTitle>Sign in to your account</CardTitle>
-          <CardDescription>
-            Choose your preferred sign in method below
+    <div className="flex items-center justify-center min-h-screen p-4 bg-black">
+      <Card className="w-full max-w-md mx-auto shadow-lg">
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl md:text-2xl">
+            {isSignUp ? 'Create your account' : 'Sign in to your account'}
+          </CardTitle>
+          <CardDescription className="text-sm md:text-base">
+            Choose your preferred sign in method
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
             {/* Social Auth Buttons */}
             <div className="grid grid-cols-1 gap-3">
-              <Button
-                variant="outline"
-                size={'lg'}
-                onClick={signInWithGoogle}
-                className="w-full"
-              >
-                <img src='/src/assets/protocols/google.svg' alt='Google' className='w-5 h-5 mr-1' />
-                Google
-              </Button>
-              <Button
-                variant="outline"
-                size={'lg'}
-                onClick={signInWithGithub}
-                className="w-full"
-              >
-                <img src='/src/assets/protocols/github.svg' alt='GitHub' className='w-5 h-5 mr-1' />
-                GitHub
-              </Button>
-              <Button
-                variant="outline"
-                size={'lg'}
-                onClick={signInWithDiscord}
-                className="w-full"
-              >
-                <img src='/src/assets/protocols/discord.svg' alt='Discord' className='w-5 h-5 mr-1' />
-                Discord
-              </Button>
+              {[
+                { 
+                  provider: 'Google', 
+                  icon: '/src/assets/protocols/google.svg', 
+                  onClick: signInWithGoogle 
+                },
+                { 
+                  provider: 'GitHub', 
+                  icon: '/src/assets/protocols/github.svg', 
+                  onClick: signInWithGithub 
+                },
+                { 
+                  provider: 'Discord', 
+                  icon: '/src/assets/protocols/discord.svg', 
+                  onClick: signInWithDiscord 
+                }
+              ].map(({ provider, icon, onClick }) => (
+                <Button
+                  key={provider}
+                  variant="outline"
+                  size={'lg'}
+                  onClick={onClick}
+                  className="w-full flex items-center justify-center space-x-2"
+                >
+                  <img 
+                    src={icon} 
+                    alt={provider} 
+                    className='w-5 h-5' 
+                  />
+                  <span>{provider}</span>
+                </Button>
+              ))}
             </div>
 
             {/* Separator */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <Separator className="w-full" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-gray-500">
+            <div className="relative my-4">
+              <Separator className="w-full" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="bg-white px-2 text-xs text-gray-500 uppercase">
                   Or continue with
                 </span>
               </div>
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -116,6 +120,7 @@ const AuthForm = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  className="w-full"
                 />
               </div>
               <div className="space-y-2">
@@ -126,8 +131,13 @@ const AuthForm = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  className="w-full"
                 />
-                <p className='text-xs text-red-500'>{passwordError}</p>
+                {passwordError && (
+                  <p className='text-xs text-red-500 mt-1'>
+                    {passwordError}
+                  </p>
+                )}
               </div>
               <Button 
                 type="submit"
@@ -135,18 +145,24 @@ const AuthForm = () => {
                 className="w-full"
                 disabled={isLoading}
               >
-                {isLoading ? (isSignUp ? "Signing up..." : "Signing in...") : (isSignUp ? "Sign Up" : "Sign In")}
+                {isLoading 
+                  ? (isSignUp ? "Signing up..." : "Signing in...") 
+                  : (isSignUp ? "Sign Up" : "Sign In")
+                }
               </Button>
             </form>
           </div>
         </CardContent>
-        <CardFooter className="flex flex-col space-y-4">
+        <CardFooter className="flex flex-col">
           <Button 
             variant="link" 
             className="text-sm text-gray-600 hover:text-gray-900"
             onClick={() => setIsSignUp(!isSignUp)}
           >
-            {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+            {isSignUp 
+              ? 'Already have an account? Sign in' 
+              : "Don't have an account? Sign up"
+            }
           </Button>
         </CardFooter>
       </Card>

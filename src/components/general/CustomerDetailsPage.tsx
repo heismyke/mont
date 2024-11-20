@@ -35,6 +35,7 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
   // Only apply isDesktop layout on /form route
   const useDesktopLayout = location.pathname === "/form" && isDesktop;
   const useMobileLayout = location.pathname === "/form" && !isDesktop;
+  const formPage = location.pathname === "/form";
 
   const { fields } = formState.customer;
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -277,19 +278,21 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
   ];
 
   return (
-    <div className="relative">
-      { formState.form.form_ad && <div className="absolute top-[-12px] right-4 z-10">
-        <button
-          className="bg-white text-xs hover:text-white flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow"
-          style={{
-            color: design.primaryColor,
-            ["--tw-hover-bg" as string]: design.primaryColor,
-          }}
-          onClick={() => navigate('/')}
-        >
-          Collect testimonials with Mont
-        </button>
-      </div>}
+    <div className={`relative ${isDesktop && formPage ? "min-h-[130vh] pt-40" : ""} `}>
+      {formState.form.form_ad && (
+        <div className="absolute top-[-12px] right-4 z-10">
+          <button
+            className="bg-white text-xs hover:text-white flex items-center px-3 py-[6px] rounded-full shadow-md hover:shadow-lg transition-shadow"
+            style={{
+              color: design.primaryColor,
+              ["--tw-hover-bg" as string]: design.primaryColor,
+            }}
+            onClick={() => navigate("/")}
+          >
+            Collect testimonials with Mont
+          </button>
+        </div>
+      )}
 
       <div
         className={`
@@ -301,7 +304,7 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
               ? "w-[360px] h-[660px] border-4 border-gray-800 flex flex-col justify-center overflow-y-auto "
               : `
                 
-                w-[360px]
+                w-[380px]
                 md:w-[480px]
                 lg:w-[560px]
                 min-h-[500px]

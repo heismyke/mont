@@ -7,7 +7,7 @@ interface LearnMoreProps {
 
 const LearnMore = ({ onNavigateNext }: LearnMoreProps) => {
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-3xl mx-auto p-5 bg-white rounded-lg shadow-md">
       <div className="mb-8">
         <h1 className="text-xl font-bold mb-2">Mont Protocol</h1>
         <p className="text-sm text-gray-600">
@@ -36,7 +36,7 @@ const LearnMore = ({ onNavigateNext }: LearnMoreProps) => {
             onClick={onNavigateNext}
             className="bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
           >
-            Try Live Demo
+            Check Live Demo
           </Button>
         </div>
       </div>

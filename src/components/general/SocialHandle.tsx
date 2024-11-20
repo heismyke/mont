@@ -6,11 +6,13 @@ import {
   Share,
   MoreHorizontal,
   Sparkles,
+  EditIcon,
 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -73,7 +75,12 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
   return (
     <>
       <Dialog open={showWelcome} onOpenChange={setShowWelcome}>
-        <DialogContent className="sm:max-w-sm">
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <EditIcon size={20} className="text-gray-500 hover:text-gray-700" />
+        </Button>
+      </DialogTrigger>
+        <DialogContent className="sm:max-w-sm max-w-sm rounded-lg">
           <DialogDescription className="text-base mt-2 text-center">
             <div className="mt-4 text-sm text-gray-600 text-start">
               <span className="font-medium text-blue-600">Tip 1:</span> Response
@@ -98,7 +105,7 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
 
       <div
         className={`
-        rounded-2xl shadow-lg mx-auto relative
+        rounded-lg shadow-lg mx-auto relative
         ${
           useDesktopLayout
             ? "max-w-2xl p-3"
@@ -106,7 +113,6 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
             ? "w-[360px] h-[660px] p-2 border-4 border-gray-800 flex flex-col justify-center"
             : `
               w-full
-              sm:w-[360px]
               md:w-[480px]
               lg:w-[560px]
               min-h-[500px]

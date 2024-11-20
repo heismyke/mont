@@ -23,7 +23,7 @@ export const FormTitleDialog = () => {
           <EditIcon size={20} className="text-gray-500 hover:text-gray-700" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-w-sm rounded-lg">
         <DialogHeader className="text-gray-700">
           <DialogTitle>Form Title</DialogTitle>
           <DialogDescription className="mt-1 text-sm">

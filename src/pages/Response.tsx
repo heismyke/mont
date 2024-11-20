@@ -23,7 +23,7 @@ const ResponsePage = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-gray-800">
+    <div className="flex min-h-screen bg-gray-50 text-gray-800 w-full">
       <div
         className="flex-1 p-4 flex flex-col"
         style={{

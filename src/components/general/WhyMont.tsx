@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
+import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 const WhyUsSection = () => {
+  const navigate = useNavigate();
   const stats = [
     {
       number: "40%",
@@ -19,7 +22,7 @@ const WhyUsSection = () => {
   ];
 
   return (
-    <section className="bg-gray-50 py-14 px-4 lg:px-16 mb-16">
+    <section className="bg-gray-50 md:py-14 px-4 md:px-16 mb-16">
       <div className="max-w-6xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -32,18 +35,17 @@ const WhyUsSection = () => {
 
         <p className="text-gray-700 text-center">
           Mont transforms hackathon and conference feedback into powerful social
-          proof for Web3 protocols. 
+          proof for Web3 protocols.
         </p>
         <p className="text-gray-700 text-center mb-8 ">
-         Share link. Collect video feedback. Get
-          ready-to-post social content.
+          Share link. Collect video feedback. Get ready-to-post social content.
         </p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid md:grid-cols-3 gap-8"
+          className="grid md:grid-cols-3 md:gap-8"
         >
           {stats.map((stat, index) => (
             <div key={index} className="p-8 text-center ">
@@ -59,9 +61,12 @@ const WhyUsSection = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-16"
         >
-          <button className="bg-purple-800 text-white px-10 py-3 rounded-full text-base hover:bg-purple-800 transition-colors">
-            Launch Your First Campaign
-          </button>
+          <Button
+            onClick={() => navigate("/form")}
+            className="bg-purple-800 text-white md:px-10 py-6 rounded-full text-sm md:text-base hover:bg-purple-800 transition-colors"
+          >
+            Launch Your Campaign
+          </Button>
         </motion.div>
       </div>
     </section>
