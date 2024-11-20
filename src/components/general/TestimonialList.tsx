@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useAuth } from "@/context/AuthContext";
 import { useFormContext } from "@/context/FormContext";
 import { useResponseContext } from "@/context/ResponseContext";
@@ -42,6 +41,7 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
         loadResponsesByForm(selectedForm.id).then(() => setIsLoading(false));
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTab, user?.id]);
 
   const handleCopy = (text: string | null) => {
@@ -113,7 +113,6 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
       ) : responses.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 px-4">
           <div className="relative w-48 h-48">
-            {/* Decorative elements */}
             <div className="absolute top-0 right-0 w-20 h-20 bg-purple-100 rounded-lg transform rotate-6"></div>
             <div className="absolute inset-0 m-auto w-28 h-28 bg-white rounded-xl shadow-lg flex items-center justify-center"></div>
           </div>
@@ -141,11 +140,11 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
           return (
             <div
               key={form.id}
-              className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-white rounded-lg border border-gray-200 p-4 md:p-6 shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="flex gap-6">
-                {/* Left side - Video */}
-                <div className="w-72 flex-shrink-0">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+                {/* Video */}
+                <div className="w-full md:w-72 flex-shrink-0">
                   <div className="relative rounded-lg overflow-hidden bg-gray-900">
                     <video
                       className="w-full aspect-video object-cover"
@@ -159,11 +158,10 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                   </div>
                 </div>
 
-                {/* Right side - Content */}
+                {/* Content */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between mb-3">
-                    {" "}
-                    <div className="flex items-center gap-3">
+                  <div className="flex flex-col md:flex-row items-start justify-between mb-3">
+                    <div className="flex items-center gap-3 mb-3 md:mb-0">
                       <Avatar className="w-10 h-10 rounded-full">
                         <AvatarImage
                           className="rounded-full"
@@ -174,7 +172,6 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                       </Avatar>
                       <div>
                         <h3 className="font-medium text-gray-800 text-sm flex items-center gap-2">
-                          {" "}
                           {form.responseState.customerInputs.name || "N/A"}
                         </h3>
                         <p className="text-gray-600 text-xs">
@@ -183,24 +180,24 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 w-full md:w-auto">
                       <button
-                        className="flex items-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
                         onClick={() =>
                           handleShare(form.responseState.response.videoUrl)
                         }
                       >
                         <TwitterLogoIcon className="w-4 h-4" />
-                        <span>Share</span>
+                        <span className="">Share</span>
                       </button>
                       <button
-                        className="flex items-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-sm transition-colors"
                         onClick={() =>
                           handleDownload(form.responseState.response.videoUrl)
                         }
                       >
                         <DownloadIcon className="w-4 h-4" />
-                        <span>Download</span>
+                        <span className="">Download</span>
                       </button>
                     </div>
                   </div>
@@ -211,14 +208,11 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                     </h4>
                   </div>
 
-                  {/* Collapsible section */}
                   <div className="mb-2">
-                    {/* Witty comment - always visible */}
                     <p className="text-xs text-gray-500 italic">
                       {form.responseState.customerInputs.comment || "N/A"}
                     </p>
 
-                    {/* Show more/less button */}
                     <button
                       onClick={() =>
                         setExpandedId(expandedId === form.id ? null : form.id)
@@ -230,19 +224,16 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                         : "Show more details"}
                     </button>
 
-                    {/* Expandable content */}
                     {expandedId === form.id && (
-                      <div className="mt-2 flex items-center gap-4">
+                      <div className="mt-2 flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4">
                         <p className="text-xs text-gray-600">
-                          <span className="font-medium"> Email: </span>
+                          <span className="font-medium">Email: </span>
                           {form.responseState.customerInputs.email || "N/A"}
                         </p>
-                        <div className="h-4 w-px bg-gray-300" />{" "}
-                        {/* Separator */}
+                        <div className="hidden md:block h-4 w-px bg-gray-300" />
                         <div className="flex gap-3 items-center">
                           <p className="text-xs text-gray-600 line-clamp-1">
                             <span className="font-medium">
-                              {" "}
                               Wallet Address:{" "}
                             </span>
                             {form.responseState.customerInputs.walletAddress ||
@@ -263,8 +254,7 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                     )}
                   </div>
 
-                  {/* Footer */}
-                  <div className="flex items-center gap-3 text-sm text-gray-400">
+                  <div className="flex flex-col md:flex-row items-start md:items-center gap-3 text-sm text-gray-400">
                     <button onClick={() => handleFavoriteClick(form.id)}>
                       <HeartIcon
                         className={`w-6 h-6 ${
@@ -275,17 +265,14 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
                       />
                     </button>
 
-                    <span className="text-sm">
-                      {new Date(form.date).toLocaleDateString()},
-                    </span>
-                    {/* <img
-                      src={`/src/assets/flags/${form.responseState.customerInputs.nationality}.svg`}
-                      alt=""
-                      className="w-6 h-5"
-                    /> */}
-                    <p className="text-sm">
-                      {form.responseState.customerInputs.nationality || "N/A"}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">
+                        {new Date(form.date).toLocaleDateString()},
+                      </span>
+                      <p className="text-sm">
+                        {form.responseState.customerInputs.nationality || "N/A"}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
