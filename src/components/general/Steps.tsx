@@ -1,25 +1,25 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Button } from '../ui/button';
 
 const FeatureSection = () => {
   const features = [
     {
-      title: "Track & Analyze",
-      tag: "ARTIFICIAL INTELLIGENCE",
-      description: "Seamlessly connect and aggregate data from multiple sources, providing a comprehensive view of your customer feedback landscape.",
+      title: "Collect & Organize",
+      tag: "VIDEO FEEDBACK",
+      description: "Easily gather authentic video testimonials from hackathon participants and conference attendees with our User-friendly interface designed specifically for video collection.",
       image: "/feature1.jpg"
     },
     {
-      title: "Identify Growth",
-        tag: "DATA INSIGHTS", 
-      description: "Leverage advanced analytics to uncover hidden insights, trends, and opportunities within your customer feedback data.",
+      title: "Edit & Transform",
+      tag: "CONTENT CREATION",
+      description: "Our team professionally edits your collected videos into engaging social media reels and comprehensive event montages that showcase your protocol's impact.",
       image: "/feature2.jpg"
     },
     {
-      title: "Take Action",
-      tag: "CONTENT CREATION",
-      description: "Transform insights into strategic actions, creating targeted content that resonates with your audience and drives engagement.",
+      title: "Share & Grow",
+      tag: "SOCIAL IMPACT",
+      description: "Deploy authentic, user-generated content across your social channels to build credibility and attract new users to your protocol.",
       image: "/feature3.jpg"
     }
   ];
@@ -27,7 +27,7 @@ const FeatureSection = () => {
   return (
     <section className="py-20 px-4 lg:px-16">
       <h2 className="text-4xl md:text-5xl font-medium text-center mb-16 max-w-3xl mx-auto">
-        Mont helps you understand your attendees
+      Your Events, Transformed Into Powerful Content
       </h2>
       
       {features.map((feature, index) => (

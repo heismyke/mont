@@ -73,7 +73,7 @@ const Hero = () => {
 
   return (
     <section className="flex flex-col md:flex-row items-center justify-between px-4 lg:px-16 py-16 gap-8">
-      <div className="flex gap-1 w-full md:w-1/2">
+      <div className="flex gap-1 w-full md:w-2/3">
         <div className="w-1/2 rounded overflow-hidden shadow-lg">
           <VideoCarousel videos={leftVideos} />
         </div>
@@ -88,10 +88,10 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
         >
-          <p className="text-green text-xs">TRY IT NOW !</p>
-          <h2 className="text-7xl font-semibold mb-4 text-navy">
-            Secure Your <br />
-            <span className="">Digital Legacy</span>
+          <p className="text-green text-xs">TRY IT NOW!</p>
+          <h2 className="text-6xl font-semibold mb-4 text-navy">
+            Turn Feedback  <br />
+            <span className="">Into Social Gold</span>
           </h2>
         </motion.div>
 
@@ -99,18 +99,19 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-sm mb-8 pr-8 text-green"
+          className="text-base mb-8 pr-8 text-green"
         >
-          Set up a beneficiary system for your digital assets. Ensure your funds
-          are recovered and distributed according to your wishes.
+          Collect, edit, and transform your hackathon and conference attendee
+          feedback into powerful social content. The easiest way to showcase
+          real user experiences and build protocol credibility.
         </motion.p>
 
         <div className="flex space-x-5 items-center">
           <Button
-            className="bg-purple-700 hover:bg-purple-700 rounded-full px-6"
+            className="bg-purple-700 hover:bg-purple-700 rounded-full px-6 md:py-6"
             size="lg"
           >
-            Get Started Now
+            Start Collecting Videos
           </Button>
 
           <div className="space-y-1">
@@ -123,7 +124,7 @@ const Hero = () => {
               <p className="text-green font-semibold text-sm">5.0</p>
             </div>
 
-            <p className="text-green text-xs">Trusted by top brands</p>
+            <p className="text-green text-xs">Trusted by leading Web3 protocols</p>
           </div>
         </div>
       </div>

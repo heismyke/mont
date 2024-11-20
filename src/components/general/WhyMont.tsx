@@ -1,38 +1,42 @@
-import React from "react";
 import { motion } from "framer-motion";
 
 const WhyUsSection = () => {
   const stats = [
     {
-      number: "96%",
-      description: "of brands improve content creation efficiency",
+      number: "40%",
+      description: "boost in developer onboarding from mont campaigns",
     },
     {
-      number: "95%",
-      description: "increase in audience engagement",
+      number: "85%",
+      description:
+        "of participant feedback leads to meaningful protocol improvements",
     },
     {
-      number: "87%",
-      description: "faster social media content turnaround",
+      number: "100+",
+      description:
+        "authentic ready-to-post social content pieces per event, no effort required",
     },
   ];
 
   return (
-    <section className="bg-gray-50 py-20 px-4 lg:px-16">
+    <section className="bg-gray-50 py-14 px-4 lg:px-16">
       <div className="max-w-6xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-4xl md:text-5xl font-bold text-center mb-8"
+          className="text-4xl md:text-5xl font-bold text-center mb-6"
         >
-          Why Choose Mont?
+          Why Mont?
         </motion.h2>
 
-        <p className="text-gray-600 text-center mb-8">
-          Mont empowers brands to turn customer insights into compelling social
-          media content effortlessly. Our AI-driven platform transforms feedback
-          into engaging stories that resonate with your audience.
+        <p className="text-gray-700 text-center">
+          Mont transforms hackathon and conference feedback into powerful social
+          proof for Web3 protocols. 
+        </p>
+        <p className="text-gray-700 text-center mb-8 ">
+         Share link. Collect video feedback. Get
+          ready-to-post social content.
         </p>
 
         <motion.div
@@ -42,13 +46,8 @@ const WhyUsSection = () => {
           className="grid md:grid-cols-3 gap-8"
         >
           {stats.map((stat, index) => (
-            <div
-              key={index}
-              className="p-8 text-center "
-            >
-              <div className="text-6xl font-medium text-gray-900 mb-4">
-                {stat.number}
-              </div>
+            <div key={index} className="p-8 text-center ">
+              <div className="text-6xl text-gray-900 mb-4">{stat.number}</div>
               <p className="text-gray-600 text-base">{stat.description}</p>
             </div>
           ))}
@@ -60,8 +59,8 @@ const WhyUsSection = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-16"
         >
-          <button className="bg-purple-800 text-white px-12 py-3 rounded-2xl text-lg font-medium hover:bg-purple-800 transition-colors">
-            Get started now
+          <button className="bg-purple-800 text-white px-10 py-3 rounded-full text-base hover:bg-purple-800 transition-colors">
+            Launch Your First Campaign
           </button>
         </motion.div>
       </div>
