@@ -1,84 +1,121 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { Button } from "../ui/button";
 
-interface VideoCarouselProps {
-  videos: string[];
+interface VideoItemProps {
+  video: string;
+  event: string;
 }
 
-const VideoCarousel: React.FC<VideoCarouselProps> = ({ videos }) => {
-  const carouselRef = useRef(null);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const VideoItem: React.FC<VideoItemProps> = ({ video, event }) => {
+  return (
+    <div className="relative w-full h-full border-0 border-black rounded-lg overflow-hidden">
+      {/* <div className="absolute top-0 left-0 right-0 bg-black text-white p-2 text-center text-sm font-bold z-10">
+        {event}
+      </div> */}
+
+      <video
+        src={video}
+        className="w-full h-full object-cover"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+    </div>
+  );
+};
+
+interface VideoCarouselProps {
+  videos: string[];
+  events: string[];
+  initialDelay?: number;
+}
+
+const VideoCarousel: React.FC<VideoCarouselProps> = ({
+  videos,
+  events,
+  initialDelay = 0,
+}) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
-    const carousel = carouselRef.current;
-    let animationFrame: ReturnType<typeof requestAnimationFrame> | undefined;
-    let scrollPosition = 0;
+    let timeoutId: NodeJS.Timeout;
 
-    const autoScroll = () => {
-      if (carousel && "scrollHeight" in carousel && "scrollTo" in carousel) {
-        scrollPosition += 1;
-        if (scrollPosition >= (carousel as HTMLElement).scrollHeight / 2) {
-          scrollPosition = 0;
-        }
-        (carousel as HTMLElement).scrollTo({
-          top: scrollPosition,
-          behavior: "smooth",
-        });
-      }
-      animationFrame = requestAnimationFrame(autoScroll);
-    };
-
-    const startAutoScroll = () => {
-      animationFrame = requestAnimationFrame(autoScroll);
-    };
-
-    const stopAutoScroll = () => {
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-      }
-    };
-
-    startAutoScroll();
+    if (isPlaying) {
+      timeoutId = setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % videos.length);
+      }, 5000 + initialDelay);
+    }
 
     return () => {
-      stopAutoScroll();
+      if (timeoutId) clearTimeout(timeoutId);
     };
-  }, []);
+  }, [currentIndex, isPlaying, videos.length, initialDelay]);
+
+  const handleMouseEnter = () => {
+    setIsPlaying(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsPlaying(true);
+  };
 
   return (
     <div
-      ref={carouselRef}
-      className="h-[620px] w-full overflow-y-hidden scroll-smooth no-scrollbar"
+      className="h-[620px] w-full overflow-hidden relative"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      {videos.map((video, index) => (
-        <video
-          key={index}
-          src={video}
-          className="w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-        />
-      ))}
+      <VideoItem video={videos[currentIndex]} event={events[currentIndex]} />
     </div>
   );
 };
 
 const Hero = () => {
-  const leftVideos = ["/video1.mp4", "/video2.mp4", "/video3.mp4"];
+  const leftVideos = [
+    "/src/assets/video/9.mp4",
+    "/src/assets/video/8.mp4",
+    "/src/assets/video/4.mp4",
+  ];
 
-  const rightVideos = ["/video4.mp4", "/video5.mp4", "/video6.mp4"];
+  const rightVideos = [
+    "/src/assets/video/5.mp4",
+    "/src/assets/video/6.mp4",
+    "/src/assets/video/7.mp4",
+  ];
+
+  const leftEvents = [
+    "ETH Denver 2024",
+    "Consensus Hackathon",
+    "Web3 Startup Summit",
+  ];
+
+  const rightEvents = [
+    "Solana Hackathon",
+    "Bitcoin Conference",
+    "Blockchain Week",
+  ];
 
   return (
     <section className="flex flex-col md:flex-row items-center justify-between px-4 lg:px-16 py-16 gap-8">
       <div className="flex gap-1 w-full md:w-2/3">
         <div className="w-1/2 rounded overflow-hidden shadow-lg">
-          <VideoCarousel videos={leftVideos} />
+          <VideoCarousel
+            videos={leftVideos}
+            events={leftEvents}
+            initialDelay={0}
+          />
         </div>
         <div className="w-1/2 rounded overflow-hidden shadow-lg">
-          <VideoCarousel videos={rightVideos} />
+          <VideoCarousel
+            videos={rightVideos}
+            events={rightEvents}
+            initialDelay={500}
+          />
         </div>
       </div>
 
@@ -90,7 +127,7 @@ const Hero = () => {
         >
           <p className="text-green text-xs">TRY IT NOW!</p>
           <h2 className="text-6xl font-semibold mb-4 text-navy">
-            Turn Feedback  <br />
+            Turn Feedback <br />
             <span className="">Into Social Gold</span>
           </h2>
         </motion.div>
@@ -102,8 +139,8 @@ const Hero = () => {
           className="text-base mb-8 pr-8 text-green"
         >
           Collect, edit, and transform your hackathon and conference attendee
-          feedback into powerful social content. The easiest way to showcase
-          real user experiences and build protocol credibility.
+          moments into powerful social content. The easiest way to showcase real
+          user experiences and build protocol credibility.
         </motion.p>
 
         <div className="flex space-x-5 items-center">
@@ -124,7 +161,9 @@ const Hero = () => {
               <p className="text-green font-semibold text-sm">5.0</p>
             </div>
 
-            <p className="text-green text-xs">Trusted by leading Web3 protocols</p>
+            <p className="text-green text-xs">
+              Trusted by leading Web3 protocols
+            </p>
           </div>
         </div>
       </div>

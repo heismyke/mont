@@ -19,7 +19,7 @@ const WhyUsSection = () => {
   ];
 
   return (
-    <section className="bg-gray-50 py-14 px-4 lg:px-16">
+    <section className="bg-gray-50 py-14 px-4 lg:px-16 mb-16">
       <div className="max-w-6xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
