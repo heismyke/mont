@@ -6,13 +6,11 @@ import {
   Share,
   MoreHorizontal,
   Sparkles,
-  EditIcon,
 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -75,11 +73,7 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
   return (
     <>
       <Dialog open={showWelcome} onOpenChange={setShowWelcome}>
-        <DialogTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <EditIcon size={20} className="text-gray-500 hover:text-gray-700" />
-          </Button>
-        </DialogTrigger>
+       
         <DialogContent className="sm:max-w-sm max-w-sm rounded-lg">
           <DialogDescription className="text-base mt-2 text-center">
             <div className="mt-4 text-sm text-gray-600 text-start">
@@ -105,7 +99,7 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
 
       <div
         className={`
-        rounded-lg shadow-lg mx-auto relative
+        rounded-lg shadow-lg mx-auto overflow-x-hidden
         ${
           useDesktopLayout
             ? "max-w-2xl p-3"
@@ -115,7 +109,9 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
               w-full
               md:w-[480px]
               lg:w-[560px]
-              min-h-[500px]
+              min-h-[80vh]
+              my-8
+              
               flex flex-col justify-center 
             `
         }
@@ -123,7 +119,7 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
         style={{ backgroundColor: design.backgroundColor, fontFamily: font }}
       >
         {/* Profile Header */}
-        <div className="border-b border-gray-800 py-3 px-4">
+        <div className="border-b border-gray-800 py-3 px-2">
           <div className="flex items-center gap-3">
             <img
               src={design.logo.preview || ""}
@@ -159,8 +155,8 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
 
         <div
           ref={scrollRef}
-          className="overflow-hidden"
-          style={{ height: "calc(100vh - 150px)" }}
+          className="overflow-x-hidden overflow-y-auto"
+          style={{ height: "calc(100vh - 300px)" }}
         >
           {socialHandle.tweets.map((tweet) => (
             <div key={tweet.id} className="border-b border-gray-800 p-3">

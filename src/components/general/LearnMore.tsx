@@ -8,7 +8,7 @@ interface LearnMoreProps {
 
 const LearnMore = ({ onNavigateNext }: LearnMoreProps) => {
   return (
-    <div className="max-w-4xl mx-auto p-5 bg-white rounded-lg shadow-md space-y-8">
+    <div className="max-w-4xl mx-auto px-5 py-10 bg-white rounded-lg shadow-md space-y-8">
       <div className="">
         <div className="flex items-center justify-center gap-2 mb-3">
           <img src="/assets/images/mont.png" className="w-8 sm:w-10 h-8 sm:h-10" />
