@@ -9,7 +9,6 @@ interface VideoItemProps {
   event: string;
 }
 
-
 const VideoItem: React.FC<VideoItemProps> = ({ video }) => {
   return (
     <div className="relative w-full h-full border-0 border-black rounded-lg overflow-hidden">
@@ -78,15 +77,21 @@ const VideoCarousel: React.FC<VideoCarouselProps> = ({
 
 const Hero = () => {
   const leftVideos = [
-    "/assets/video/9.mp4",
-    "/assets/video/8.mp4",
-    "/assets/video/4.mp4",
+    "https://silver-logical-swan-349.mypinata.cloud/ipfs/QmURN6HJgCCxFhDCRn1dGEhmGMi2XDgeZZLCc3qmyGTYdV",
+    "https://utfs.io/f/PKy8oE1GN2J33WlJ217dHPkDtpiKx4qVXuO0WSbovLg7UwEB",
+    "https://utfs.io/f/PKy8oE1GN2J3F5Nk4alikYrWEQ0qAVTfL34d9GtgN2aBOjem",
+    "https://utfs.io/f/PKy8oE1GN2J3tjthJ4kvpN1sulgB5tndmrzYhToROK9e3EVa",
+    'https://utfs.io/f/PKy8oE1GN2J3tmrF1wkvpN1sulgB5tndmrzYhToROK9e3EVa',
+    "https://utfs.io/f/PKy8oE1GN2J3NLHPQSmqTwZLGavY36FuE8XmyPAoRIOJCQBK",
   ];
 
   const rightVideos = [
-    "/assets/video/5.mp4",
-    "/assets/video/6.mp4",
-    "/assets/video/7.mp4",
+    "https://utfs.io/f/PKy8oE1GN2J3NLHPQSmqTwZLGavY36FuE8XmyPAoRIOJCQBK",
+    'https://utfs.io/f/PKy8oE1GN2J3tmrF1wkvpN1sulgB5tndmrzYhToROK9e3EVa',
+    "https://utfs.io/f/PKy8oE1GN2J3tjthJ4kvpN1sulgB5tndmrzYhToROK9e3EVa",
+    "https://utfs.io/f/PKy8oE1GN2J3F5Nk4alikYrWEQ0qAVTfL34d9GtgN2aBOjem",
+    "https://utfs.io/f/PKy8oE1GN2J33WlJ217dHPkDtpiKx4qVXuO0WSbovLg7UwEB",
+    "https://silver-logical-swan-349.mypinata.cloud/ipfs/QmURN6HJgCCxFhDCRn1dGEhmGMi2XDgeZZLCc3qmyGTYdV",
   ];
 
   const leftEvents = [
@@ -141,9 +146,9 @@ const Hero = () => {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="text-sm sm:text-base mb-8 pr-8 text-green"
         >
-          Collect, edit, and transform your event attendee
-          moments and feedback into powerful social content. The easiest way to showcase real
-          user experiences and build protocol credibility.
+          Collect, edit, and transform your event attendee moments and feedback
+          into powerful social content. The easiest way to showcase real user
+          experiences and build protocol credibility.
         </motion.p>
 
         <div className="flex space-x-5 items-center">
@@ -165,9 +170,7 @@ const Hero = () => {
               <p className="text-green font-semibold text-sm">5.0</p>
             </div>
 
-            <p className="text-green text-xs">
-              Trusted by leading brands
-            </p>
+            <p className="text-green text-xs">Trusted by leading brands</p>
           </div>
         </div>
       </div>
