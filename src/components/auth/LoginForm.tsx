@@ -68,17 +68,17 @@ const AuthForm = () => {
               {[
                 { 
                   provider: 'Google', 
-                  icon: '/src/assets/protocols/google.svg', 
+                  icon: '/public/assets/protocols/google.svg', 
                   onClick: signInWithGoogle 
                 },
                 { 
                   provider: 'GitHub', 
-                  icon: '/src/assets/protocols/github.svg', 
+                  icon: '/public/assets/protocols/github.svg', 
                   onClick: signInWithGithub 
                 },
                 { 
                   provider: 'Discord', 
-                  icon: '/src/assets/protocols/discord.svg', 
+                  icon: '/public/assets/protocols/discord.svg', 
                   onClick: signInWithDiscord 
                 }
               ].map(({ provider, icon, onClick }) => (

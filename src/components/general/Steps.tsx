@@ -10,21 +10,21 @@ const FeatureSection = () => {
       tag: "VIDEO FEEDBACK",
       description:
         "Easily gather authentic video feedbacks from hackathon participants and conference attendees with our User-friendly interface designed specifically for video collection.",
-      image: "/src/assets/images/collect.png",
+      image: "/public/assets/images/collect.png",
     },
     {
       title: "Edit & Transform",
       tag: "CONTENT CREATION",
       description:
         "Our team professionally edits your collected videos into engaging social media reels and comprehensive event montages that showcase your protocol's impact.",
-      image: "/src/assets/images/edit.jpeg",
+      image: "/public/assets/images/edit.jpeg",
     },
     {
       title: "Share & Grow",
       tag: "SOCIAL IMPACT",
       description:
         "Deploy authentic, user-generated content across your social channels to build credibility and attract new users to your protocol.",
-      image: "/src/assets/images/socials.png",
+      image: "/public/assets/images/socials.png",
     },
   ];
 
