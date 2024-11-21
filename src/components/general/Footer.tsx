@@ -33,14 +33,14 @@ const Footer = () => {
               <div className="flex space-x-3">
                 <a href="#" className="text-gray-400 hover:text-white">
                   <img
-                    src="/public/assets/protocols/x.svg"
+                    src="/assets/protocols/x.svg"
                     alt="GitHub"
                     className="w-5 h-5 "
                   />
                 </a>
                 <a href="#" className="text-gray-400 hover:text-white">
                   <img
-                    src="/public/assets/protocols/discord.svg"
+                    src="/assets/protocols/discord.svg"
                     alt="Discord"
                     className="w-5 h-5 "
                   />

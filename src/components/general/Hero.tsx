@@ -78,15 +78,15 @@ const VideoCarousel: React.FC<VideoCarouselProps> = ({
 
 const Hero = () => {
   const leftVideos = [
-    "/public/assets/video/9.mp4",
-    "/public/assets/video/8.mp4",
-    "/public/assets/video/4.mp4",
+    "/assets/video/9.mp4",
+    "/assets/video/8.mp4",
+    "/assets/video/4.mp4",
   ];
 
   const rightVideos = [
-    "/public/assets/video/5.mp4",
-    "/public/assets/video/6.mp4",
-    "/public/assets/video/7.mp4",
+    "/assets/video/5.mp4",
+    "/assets/video/6.mp4",
+    "/assets/video/7.mp4",
   ];
 
   const leftEvents = [
