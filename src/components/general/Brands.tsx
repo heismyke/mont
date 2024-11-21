@@ -5,7 +5,7 @@ const Brands = () => {
     <section className="py-8">
       <div className="space-y-6">
         {/* <Separator /> */}
-        <p className="text-center text-sm font-medium">Trusted by teams at</p>
+        <p className="text-center text-xs md:text-sm font-medium">Trusted by teams at</p>
         <div className="flex justify-evenly items-center">
           <div className="ml-2 flex items-center">
             <img

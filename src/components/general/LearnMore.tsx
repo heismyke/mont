@@ -1,3 +1,4 @@
+import { Globe } from "lucide-react";
 import { Button } from "../ui/button";
 
 interface LearnMoreProps {
@@ -7,38 +8,58 @@ interface LearnMoreProps {
 
 const LearnMore = ({ onNavigateNext }: LearnMoreProps) => {
   return (
-    <div className="max-w-3xl mx-auto p-5 bg-white rounded-lg shadow-md">
-      <div className="mb-8">
-        <h1 className="text-xl font-bold mb-2">Mont Protocol</h1>
-        <p className="text-sm text-gray-600">
-          The next generation DeFi lending protocol built for institutional
-          adoption Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Totam, odit. We've built a live demo of the protocol for you to test out!
+    <div className="max-w-4xl mx-auto p-5 bg-white rounded-lg shadow-md space-y-8">
+      <div className="">
+        <div className="flex items-center justify-center gap-2 mb-3">
+          <img src="/assets/images/mont.png" className="w-8 sm:w-10 h-8 sm:h-10" />
+          <h1 className="text-xl md:text-2xl text-center font-bold">Mont</h1>
+        </div>
+
+        <p className="text-sm text-gray-600 text-center">
+          Mont transforms hackathon and event feedback into powerful social
+          proof for Web3 protocols. Share link. Collect video feedback. Get
+          ready-to-post social contents.
         </p>
       </div>
 
-      <div className="space-y-6">
-        <div>
-          <iframe
-            width="100%"
-            height="400"
-            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            title="YouTube video player"
-            frameBorder="3"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            style={{ borderRadius: "8px" }}
-          ></iframe>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-2">
+        <div className="bg-gray-50 p-2 rounded text-center space-y-2">
+          <img src="/assets/images/video.svg" className="w-12 h-12 mx-auto" />
+          <h3 className="text-base font-semibold">Video Collection</h3>
+          <p className="text-sm text-gray-600">
+            Easily gather video feedbacks from hackathon participants and
+            conference attendees.
+          </p>
+        </div>
+        <div className="bg-gray-50 p-2 rounded text-center space-y-2">
+          <img src="/assets/images/content.svg" className="w-12 h-12 mx-auto" />
+          <h3 className="text-base font-semibold">Content Creation</h3>
+          <p className="text-sm text-gray-600">
+            Our team professionally edits your collected videos into engaging
+            contents.
+          </p>
         </div>
 
-        <div className="flex gap-4 justify-center">
-          <Button
-            onClick={onNavigateNext}
-            className="bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
-          >
-            Check Live Demo
-          </Button>
+        <div className="bg-gray-50 p-2 rounded text-center space-y-2">
+          <Globe className="mx-auto mb-1 text-purple-900" size={38} />
+          <h3 className="text-base font-semibold">Share and Grow</h3>
+          <p className="text-sm text-gray-600">
+            Share contents across your social channels to build credibility and
+            attract new users to your protocol.
+          </p>
         </div>
+      </div>
+
+      <div className="flex gap-8 justify-center items-center mr-20">
+        <div className="transform translate-x-1/2">
+          <img
+            src="/assets/images/hand.svg"
+            className="w-14 h-10 animate-bounce-horizontal"
+          />
+        </div>
+        <Button onClick={onNavigateNext} className="bg-purple-700 text-white text-sm px-4 py-2 rounded hover:bg-purple-800">
+          Go to Live Demo
+        </Button>
       </div>
     </div>
   );

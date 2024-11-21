@@ -75,20 +75,20 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
   return (
     <>
       <Dialog open={showWelcome} onOpenChange={setShowWelcome}>
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <EditIcon size={20} className="text-gray-500 hover:text-gray-700" />
-        </Button>
-      </DialogTrigger>
+        <DialogTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <EditIcon size={20} className="text-gray-500 hover:text-gray-700" />
+          </Button>
+        </DialogTrigger>
         <DialogContent className="sm:max-w-sm max-w-sm rounded-lg">
           <DialogDescription className="text-base mt-2 text-center">
             <div className="mt-4 text-sm text-gray-600 text-start">
               <span className="font-medium text-blue-600">Tip 1:</span> Response
-              videos are excellent choices for social marketing contents!
-              example below
+              videos are excellent choices for social contents! Below is a
+              demonstration of how you can use this videos 🎬
               <br />
               <span className="font-medium text-blue-600">Tip 2:</span> Use the
-              'Get Form' button to customize the demo to your needs! ✨
+              'Get Form' button to begin customizing the demo to your needs! 🚀
             </div>
           </DialogDescription>
 

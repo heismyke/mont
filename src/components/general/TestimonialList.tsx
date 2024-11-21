@@ -226,10 +226,10 @@ const TestimonialList = ({ selectedTab }: TestimonialListProps) => {
 
                     {expandedId === form.id && (
                       <div className="mt-2 flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4">
-                        <p className="text-xs text-gray-600">
+                        {/* <p className="text-xs text-gray-600">
                           <span className="font-medium">Email: </span>
                           {form.responseState.customerInputs.email || "N/A"}
-                        </p>
+                        </p> */}
                         <div className="hidden md:block h-4 w-px bg-gray-300" />
                         <div className="flex gap-3 items-center">
                           <p className="text-xs text-gray-600 line-clamp-1">
