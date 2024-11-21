@@ -8,6 +8,7 @@ import {
   Check,
   X,
   RotateCcw,
+  PartyPopper,
 } from "lucide-react";
 import { useFormContext } from "@/context/FormContext";
 import { Separator } from "../ui/separator";
@@ -42,6 +43,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [isPreviewing, setIsPreviewing] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -139,6 +141,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
         toast({
           description: "Video uploaded successfully!",
         });
+        setIsUploaded(true);
       } catch {
         toast({
           description: "Error uploading video. Please try again.",
@@ -174,6 +177,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
 
     const data = await response.json();
     updateResponse({ videoUrl: data.secure_url });
+    
   };
 
   const handleFileUpload = async (
@@ -190,6 +194,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
       } catch {
         toast({
           description: "Error uploading video. Please try again.",
+          variant: "destructive",
         });
       } finally {
         setIsUploading(false);
@@ -202,7 +207,11 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
   };
 
   return (
-    <div className={`relative ${isDesktop && formPage ? "min-h-[130vh] pt-40" : ""} `}>
+    <div
+      className={`relative ${
+        isDesktop && formPage ? "min-h-[130vh] pt-40" : ""
+      } `}
+    >
       {formState.form.form_ad && (
         <div className="absolute top-[-12px] right-4 z-10">
           <button
@@ -243,7 +252,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
               <img
                 src={design.logo.preview}
                 alt="Logo"
-                className="h-8 sm:h-12 w-auto object-contain"
+                className="h-8 sm:h-12 w-auto object-contain rounded-sm"
               />
             ) : (
               <Heart
@@ -330,8 +339,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
                       </p>
                       <p className="text-gray-200 text-center text-xs px-4 md:px-10">
                         Your responder's camera feed will show up here and
-                        psst... try out the recording feature to see how it
-                        works! 😊
+                        psst... you can record a sample video for your responders! 😊
                       </p>
                     </div>
                   </div>
@@ -344,9 +352,9 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
                   {formatTime(recordedTime)}
                 </span>
 
-                {isPreviewing ? (
+                {isPreviewing && !isUploaded ? (
                   <div className="space-y-2">
-                    <p className="text-gray-100 text-sm">Ready to send?</p>
+                    <p className="text-gray-100 text-sm">{isUploading ? 'Uploading..' : 'Ready to send?'}</p>
                     <div className="flex gap-2">
                       <button
                         className="bg-green-600 hover:bg-green-700 text-white rounded-full p-3"
@@ -363,6 +371,12 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
                         <X size={22} className="sm:w-6 sm:h-6" />
                       </button>
                     </div>
+                  </div>
+                ) : isUploaded ? (
+                  <div className="space-y-2">
+                    <p className="text-gray-100 text-sm flex items-center gap-2">
+                      Response Captured <PartyPopper className="text-yellow-400" />
+                    </p>
                   </div>
                 ) : (
                   <button

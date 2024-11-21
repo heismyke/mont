@@ -445,6 +445,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
           preview: data.secure_url,
         },
       });
+      console.log('Logo uploaded successfully')
     } catch (error) {
       console.error("Error uploading logo:", error);
     }
@@ -483,6 +484,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
           preview: data.secure_url,
         },
       });
+      console.log('Logo uploaded successfully')
     } catch (error) {
       console.error("Error uploading background:", error);
     }

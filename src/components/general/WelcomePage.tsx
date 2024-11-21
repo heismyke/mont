@@ -57,7 +57,7 @@ const WelcomePage = ({ isDesktop, onNavigateNext }: WelcomePageProps) => {
             <img
               src={design.logo.preview}
               alt="Logo"
-              className="h-8 sm:h-12 w-auto object-contain"
+              className="h-8 sm:h-12 w-auto object-contain rounded-sm"
             />
           ) : (
             <Heart

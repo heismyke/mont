@@ -57,7 +57,7 @@ const ThankYouPage: React.FC<ThankYouPageProps> = ({ isDesktop }) => {
             <img 
               src={design.logo.preview} 
               alt="Logo" 
-              className="h-12 w-auto object-contain"
+              className="h-12 w-auto object-contain rounded-sm"
             />
           ) : (
             <Heart 

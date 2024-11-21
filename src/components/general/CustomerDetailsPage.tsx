@@ -38,7 +38,7 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
   const formPage = location.pathname === "/form";
 
   const { fields } = formState.customer;
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(customerInputs.photo);
 
   const handlePhotoUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -62,6 +62,7 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
         const data = await response.json();
         setPhotoPreview(data.url);
         updateDetails({ photo: data.url });
+        console.log('Logo uploaded successfully')
       } catch (error) {
         console.error("Error uploading file:", error);
       }
@@ -320,7 +321,7 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
               <img
                 src={design.logo.preview}
                 alt="Logo"
-                className="h-8 sm:h-12 w-auto object-contain"
+                className="h-8 sm:h-12 w-auto object-contain rounded-sm"
               />
             ) : (
               <Heart

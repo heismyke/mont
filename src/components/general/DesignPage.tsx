@@ -60,7 +60,7 @@ const DesignPage: React.FC<DesignPageProps> = ({ isDesktop }) => {
             <img
               src={logo.preview}
               alt="Logo"
-              className="h-12 w-12 object-contain"
+              className="h-12 w-12 object-contain rounded-sm"
             />
           ) : (
             <Heart
