@@ -35,7 +35,7 @@ const OnboardPage = () => {
           backgroundSize: "cover",
         }}
       >
-        <div className="flex items-center justify-center flex-grow">
+        <div className="flex items-center justify-center flex-grow overflow-y-hidden">
           {ActiveComponent && (
             <ActiveComponent
               isDesktop={isDesktop}

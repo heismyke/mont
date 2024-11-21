@@ -78,7 +78,7 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
           <DialogDescription className="text-base mt-2 text-center">
             <div className="mt-4 text-sm text-gray-600 text-start">
               <span className="font-medium text-blue-600">Tip 1:</span> Response
-              videos are excellent choices for social contents! Below is a
+              videos are excellent for social contents! Below is a
               demonstration of how you can use this videos 🎬
               <br />
               <span className="font-medium text-blue-600">Tip 2:</span> Use the
@@ -109,7 +109,7 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
               w-full
               md:w-[480px]
               lg:w-[560px]
-              min-h-[80vh]
+              min-h-[90vh]
               my-8
               
               flex flex-col justify-center 
