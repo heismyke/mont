@@ -9,8 +9,8 @@ interface VideoItemProps {
   event: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const VideoItem: React.FC<VideoItemProps> = ({ video, event }) => {
+
+const VideoItem: React.FC<VideoItemProps> = ({ video }) => {
   return (
     <div className="relative w-full h-full border-0 border-black rounded-lg overflow-hidden">
       {/* <div className="absolute top-0 left-0 right-0 bg-black text-white p-2 text-center text-sm font-bold z-10">
