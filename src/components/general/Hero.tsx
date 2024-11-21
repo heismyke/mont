@@ -141,8 +141,8 @@ const Hero = () => {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="text-sm sm:text-base mb-8 pr-8 text-green"
         >
-          Collect, edit, and transform your hackathon and conference attendee
-          moments into powerful social content. The easiest way to showcase real
+          Collect, edit, and transform your event attendee
+          moments and feedback into powerful social content. The easiest way to showcase real
           user experiences and build protocol credibility.
         </motion.p>
 
