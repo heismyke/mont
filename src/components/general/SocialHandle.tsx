@@ -13,7 +13,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useFormContext } from "@/context/FormContext";
 
 interface SocialHandleProps {
@@ -31,9 +31,9 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
     design: { font },
   } = formState;
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const location = useLocation();
-  const { id } = useParams();
+  // const { id } = useParams();
 
   // Only apply isDesktop layout on /admin-manager route
   const useDesktopLayout = location.pathname === "/admin-manager" && isDesktop;
@@ -62,13 +62,17 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
     }
   }, [location.pathname]);
 
-  const handleGetForm = () => {
-    const dataToStore = {
-      formState,
-    };
-    sessionStorage.setItem("formState", JSON.stringify(dataToStore));
-    navigate(`/form/${id}`);
-  };
+  // const handleGetForm = () => {
+  //   const dataToStore = {
+  //     formState,
+  //   };
+  //   sessionStorage.setItem("formState", JSON.stringify(dataToStore));
+  //   navigate(`/form/${id}`);
+  // };
+
+  const handleContact = () => {
+    window.open('https://calendly.com/winneremeka/request-form', '_blank');
+}
 
   return (
     <>
@@ -82,7 +86,7 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
               demonstration of how you can use this videos 🎬
               <br />
               <span className="font-medium text-blue-600">Tip 2:</span> Use the
-              'Get Form' button to begin customizing the demo to your needs! 🚀
+              'Get form' button to request form for your event! 🚀
             </div>
           </DialogDescription>
 
@@ -132,7 +136,7 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
                 @{socialHandle.profile.handle}
               </p>
             </div>
-            <div className="relative ml-auto" onClick={handleGetForm}>
+            <div className="relative ml-auto" onClick={handleContact}>
               <Button className="relative cursor-pointer overflow-hidden bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 group">
                 <span className="flex items-center gap-2">
                   <Sparkles
@@ -155,7 +159,7 @@ const SocialHandle = ({ isDesktop }: SocialHandleProps) => {
 
         <div
           ref={scrollRef}
-          className="overflow-x-hidden overflow-y-auto"
+          className="overflow-x-hidden overflow-y-hidden"
           style={{ height: "calc(100vh - 300px)" }}
         >
           {socialHandle.tweets.map((tweet) => (

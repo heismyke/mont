@@ -8,7 +8,7 @@ const OnboardPage = () => {
   const { id } = useParams();
   const { formState, loadForm, activeView, isDesktop } = useFormContext();
   const { background } = formState.design;
-  const [navIndex, setNavIndex] = useState(0);
+  const [navIndex, setNavIndex] = useState(1);
 
   useEffect(() => {
     if (id) {

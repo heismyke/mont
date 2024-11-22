@@ -9,6 +9,7 @@ interface DesignPageProps {
 
 const DesignPage: React.FC<DesignPageProps> = ({ isDesktop }) => {
   const { formState } = useFormContext();
+  const {welcome, design} = formState
   const { primaryColor, backgroundColor, font, logo } = formState.design;
   const navigate = useNavigate();
   const location = useLocation();
@@ -71,27 +72,29 @@ const DesignPage: React.FC<DesignPageProps> = ({ isDesktop }) => {
           )}
         </div>
 
-        <h2 className="text-2xl font-bold mb-3">Share a testimonial!</h2>
+        <h2 className="text-2xl font-bold mb-3">{welcome.title}</h2>
         <p className="text-gray-600 mb-4">
-          Do you love using our product? We'd love to hear about it!
+        {welcome.subtitle}
         </p>
 
-        <ul className="list-disc text-gray-600 ml-5 mb-6">
-          <li>Share your experience with a quick video or text testimonial</li>
-          <li>Recording a video? Don't forget to smile 😊</li>
+        <ul className="text-sm sm:text-base list-disc text-gray-600 ml-4 mb-3">
+          {welcome.prompts.split("\n").map((prompt, index) => (
+            <li key={index}>{prompt.replace("- ", "")}</li>
+          ))}
         </ul>
 
         <button
-          className="w-full text-white rounded-lg py-3 mb-3 flex items-center justify-center gap-2"
-          style={{ backgroundColor: primaryColor }}
+          className="w-full text-white rounded-lg py-2 sm:py-3 mb-3 flex items-center justify-center gap-2"
+          style={{ backgroundColor: design.primaryColor }}
+          
         >
           <Video size={20} />
-          Record a video
+          {welcome.buttonText}
         </button>
 
         <div
           className={`text-center ${
-            isDesktop ? "mt-10" : "absolute bottom-6 left-0 right-0"
+            useDesktopLayout ? "mt-10" : "absolute bottom-6 left-0 right-0"
           }`}
         >
           <p className="text-xs text-gray-300">Powered by Mont protocol</p>

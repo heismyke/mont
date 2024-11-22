@@ -426,7 +426,7 @@ const ResponsePage: React.FC<ResponsePageProps> = ({
           </Button>
 
           {location.pathname !== "/form" && (
-            <Button onClick={onNavigateNext} size={"lg"} className="w-full">
+            <Button  style={{ backgroundColor: design.primaryColor }} onClick={onNavigateNext} size={"lg"} className={`w-full`}>
               Proceed
             </Button>
           )}
