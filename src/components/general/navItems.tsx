@@ -1,4 +1,4 @@
-import { Palette, MessageSquare, Aperture, Sparkles, Heart, Users, BookOpen, Share2, Gem, Video } from "lucide-react";
+import { Palette, MessageSquare, Aperture, Sparkles, Heart, Users, BookOpen, Gem, Video } from "lucide-react";
 import DesignPage from "./DesignPage";
 import DesignSettings from "./DesignSettings";
 import WelcomePage from "./WelcomePage";
@@ -125,10 +125,17 @@ export const onboardNavItems = [
     component: CustomerDetailsPage,
   },
   {
-    id: "social",
-    icon: <Share2 className="text-fuchsia-500" />,
-    label: "Social Handle",
-    component: SocialHandle,
-    
+    id: "thanks",
+    icon: <Heart className="text-rose-500" />,
+    label: "Thank you page",
+    component: ThankYouPage,
+    settings: ThankYouSettings,
   },
+  // {
+  //   id: "social",
+  //   icon: <Share2 className="text-fuchsia-500" />,
+  //   label: "Social Handle",
+  //   component: SocialHandle,
+    
+  // },
 ];
